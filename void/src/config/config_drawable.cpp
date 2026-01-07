@@ -437,7 +437,9 @@ void config_drawable::render_button(const config_button& button, float alpha)
         min, max,
         style.accent2().alpha(alpha * (button.animation_hovered * 1.f) * 0.5f),
         style.rounding->get(instance()->scale()), 
-        button.pos.h * 0.7f
+        button.pos.h * 0.7f,
+        r2::e_rounding_flags::rounding_all,
+        button.pos.h * 0.15f
     );
 
     // icon

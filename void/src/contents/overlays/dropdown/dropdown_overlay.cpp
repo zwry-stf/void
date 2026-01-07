@@ -142,8 +142,10 @@ input_response dropdown_overlay::input(const overlay_input& input)
          input.event().get_mouse_button() == mouse_button::left) ||
             input.event().is_message(message_type::mouse_move)) {
         if (!util::is_in_rect(mouse_x, mouse_y, last_pos_)) {
-            if (input.event().is_message(message_type::mouse_button_down))
+            if (input.event().is_message(message_type::mouse_button_down)) {
                 input.clear_opened();
+                return input_response::handled();
+            }
         }
 
         else {

@@ -13,14 +13,9 @@ void multiselect_child::render(const r2::rectf& full_pos, float alpha, float ani
     auto& owned_overlay = *parent_overlay_owner_->get_overlay<multiselect_overlay>(overlay_id_);
 
     const float shadow_size = 0.7f;
-    bool push_clip_rect = last_pos_.x - shadow_size < full_pos.x;
-    if (push_clip_rect) {
-        renderer.push_clip_rect(
-            r2::vec2(full_pos.x, full_pos.y),
-            r2::vec2(full_pos.x + full_pos.w, full_pos.y + full_pos.h),
-            true
-        );
-    }
+    const bool push_clip_rect = last_pos_.x - shadow_size < full_pos.x;
+    if (push_clip_rect)
+        renderer.modify_clip_rect_x(full_pos.x, full_pos.x + full_pos.w);
 
     dropdown::render_dropdown(
         instance(),

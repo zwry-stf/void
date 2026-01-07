@@ -237,11 +237,10 @@ void theme_tab::render(float alpha, bool selected)
             (add_pos_.h * 0.5f)
         );
 
-        renderer.add_rect_inner(
+        renderer.add_rect_inner_fast(
             button_min - outer_offset, button_max + outer_offset,
             button_color,
-            border_size * 2.f,
-            0.f /* rounding */
+            border_size * 2.f
         );
 
         const r2::vec2 mid = (button_min + button_max) * r2::vec2(0.5f);
@@ -388,8 +387,12 @@ void theme_tab::on_activate(bool parent_change, bool first)
 
 void theme_tab::on_scale_change()
 {
-    for (auto& c : theme_instance_->themes_)
-        c->on_scale_changed();
+    child_tab::on_scale_change();
+
+    for (auto& t : theme_instance_->themes_)
+        t->on_scale_changed();
+
+    no_results_width_calculated_ = false;
 }
 
 void_end_

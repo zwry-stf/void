@@ -2,6 +2,7 @@
 #include <void/util/vobj.h>
 #include <void/util/xstr.h>
 #include <r2/renderer_definitions.h>
+#include <void/contents/input/message_event.h>
 
 
 void_begin_
@@ -119,11 +120,11 @@ private:
     // Mutable after init: no
     _new_void_option(UserAccount,     bool,         true,                  false);
 
-    // Display FPS in the top-right corner.
-    // Type: bool
-    // Default: true
+    // Set the key used to toggle the menu
+    // Type: key (enum)
+    // Default: key::insert
     // Mutable after init: yes
-    _new_void_option(DebugFps,        bool,         true,                  true);
+    _new_void_option(MenuKey,         key,          key::insert,           true);
 
     // Block application/game input while the menu is open.
     // Type: bool

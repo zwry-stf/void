@@ -92,19 +92,43 @@ void input::input_on_frame()
 {
     assert(instance()->is_initialized());
 
-
     instance()->reset_hovered_state();
     instance()->cursors().set_cursor(cursor::arrow);
 
+    if (instance()->is_open()) {
 #if defined(R2_PLATFORM_WINDOWS)
-    update_key_flags_win32();
-    input_on_frame_win32();
+        update_key_flags_win32();
+        input_on_frame_win32();
 #endif
+    }
+
+    if (instance()->is_open()) {
+        process_pending_events();
+    }
+    else {
+        std::vector<message_event> local_events;
+        {
+            std::lock_guard<std::mutex> lock(messages_mutex_);
+            pending_messages_.swap(local_events);
+        }
+        for (auto& e : local_events) {
+            if (e.is_message(message_type::key_down) &&
+                e.get_key() == instance()->options().get<options::option_MenuKey>()) {
+                instance()->toggle_menu(!instance()->is_open());
+            }
+        }
+    }
 }
 
 keybind_owner* input::add_keybind(keybind* bind, key default_key, keybind_mode mode)
 {
     return keybind_manager_->add_keybind(bind, default_key, mode);
+}
+
+void input::clear_queue()
+{
+    std::lock_guard<std::mutex> lock(messages_mutex_);
+    pending_messages_.clear();
 }
 
 int input::get_scan_code(key key)
@@ -307,8 +331,6 @@ void input::input_on_frame_win32()
 
     message_event ev = message_event::from_mousemove(mx, my, in_window);
     process_event(ev);
-
-    process_pending_events();
 }
 
 void input::update_key_flags_win32()

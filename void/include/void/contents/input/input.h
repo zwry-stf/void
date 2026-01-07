@@ -64,6 +64,8 @@ public:
     class keybind_owner* add_keybind(keybind* bind, key default_key = key::none,
                                      keybind_mode mode = keybind_mode::hold);
 
+    void clear_queue();
+
 private:
 #if defined(R2_PLATFORM_WINDOWS)
     message_event convert_message_win32(std::uint32_t msg, uint64_t wparam, int64_t lparam);

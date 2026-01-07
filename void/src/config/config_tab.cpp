@@ -364,8 +364,12 @@ void config_tab::on_activate(bool parent_change, bool first)
 
 void config_tab::on_scale_change()
 {
+    child_tab::on_scale_change();
+
     for (auto& c : config_instance_->configs_)
         c->on_scale_changed();
+
+    no_results_width_calculated_ = false;
 }
 
 void_end_

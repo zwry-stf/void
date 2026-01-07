@@ -105,7 +105,7 @@ void void_::init(const r2::platform_init_data& pinit, const r2::backend_init_dat
 
     initialized_ = true;
 
-    //sidebar_->on_activate();
+    sidebar_->on_activate();
 }
 
 void void_::destroy()
@@ -117,8 +117,6 @@ void void_::destroy()
 
     background_->destroy();
     background_overlay_->destroy();
-
-    //profiler_->gpu_cleanup();
 
     renderer_.destroy();
 
@@ -256,7 +254,7 @@ input_response void_::on_input(const message_event& event)
     }
 
     if (event.is_message(message_type::key_down) &&
-        event.get_key() == key::insert) {
+        event.get_key() == options().get<options::option_MenuKey>()) {
         toggle_menu(!open_);
         return input_response::handled();
     }
@@ -266,9 +264,13 @@ input_response void_::on_input(const message_event& event)
 
 void void_::toggle_menu(bool open)
 {
+#if defined(_DEBUG)
+    renderer_.assert_render_thread();
+#endif
     open_ = open;
     if (!open_)
         input_reset_selected_state();
+    input().clear_queue();
 }
 
 void void_::set_scale(float scale)

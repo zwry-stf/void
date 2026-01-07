@@ -147,7 +147,7 @@ void dropdown::render_dropdown(void_* instance, const r2::rectf& pos, float anim
         rounding * 0.5f
     );
 
-    const float icon_spacing = std::round(pos.h * 0.2f);
+    const float icon_spacing = std::round(pos.h * 0.15f);
     const float icon_size = pos.h - icon_spacing * 2.f;
 
     const r2::vec2 icon_min = r2::vec2(pos.x + pos.w - icon_spacing - icon_size,
@@ -161,24 +161,28 @@ void dropdown::render_dropdown(void_* instance, const r2::rectf& pos, float anim
     // dropdown icon
     if (is_multiselect) {
         const float icon_line_width = border_size * 2.f;
+        const float line_spacing = icon_line_width;
+        const float space_per_line = icon_line_width + line_spacing;
 
         const float full_icon_height = icon_size;
-        const float num_in_height = std::floor(
-            (full_icon_height + icon_line_width) / (icon_line_width * 2.f)
+        const int num_in_height = static_cast<int>(
+            std::floor(
+                (full_icon_height + line_spacing) / space_per_line
+            )
         );
         const float remaining_space = full_icon_height -
-            (num_in_height * (icon_line_width * 2.f) - icon_line_width);
+            (static_cast<float>(num_in_height) * space_per_line - line_spacing);
 
         const float f = std::round(remaining_space * 0.5f);
 
-        for (float i = pos.y + icon_spacing + f;
-            i < pos.y + pos.h - icon_spacing + f;
-            i += icon_line_width * 2.f) {
+        float pos_y = pos.y + icon_spacing + f;
+        for (int i = 0; i < num_in_height; i++) {
             renderer.add_rect_filled(
-                r2::vec2(icon_min.x, i),
-                r2::vec2(icon_max.x, i + icon_line_width),
+                r2::vec2(icon_min.x, pos_y),
+                r2::vec2(icon_max.x, pos_y + icon_line_width),
                 icon_color
             );
+            pos_y += space_per_line;
         }
     }
     else {

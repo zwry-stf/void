@@ -140,6 +140,8 @@ float group::update(float x, float y, float w, const render_input& input, float&
         return 0.f;
     }
 
+    instance()->fonts().bind_font_small();
+
     auto& style = instance()->style();
     const auto& menu_pos = instance()->pos();
 
@@ -188,6 +190,8 @@ void group::render(float alpha)
     if (occluded_) {
         return;
     }
+
+    instance()->fonts().bind_font_small();
 
     render_outline(alpha);
 

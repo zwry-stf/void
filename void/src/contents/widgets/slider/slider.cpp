@@ -151,7 +151,7 @@ void slider::render(float alpha)
 
     auto& path = renderer.path();
 
-    renderer.add_shadow_convex_filled(
+    renderer.add_shadow_convex(
         path.data(), static_cast<std::uint32_t>(path.size()),
         util.disable_color(style.accent().alpha(animation_selected_ * 0.5f), animation_disabled_),
         (thumb_max.y - thumb_min.y) * 0.7f, 

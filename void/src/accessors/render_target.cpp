@@ -171,16 +171,19 @@ void render_target::draw_menu() noexcept
         ctx->set_index_buffer(background->data_quad_ib_.get());
         ctx->set_shaderprogram(menu_shader_.get());
         ctx->set_texture(menu_view_.get());
-        ctx->set_uniform_buffer(menu_cb_.get(),
-            r2::shader_bind_type::ps, 1u);
+        ctx->set_uniform_buffer(
+            menu_cb_.get(),
+            r2::shader_bind_type::ps, 1u
+        );
 
-        ctx->set_scissor_rect({
-                static_cast<long>(min.x),
-                static_cast<long>(min.y),
-                static_cast<long>(max.x),
-                static_cast<long>(max.y),
+        ctx->set_scissor_rect(
+            {
+                static_cast<std::int32_t>(min.x),
+                static_cast<std::int32_t>(min.y),
+                static_cast<std::int32_t>(max.x),
+                static_cast<std::int32_t>(max.y),
             }
-            );
+        );
 
         ctx->draw_indexed(6u);
 
@@ -194,6 +197,8 @@ void render_target::draw_menu() noexcept
             r2::color::white().alpha(instance()->alpha()),
             uv_min, uv_max
         );
+        renderer.render();
+        renderer.reset_render_data();
     }
 }
 
@@ -240,7 +245,7 @@ void render_target::init_targets()
     tex_desc.format = r2::texture_format::backbuffer;
     tex_desc.mip_levels = 1u;
     tex_desc.sample_desc.count = msaa_count;
-    tex_desc.sample_desc.quality = msaa_quality - 1;
+    tex_desc.sample_desc.quality = msaa_quality - 1u;
     tex_desc.usage = r2::texture_usage::render_target | r2::texture_usage::shader_resource;
 
     menu_tex_ = ctx->create_texture2d(tex_desc);

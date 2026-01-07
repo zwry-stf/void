@@ -98,6 +98,10 @@ public:
     void set_clip_rect(const rect& r);
     void push_clip_rect(const vec2& min, const vec2& max, bool intersect_current = false);
     void push_clip_rect(const rect& r, bool intersect_current = false);
+    void modify_clip_rect_x(std::int32_t min, std::int32_t max);
+    void modify_clip_rect_x(float min, float max);
+    void modify_clip_rect_y(std::int32_t min, std::int32_t max);
+    void modify_clip_rect_y(float min, float max);
     void pop_clip_rect();
     void set_current_texture(texture_handle texture);
     void push_texture_id(texture_handle texture);
@@ -113,6 +117,7 @@ public:
                   e_rounding_flags flags = e_rounding_flags::rounding_all, float corner_step = 2.f);
     void add_rect_inner(const vec2& min, const vec2& max, color_u32 col, float line_width, float rounding = 0.f,
                         e_rounding_flags flags = e_rounding_flags::rounding_all, float corner_step = 2.f);
+    void add_rect_inner_fast(const vec2& min, const vec2& max, color_u32 col, float line_width);
     void add_rect_filled(const vec2& min, const vec2& max, color_u32 col, float rounding = 0.f,
                          e_rounding_flags flags = e_rounding_flags::rounding_all, float corner_step = 2.f);
     void add_rect_filled_multicolor(const vec2& min, const vec2& max,
@@ -126,7 +131,7 @@ public:
                                     color_u32 col1, color_u32 col2, color_u32 col3, color_u32 col4);
     void add_line(const vec2& start, const vec2& end, color_u32 col, float line_width);
     void add_convex_filled(const vec2* points, std::uint32_t num_points, color_u32 col);
-    void add_shadow_convex_filled(const vec2* points, std::uint32_t num_points, color_u32 col, float shadow_size, bool filled = true);
+    void add_shadow_convex(const vec2* points, std::uint32_t num_points, color_u32 col, float shadow_size, bool filled = true);
     void add_lines(const vec2* points, std::uint32_t num_points, color_u32 col, float line_width, bool closed = false);
 
     void add_image(texture_handle texture, const vec2& min, const vec2& max, color_u32 col = color::white(),

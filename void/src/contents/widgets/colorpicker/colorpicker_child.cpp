@@ -18,13 +18,8 @@ void colorpicker_child::render(const r2::rectf& full_pos, float alpha, float ani
 
     // render
     const bool push_clip_rect = last_pos_.x < full_pos.x;
-    if (push_clip_rect) {
-        renderer.push_clip_rect(
-            r2::vec2(full_pos.x, full_pos.y),
-            r2::vec2(full_pos.x + full_pos.w, full_pos.y + full_pos.h),
-            true
-        );
-    }
+    if (push_clip_rect)
+        renderer.modify_clip_rect_x(full_pos.x, full_pos.x + full_pos.w);
 
     const float border_size = style.border_size.get(instance()->scale());
     const float selected_animation = std::max(animation_selected_, owned_overlay.alpha());
