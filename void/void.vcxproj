@@ -369,6 +369,11 @@
     <ClInclude Include="include\void\accessors\theme.h" />
     <ClInclude Include="include\void\accessors\util.h" />
     <ClInclude Include="include\void\accessors\watermark.h" />
+    <ClInclude Include="include\void\builder\base.h" />
+    <ClInclude Include="include\void\builder\builder.h" />
+    <ClInclude Include="include\void\builder\childwindow.h" />
+    <ClInclude Include="include\void\builder\group.h" />
+    <ClInclude Include="include\void\builder\overlay.h" />
     <ClInclude Include="include\void\contents\container\child_tab.h" />
     <ClInclude Include="include\void\contents\container\tab.h" />
     <ClInclude Include="include\void\contents\input\events.h" />
@@ -437,6 +442,8 @@
     <ClCompile Include="src\accessors\account.cpp" />
     <ClCompile Include="src\accessors\theme_access.cpp" />
     <ClCompile Include="src\accessors\watermark.cpp" />
+    <ClCompile Include="src\builder\builder.cpp" />
+    <ClCompile Include="src\builder\overlay_builder.cpp" />
     <ClCompile Include="src\config\config.cpp" />
     <ClCompile Include="src\config\config_drawable.cpp" />
     <ClCompile Include="src\config\config_manager.cpp" />
@@ -489,6 +496,7 @@
     <ClCompile Include="src\void.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="include\void\builder\group.inline.inl" />
     <None Include="include\void\contents\widgets\list_options.inline.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -84,6 +84,8 @@ public:
         return frame_start_;
     }
 
+    [[nodiscard]] class menu_builder get_builder() noexcept;
+
     // search
 
     [[nodiscard]] const auto& search_pos() const noexcept {

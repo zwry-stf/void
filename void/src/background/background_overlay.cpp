@@ -7,43 +7,6 @@ void_begin_
 
 void _background_overlay::init(_background* background)
 {
-    {
-        auto overlay = std::make_unique<custom_overlay>(
-            instance(), instance(),
-            custom_overlay_cfg(), custom_overlay_data()
-        );
-        static bool overlay_enabled = true;
-        overlay->cfg().liquid_glass = true;
-        overlay->cfg().liquid_glass_curve = 1.f;
-        overlay->set_render_callback([this](custom_overlay& overlay) -> void
-            {
-                auto& style = instance()->style();
-
-                overlay.data().rounding_bottom =
-                    overlay.data().rounding_top =
-                    instance()->style().rounding->get(instance()->scale());
-                overlay.data().border = instance()->style().border();
-                overlay.data().background = instance()->style().overlay_background().transparent();
-
-                overlay.cfg().liquid_glass_size.raw() = style.spacing->get(instance()->scale()) * 2.f;
-                overlay.data().liquid_glass_color = r2::color::black().alpha(0.1f);
-
-                constinit static float overlay_animation = 1.f;
-                overlay_animation = instance()->util().lerp2(
-                    overlay_animation, overlay_enabled);
-
-                overlay.set_animation(overlay_animation);
-            }
-        );
-        overlay->set_update_callback([this](custom_overlay& overlay) -> void
-            {
-                overlay.toggle_input(overlay_enabled);
-            }
-        );
-
-        add_overlay(std::move(overlay));
-    }
-
     auto& renderer = instance()->renderer();
     auto* ctx = renderer.context();
 

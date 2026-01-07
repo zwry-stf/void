@@ -53,13 +53,13 @@ void custom_overlay::update()
     set_size_scaled(size);
 
     if (update_callback_ != nullptr)
-        update_callback_(*this);
+        update_callback_(instance(), *this);
 }
 
 void custom_overlay::render()
 {
     if (render_callback_ != nullptr)
-        render_callback_(*this);
+        render_callback_(instance(), *this);
 }
 
 input_response custom_overlay::input(const input_base& input)

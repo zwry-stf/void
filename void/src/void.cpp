@@ -6,6 +6,7 @@
 #include <util/resizing_type.h>
 #include <config/config.h>
 #include <theme/theme.h>
+#include <void/builder/builder.h>
 
 #include "contents/container/tab_normal.h"
 #include "contents/container/label.h"
@@ -281,6 +282,11 @@ void void_::set_scale(float scale)
 void void_::set_scale_auto()
 {
     update_scale(calculate_scale());
+}
+
+menu_builder void_::get_builder() noexcept
+{
+    return menu_builder(this);
 }
 
 float void_::calculate_scale() noexcept

@@ -5,8 +5,31 @@
 
 void_begin_
 
-struct default_config_module : public config_module {
+template <typename T>
+class default_config_module : public config_module {
+private:
+	T* const value_;
+	const T default_value_;
 
+public:
+	default_config_module(const xstr& name, T* value)
+		: config_module(name, static_cast<std::uint32_t>(sizeof(T))),
+		  value_(value), 
+		  default_value_(*value) { }
+
+public:
+	virtual void reset() override {
+		*value_ = default_value_;
+	}
+	virtual void load(const std::uint8_t* data) override {
+		std::memcpy(value_, data, sizeof(T));
+	}
+	virtual void save(std::vector<std::uint8_t>& out_buffer) override {
+		auto old_size = out_buffer.size();
+		out_buffer.resize(old_size + sizeof(T));
+
+		std::memcpy(out_buffer.data() + old_size, value_, sizeof(T));
+	}
 };
 
 class config_drawable;

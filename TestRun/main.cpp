@@ -9,6 +9,10 @@
 
 
 // platform dependent includes
+#if defined(R2_PLATFORM_WINDOWS)
+#define NOMINMAX
+#endif
+
 #if defined(R2_BACKEND_D3D11)
 #include <backend/d3d11/texture2d.h>
 #endif
@@ -26,6 +30,8 @@
 #include <r2/renderer.h>
 #include <r2/error.h>
 #include <void/void.h>
+#include <void/builder/builder.h>
+#include <void/contents/overlays/custom_overlay.h>
 
 
 // Global data
@@ -61,6 +67,7 @@ inline static vo::void_* g_void = &vo::get();
 // function def
 bool create_window(const std::string& title);
 bool initialize_backend();
+void add_widgets();
 template<typename... Args>
 void show_error_and_exit(std::format_string<Args...> f, Args&&... args);
 void on_resize(GLFWwindow* window, int width, int height);
@@ -99,13 +106,7 @@ int __stdcall WinMain(HINSTANCE /* instance */,
     g_void->options().set<vo::options::option_UpdateFrameTime>(false);
     g_void->options().set<vo::options::option_MenuMSAA>(false);
 
-    g_void->watermark().add_avarage_component(
-        "fps",
-        []() -> float {
-            return 1.f / std::clamp(g_void->delta_time(), 0.0001f, 1.f);
-        },
-        std::chrono::milliseconds(600)
-    );
+    add_widgets();
 
     try {
         g_void->init(pinit, binit);
@@ -289,6 +290,58 @@ bool initialize_backend()
 #endif
 
     return true;
+}
+
+void add_widgets()
+{
+    g_void->watermark().add_avarage_component(
+        "fps",
+        []() -> float {
+            return 1.f / std::clamp(g_void->delta_time(), 0.0001f, 1.f);
+        },
+        std::chrono::milliseconds(600)
+    );
+
+    auto mb = g_void->get_builder();
+
+    static bool overlay_enabled = true;
+    mb.overlay()
+        .config("test_overlay")
+        .liquid_glass(true)
+        .make_resizable(true)
+        .pos(0.8f, 0.4f)
+        .size(200.f, 120.f)
+        .min(100.f, 50.f)
+        .max(400.f, 300.f)
+        .on_render(
+            [](vo::void_* instance, vo::custom_overlay& overlay) -> void
+            {
+                auto& style = instance->style();
+
+                overlay.data().rounding_bottom =
+                    overlay.data().rounding_top =
+                    instance->style().rounding->get(instance->scale());
+                overlay.data().border = instance->style().border();
+                overlay.data().background = instance->style().overlay_background().transparent();
+
+                overlay.cfg().liquid_glass_size.raw() = style.spacing->get(instance->scale()) * 2.f;
+                overlay.data().liquid_glass_color = r2::color::black().alpha(0.1f);
+
+                constinit static float overlay_animation = 1.f;
+                overlay_animation = instance->util().lerp2(
+                    overlay_animation, overlay_enabled
+                );
+
+                overlay.set_animation(overlay_animation);
+            }
+        )
+        .on_update(
+            [](vo::void_* instance, vo::custom_overlay& overlay) -> void
+            {
+                (void)instance;
+                overlay.toggle_input(overlay_enabled);
+            }
+        );
 }
 
 template<typename ...Args>

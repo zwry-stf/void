@@ -235,6 +235,11 @@
     <ClInclude Include="src\theme\theme_drawable.h" />
     <ClInclude Include="src\theme\theme_tab.h" />
     <ClInclude Include="include\void\accessors\theme.h" />
+    <ClInclude Include="include\void\builder\builder.h" />
+    <ClInclude Include="include\void\builder\childwindow.h" />
+    <ClInclude Include="include\void\builder\group.h" />
+    <ClInclude Include="include\void\builder\overlay.h" />
+    <ClInclude Include="include\void\builder\base.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\accessors\background_access.cpp">
@@ -354,8 +359,11 @@
     <ClCompile Include="src\theme\theme_drawable.cpp" />
     <ClCompile Include="src\theme\theme_tab.cpp" />
     <ClCompile Include="src\accessors\theme_access.cpp" />
+    <ClCompile Include="src\builder\overlay_builder.cpp" />
+    <ClCompile Include="src\builder\builder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\void\contents\widgets\list_options.inline.inl" />
+    <None Include="include\void\builder\group.inline.inl" />
   </ItemGroup>
 </Project>

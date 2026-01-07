@@ -44,7 +44,7 @@ private:
     e_resizing_type resizing_type_;
     r2::rectf move_pos_;
 
-    using callback_type = std::function<void(custom_overlay&)>;
+    using callback_type = std::function<void(void_*, custom_overlay&)>;
 
     callback_type render_callback_;
     callback_type update_callback_;

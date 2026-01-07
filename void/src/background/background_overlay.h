@@ -66,8 +66,9 @@ public:
 
     void add_immediate_overlay(const immediate_overlay& overlay);
 
-    void add_overlay(std::unique_ptr<custom_overlay>&& overlay) {
+    custom_overlay* add_overlay(std::unique_ptr<custom_overlay>&& overlay) {
         custom_overlays_.push_back(std::move(overlay));
+        return custom_overlays_.back().get();
     }
 
 public:
