@@ -155,7 +155,7 @@ bool config_manager::load_last_file(const std::wstring*& out)
     last_file_.clear();
     last_file_.assign(
         buffer.data(),
-        buffer.data() + buffer.size()
+        buffer.data() + buffer.size() - 1u /* remove \0 */
     );
 
     out = &last_file_;

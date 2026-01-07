@@ -96,7 +96,7 @@ void _config::init()
 
     const std::wstring* v;
     if (load_last_file(v))
-        load(*v);
+        load(*v, true);
 }
 
 void _config::destroy()
