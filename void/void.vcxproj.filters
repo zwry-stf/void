@@ -1,0 +1,353 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\void">
+      <UniqueIdentifier>{AAE7E369-964A-730E-3FD0-ABC42B123F91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\void\accessors">
+      <UniqueIdentifier>{9F4C0E90-8B46-37E2-74B3-CDF2604C9D4E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\void\contents">
+      <UniqueIdentifier>{07660E9B-73D2-C995-3CC6-61F3A8F1EBFD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\void\contents\container">
+      <UniqueIdentifier>{B9C21D3E-25A6-2C7E-2EA9-5ABA9A0BF3CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\void\contents\input">
+      <UniqueIdentifier>{664FE771-D25C-1558-5B43-1143C74FE10E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\void\contents\overlays">
+      <UniqueIdentifier>{2B028C7F-1728-56E6-006E-DBB1EC327BB2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\void\contents\widgets">
+      <UniqueIdentifier>{8D441DB2-F95C-04DC-C209-94752EE19875}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\void\util">
+      <UniqueIdentifier>{57E58D77-C3FB-8B0D-0C73-172F78C85C95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\accessors">
+      <UniqueIdentifier>{E28F336B-4E50-AFA1-178B-F81E830AF47D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\background">
+      <UniqueIdentifier>{3CB4849E-2882-78A4-1116-E9CAFD825409}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\contents">
+      <UniqueIdentifier>{EACC2673-D62F-B617-7FB5-EECD6BF7819A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\contents\container">
+      <UniqueIdentifier>{5C61A245-485B-CB97-31C8-61A81D613104}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\contents\input">
+      <UniqueIdentifier>{891418F2-75F8-D847-DE58-D39ACA5BC3C9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\contents\overlays">
+      <UniqueIdentifier>{6ED8D5BD-DA44-91B8-A338-29160F64B320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\contents\overlays\childwindow">
+      <UniqueIdentifier>{19FDD245-856B-28C5-CE54-E3C43A021E61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\contents\widgets">
+      <UniqueIdentifier>{70DE9301-5C6D-1DCB-058C-31C6F1F92D71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\contents\widgets\slider">
+      <UniqueIdentifier>{4249ABC7-AE56-D9AD-373D-D598A349A564}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\contents\widgets\toggle">
+      <UniqueIdentifier>{41B035CA-ADBD-63B0-36A4-5F9BA2B02F67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\util">
+      <UniqueIdentifier>{BA5238CF-A61F-93DA-CF38-8182BB64C868}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\void\accessors\background_access.h">
+      <Filter>include\void\accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\accessors\cursors.h">
+      <Filter>include\void\accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\accessors\fonts.h">
+      <Filter>include\void\accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\accessors\icons.h">
+      <Filter>include\void\accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\accessors\options.h">
+      <Filter>include\void\accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\accessors\render_target.h">
+      <Filter>include\void\accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\accessors\resources.h">
+      <Filter>include\void\accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\accessors\style.h">
+      <Filter>include\void\accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\accessors\util.h">
+      <Filter>include\void\accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\container\child_tab.h">
+      <Filter>include\void\contents\container</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\container\tab.h">
+      <Filter>include\void\contents\container</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\input\events.h">
+      <Filter>include\void\contents\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\input\input.h">
+      <Filter>include\void\contents\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\input\input_owner.h">
+      <Filter>include\void\contents\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\input\input_owner_overlay.h">
+      <Filter>include\void\contents\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\input\input_receiver.h">
+      <Filter>include\void\contents\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\input\input_response.h">
+      <Filter>include\void\contents\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\input\keybind.h">
+      <Filter>include\void\contents\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\input\message_event.h">
+      <Filter>include\void\contents\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\input\overlay_events.h">
+      <Filter>include\void\contents\input</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\overlays\overlay.h">
+      <Filter>include\void\contents\overlays</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\widgets\scrollbar.h">
+      <Filter>include\void\contents\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\widgets\textfield.h">
+      <Filter>include\void\contents\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\widgets\widget.h">
+      <Filter>include\void\contents\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\contents\widgets\widget_child.h">
+      <Filter>include\void\contents\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\def.h">
+      <Filter>include\void</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\util\def.h">
+      <Filter>include\void\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\util\default_value.h">
+      <Filter>include\void\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\util\error.h">
+      <Filter>include\void\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\util\time_point.h">
+      <Filter>include\void\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\util\vobj.h">
+      <Filter>include\void\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\util\xstr.h">
+      <Filter>include\void\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\void.h">
+      <Filter>include\void</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\void.inline.inl">
+      <Filter>include\void</Filter>
+    </ClInclude>
+    <ClInclude Include="src\background\background.h">
+      <Filter>src\background</Filter>
+    </ClInclude>
+    <ClInclude Include="src\background\background_overlay.h">
+      <Filter>src\background</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\container\child_tab_normal.h">
+      <Filter>src\contents\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\container\group.h">
+      <Filter>src\contents\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\container\label.h">
+      <Filter>src\contents\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\container\tab_normal.h">
+      <Filter>src\contents\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\input\keybind.h">
+      <Filter>src\contents\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\input\keybind_manager.h">
+      <Filter>src\contents\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\overlays\childwindow\childwindow.h">
+      <Filter>src\contents\overlays\childwindow</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\sidebar.h">
+      <Filter>src\contents</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\widgets\slider\slider.h">
+      <Filter>src\contents\widgets\slider</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\widgets\toggle\toggle.h">
+      <Filter>src\contents\widgets\toggle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\clipboard.h">
+      <Filter>src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\widgets\childwindow\childwindow_child.h" />
+    <ClInclude Include="include\void\contents\overlays\custom_overlay.h" />
+    <ClInclude Include="include\void\util\scalable_float.h" />
+    <ClInclude Include="src\util\resizing_type.h" />
+    <ClInclude Include="include\void\accessors\watermark.h" />
+    <ClInclude Include="include\void\accessors\account.h" />
+    <ClInclude Include="include\void\accessors\notifications.h" />
+    <ClInclude Include="src\contents\overlays\colorpicker\colorpicker.h" />
+    <ClInclude Include="src\util\color.h" />
+    <ClInclude Include="src\contents\widgets\colorpicker\colorpicker_child.h" />
+    <ClInclude Include="src\contents\widgets\colorpicker\colorpicker.h" />
+    <ClInclude Include="src\contents\widgets\list\list.h" />
+    <ClInclude Include="include\void\contents\widgets\list_options.h" />
+    <ClInclude Include="src\contents\overlays\dropdown\dropdown.h" />
+    <ClInclude Include="src\contents\widgets\dropdown\dropdown.h" />
+    <ClInclude Include="src\contents\widgets\multiselect\multiselect.h" />
+    <ClInclude Include="src\contents\overlays\multiselect\multiselect.h" />
+    <ClInclude Include="src\contents\widgets\dropdown\dropdown_child.h" />
+    <ClInclude Include="src\contents\widgets\multiselect\multiselect_child.h" />
+    <ClInclude Include="src\config\config.h" />
+    <ClInclude Include="src\config\config_manager.h" />
+    <ClInclude Include="include\void\accessors\config.h" />
+    <ClInclude Include="src\config\config_drawable.h" />
+    <ClInclude Include="src\config\config_tab.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\accessors\background_access.cpp">
+      <Filter>src\accessors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\accessors\cursors.cpp">
+      <Filter>src\accessors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\accessors\fonts.cpp">
+      <Filter>src\accessors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\accessors\icons.cpp">
+      <Filter>src\accessors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\accessors\options.cpp">
+      <Filter>src\accessors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\accessors\render_target.cpp">
+      <Filter>src\accessors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\accessors\resources.cpp">
+      <Filter>src\accessors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\accessors\util.cpp">
+      <Filter>src\accessors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\background\background.cpp">
+      <Filter>src\background</Filter>
+    </ClCompile>
+    <ClCompile Include="src\background\background_overlay.cpp">
+      <Filter>src\background</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\container\child_tab.cpp">
+      <Filter>src\contents\container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\container\child_tab_normal.cpp">
+      <Filter>src\contents\container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\container\group.cpp">
+      <Filter>src\contents\container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\container\label.cpp">
+      <Filter>src\contents\container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\container\tab.cpp">
+      <Filter>src\contents\container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\container\tab_normal.cpp">
+      <Filter>src\contents\container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\input\input.cpp">
+      <Filter>src\contents\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\input\input_receiver.cpp">
+      <Filter>src\contents\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\input\keybind.cpp">
+      <Filter>src\contents\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\input\keybind_manager.cpp">
+      <Filter>src\contents\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\overlays\childwindow\childwindow.cpp">
+      <Filter>src\contents\overlays\childwindow</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\overlays\overlay.cpp">
+      <Filter>src\contents\overlays</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\sidebar.cpp">
+      <Filter>src\contents</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\widgets\scrollbar.cpp">
+      <Filter>src\contents\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\widgets\slider\slider.cpp">
+      <Filter>src\contents\widgets\slider</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\widgets\textfield.cpp">
+      <Filter>src\contents\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\widgets\toggle\toggle.cpp">
+      <Filter>src\contents\widgets\toggle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\widgets\widget.cpp">
+      <Filter>src\contents\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\widgets\widget_child.cpp">
+      <Filter>src\contents\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\clipboard.cpp">
+      <Filter>src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\void.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\widgets\childwindow\childwindow_child.cpp" />
+    <ClCompile Include="src\contents\overlays\custom_overlay.cpp" />
+    <ClCompile Include="src\accessors\watermark.cpp" />
+    <ClCompile Include="src\accessors\account.cpp" />
+    <ClCompile Include="src\accessors\notifications.cpp" />
+    <ClCompile Include="src\contents\overlays\colorpicker\colorpicker_overlay.cpp" />
+    <ClCompile Include="src\contents\widgets\colorpicker\colorpicker_child.cpp" />
+    <ClCompile Include="src\contents\widgets\colorpicker\colorpicker.cpp" />
+    <ClCompile Include="src\contents\widgets\list\list.cpp" />
+    <ClCompile Include="src\contents\overlays\dropdown\dropdown_overlay.cpp" />
+    <ClCompile Include="src\contents\widgets\dropdown\dropdown.cpp" />
+    <ClCompile Include="src\contents\widgets\multiselect\multiselect.cpp" />
+    <ClCompile Include="src\contents\overlays\multiselect\multiselect_overlay.cpp" />
+    <ClCompile Include="src\contents\widgets\dropdown\dropdown_child.cpp" />
+    <ClCompile Include="src\contents\widgets\multiselect\multiselect_child.cpp" />
+    <ClCompile Include="src\config\config_manager.cpp" />
+    <ClCompile Include="src\accessors\config_access.cpp" />
+    <ClCompile Include="src\config\config.cpp" />
+    <ClCompile Include="src\config\config_drawable.cpp" />
+    <ClCompile Include="src\config\config_tab.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\void\contents\widgets\list_options.inline.inl" />
+  </ItemGroup>
+</Project>

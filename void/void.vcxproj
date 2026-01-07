@@ -1,0 +1,489 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug_d3d11|Win32">
+      <Configuration>Debug_d3d11</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_d3d11|x64">
+      <Configuration>Debug_d3d11</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_opengl|Win32">
+      <Configuration>Debug_opengl</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_opengl|x64">
+      <Configuration>Debug_opengl</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_d3d11|Win32">
+      <Configuration>Release_d3d11</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_d3d11|x64">
+      <Configuration>Release_d3d11</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_opengl|Win32">
+      <Configuration>Release_opengl</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_opengl|x64">
+      <Configuration>Release_opengl</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{57AA9F7C-43E1-A00D-ECCD-8610D8E31C0F}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>void</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_d3d11|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_d3d11|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_opengl|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_opengl|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_d3d11|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_d3d11|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_opengl|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_opengl|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug_d3d11|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug_d3d11|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug_opengl|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug_opengl|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release_d3d11|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release_d3d11|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release_opengl|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release_opengl|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_d3d11|Win32'">
+    <OutDir>$(ProjectDir)..\build\void\</OutDir>
+    <IntDir>$(ProjectDir)..\build\void\Debug_d3d11\x86\</IntDir>
+    <TargetName>void_Debug_d3d11_x86</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_d3d11|x64'">
+    <OutDir>$(ProjectDir)..\build\void\</OutDir>
+    <IntDir>$(ProjectDir)..\build\void\Debug_d3d11\x64\</IntDir>
+    <TargetName>void_Debug_d3d11_x64</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_opengl|Win32'">
+    <OutDir>$(ProjectDir)..\build\void\</OutDir>
+    <IntDir>$(ProjectDir)..\build\void\Debug_opengl\x86\</IntDir>
+    <TargetName>void_Debug_opengl_x86</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_opengl|x64'">
+    <OutDir>$(ProjectDir)..\build\void\</OutDir>
+    <IntDir>$(ProjectDir)..\build\void\Debug_opengl\x64\</IntDir>
+    <TargetName>void_Debug_opengl_x64</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_d3d11|Win32'">
+    <OutDir>$(ProjectDir)..\build\void\</OutDir>
+    <IntDir>$(ProjectDir)..\build\void\Release_d3d11\x86\</IntDir>
+    <TargetName>void_Release_d3d11_x86</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_d3d11|x64'">
+    <OutDir>$(ProjectDir)..\build\void\</OutDir>
+    <IntDir>$(ProjectDir)..\build\void\Release_d3d11\x64\</IntDir>
+    <TargetName>void_Release_d3d11_x64</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_opengl|Win32'">
+    <OutDir>$(ProjectDir)..\build\void\</OutDir>
+    <IntDir>$(ProjectDir)..\build\void\Release_opengl\x86\</IntDir>
+    <TargetName>void_Release_opengl_x86</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_opengl|x64'">
+    <OutDir>$(ProjectDir)..\build\void\</OutDir>
+    <IntDir>$(ProjectDir)..\build\void\Release_opengl\x64\</IntDir>
+    <TargetName>void_Release_opengl_x64</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_d3d11|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>_DEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X86;R2_BACKEND_D3D11;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;ext;src;..\r2\include;..\backend\include;..\resources\include;..\resources\internal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl /Gy %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_d3d11|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>_DEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X64;R2_BACKEND_D3D11;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;ext;src;..\r2\include;..\backend\include;..\resources\include;..\resources\internal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl /Gy %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_opengl|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>_DEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X86;R2_BACKEND_OPENGL;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;ext;src;..\r2\include;..\backend\include;..\resources\include;..\resources\internal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl /Gy %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_opengl|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>_DEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X64;R2_BACKEND_OPENGL;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;ext;src;..\r2\include;..\backend\include;..\resources\include;..\resources\internal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl /Gy %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_d3d11|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>NDEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X86;R2_BACKEND_D3D11;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;ext;src;..\r2\include;..\backend\include;..\resources\include;..\resources\internal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl /Gy %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_d3d11|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>NDEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X64;R2_BACKEND_D3D11;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;ext;src;..\r2\include;..\backend\include;..\resources\include;..\resources\internal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl /Gy %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_opengl|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>NDEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X86;R2_BACKEND_OPENGL;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;ext;src;..\r2\include;..\backend\include;..\resources\include;..\resources\internal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl /Gy %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_opengl|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <PreprocessorDefinitions>NDEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X64;R2_BACKEND_OPENGL;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;ext;src;..\r2\include;..\backend\include;..\resources\include;..\resources\internal;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/sdl /Gy %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\void\accessors\account.h" />
+    <ClInclude Include="include\void\accessors\background_access.h" />
+    <ClInclude Include="include\void\accessors\config.h" />
+    <ClInclude Include="include\void\accessors\cursors.h" />
+    <ClInclude Include="include\void\accessors\fonts.h" />
+    <ClInclude Include="include\void\accessors\icons.h" />
+    <ClInclude Include="include\void\accessors\notifications.h" />
+    <ClInclude Include="include\void\accessors\options.h" />
+    <ClInclude Include="include\void\accessors\render_target.h" />
+    <ClInclude Include="include\void\accessors\resources.h" />
+    <ClInclude Include="include\void\accessors\style.h" />
+    <ClInclude Include="include\void\accessors\util.h" />
+    <ClInclude Include="include\void\accessors\watermark.h" />
+    <ClInclude Include="include\void\contents\container\child_tab.h" />
+    <ClInclude Include="include\void\contents\container\tab.h" />
+    <ClInclude Include="include\void\contents\input\events.h" />
+    <ClInclude Include="include\void\contents\input\input.h" />
+    <ClInclude Include="include\void\contents\input\input_owner.h" />
+    <ClInclude Include="include\void\contents\input\input_owner_overlay.h" />
+    <ClInclude Include="include\void\contents\input\input_receiver.h" />
+    <ClInclude Include="include\void\contents\input\input_response.h" />
+    <ClInclude Include="include\void\contents\input\keybind.h" />
+    <ClInclude Include="include\void\contents\input\message_event.h" />
+    <ClInclude Include="include\void\contents\input\overlay_events.h" />
+    <ClInclude Include="include\void\contents\overlays\custom_overlay.h" />
+    <ClInclude Include="include\void\contents\overlays\overlay.h" />
+    <ClInclude Include="include\void\contents\widgets\list_options.h" />
+    <ClInclude Include="include\void\contents\widgets\scrollbar.h" />
+    <ClInclude Include="include\void\contents\widgets\textfield.h" />
+    <ClInclude Include="include\void\contents\widgets\widget.h" />
+    <ClInclude Include="include\void\contents\widgets\widget_child.h" />
+    <ClInclude Include="include\void\def.h" />
+    <ClInclude Include="include\void\util\def.h" />
+    <ClInclude Include="include\void\util\default_value.h" />
+    <ClInclude Include="include\void\util\error.h" />
+    <ClInclude Include="include\void\util\scalable_float.h" />
+    <ClInclude Include="include\void\util\time_point.h" />
+    <ClInclude Include="include\void\util\vobj.h" />
+    <ClInclude Include="include\void\util\xstr.h" />
+    <ClInclude Include="include\void\void.h" />
+    <ClInclude Include="include\void\void.inline.inl" />
+    <ClInclude Include="src\background\background.h" />
+    <ClInclude Include="src\background\background_overlay.h" />
+    <ClInclude Include="src\config\config.h" />
+    <ClInclude Include="src\config\config_drawable.h" />
+    <ClInclude Include="src\config\config_manager.h" />
+    <ClInclude Include="src\config\config_tab.h" />
+    <ClInclude Include="src\contents\container\child_tab_normal.h" />
+    <ClInclude Include="src\contents\container\group.h" />
+    <ClInclude Include="src\contents\container\label.h" />
+    <ClInclude Include="src\contents\container\tab_normal.h" />
+    <ClInclude Include="src\contents\input\keybind.h" />
+    <ClInclude Include="src\contents\input\keybind_manager.h" />
+    <ClInclude Include="src\contents\overlays\childwindow\childwindow.h" />
+    <ClInclude Include="src\contents\overlays\colorpicker\colorpicker.h" />
+    <ClInclude Include="src\contents\overlays\dropdown\dropdown.h" />
+    <ClInclude Include="src\contents\overlays\multiselect\multiselect.h" />
+    <ClInclude Include="src\contents\sidebar.h" />
+    <ClInclude Include="src\contents\widgets\childwindow\childwindow_child.h" />
+    <ClInclude Include="src\contents\widgets\colorpicker\colorpicker.h" />
+    <ClInclude Include="src\contents\widgets\colorpicker\colorpicker_child.h" />
+    <ClInclude Include="src\contents\widgets\dropdown\dropdown.h" />
+    <ClInclude Include="src\contents\widgets\dropdown\dropdown_child.h" />
+    <ClInclude Include="src\contents\widgets\list\list.h" />
+    <ClInclude Include="src\contents\widgets\multiselect\multiselect.h" />
+    <ClInclude Include="src\contents\widgets\multiselect\multiselect_child.h" />
+    <ClInclude Include="src\contents\widgets\slider\slider.h" />
+    <ClInclude Include="src\contents\widgets\toggle\toggle.h" />
+    <ClInclude Include="src\util\clipboard.h" />
+    <ClInclude Include="src\util\color.h" />
+    <ClInclude Include="src\util\resizing_type.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\accessors\config_access.cpp" />
+    <ClCompile Include="src\accessors\notifications.cpp" />
+    <ClCompile Include="src\accessors\account.cpp" />
+    <ClCompile Include="src\accessors\watermark.cpp" />
+    <ClCompile Include="src\config\config.cpp" />
+    <ClCompile Include="src\config\config_drawable.cpp" />
+    <ClCompile Include="src\config\config_manager.cpp" />
+    <ClCompile Include="src\config\config_tab.cpp" />
+    <ClCompile Include="src\contents\overlays\colorpicker\colorpicker_overlay.cpp" />
+    <ClCompile Include="src\contents\overlays\custom_overlay.cpp" />
+    <ClCompile Include="src\accessors\background_access.cpp" />
+    <ClCompile Include="src\accessors\cursors.cpp" />
+    <ClCompile Include="src\accessors\fonts.cpp" />
+    <ClCompile Include="src\accessors\icons.cpp" />
+    <ClCompile Include="src\accessors\options.cpp" />
+    <ClCompile Include="src\accessors\render_target.cpp" />
+    <ClCompile Include="src\accessors\resources.cpp" />
+    <ClCompile Include="src\accessors\util.cpp" />
+    <ClCompile Include="src\background\background.cpp" />
+    <ClCompile Include="src\background\background_overlay.cpp" />
+    <ClCompile Include="src\contents\container\child_tab.cpp" />
+    <ClCompile Include="src\contents\container\child_tab_normal.cpp" />
+    <ClCompile Include="src\contents\container\group.cpp" />
+    <ClCompile Include="src\contents\container\label.cpp" />
+    <ClCompile Include="src\contents\container\tab.cpp" />
+    <ClCompile Include="src\contents\container\tab_normal.cpp" />
+    <ClCompile Include="src\contents\input\input.cpp" />
+    <ClCompile Include="src\contents\input\input_receiver.cpp" />
+    <ClCompile Include="src\contents\input\keybind.cpp" />
+    <ClCompile Include="src\contents\input\keybind_manager.cpp" />
+    <ClCompile Include="src\contents\overlays\childwindow\childwindow.cpp" />
+    <ClCompile Include="src\contents\overlays\dropdown\dropdown_overlay.cpp" />
+    <ClCompile Include="src\contents\overlays\multiselect\multiselect_overlay.cpp" />
+    <ClCompile Include="src\contents\overlays\overlay.cpp" />
+    <ClCompile Include="src\contents\sidebar.cpp" />
+    <ClCompile Include="src\contents\widgets\childwindow\childwindow_child.cpp" />
+    <ClCompile Include="src\contents\widgets\colorpicker\colorpicker.cpp" />
+    <ClCompile Include="src\contents\widgets\colorpicker\colorpicker_child.cpp" />
+    <ClCompile Include="src\contents\widgets\dropdown\dropdown.cpp" />
+    <ClCompile Include="src\contents\widgets\dropdown\dropdown_child.cpp" />
+    <ClCompile Include="src\contents\widgets\list\list.cpp" />
+    <ClCompile Include="src\contents\widgets\multiselect\multiselect.cpp" />
+    <ClCompile Include="src\contents\widgets\multiselect\multiselect_child.cpp" />
+    <ClCompile Include="src\contents\widgets\scrollbar.cpp" />
+    <ClCompile Include="src\contents\widgets\slider\slider.cpp" />
+    <ClCompile Include="src\contents\widgets\textfield.cpp" />
+    <ClCompile Include="src\contents\widgets\toggle\toggle.cpp" />
+    <ClCompile Include="src\contents\widgets\widget.cpp" />
+    <ClCompile Include="src\contents\widgets\widget_child.cpp" />
+    <ClCompile Include="src\util\clipboard.cpp" />
+    <ClCompile Include="src\void.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\void\contents\widgets\list_options.inline.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

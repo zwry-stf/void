@@ -1,0 +1,116 @@
+{
+    "files": [
+        {
+            "id": 0,
+            "name": "child_png",
+            "path": "../../res/png/child.png"
+        },
+        {
+            "id": 1,
+            "name": "config_png",
+            "path": "../../res/png/config.png"
+        },
+        {
+            "id": 2,
+            "name": "copy_png",
+            "path": "../../res/png/copy.png"
+        },
+        {
+            "id": 3,
+            "name": "default_pfp_png",
+            "path": "../../res/png/default_pfp.png"
+        },
+        {
+            "id": 4,
+            "name": "delete_png",
+            "path": "../../res/png/delete.png"
+        },
+        {
+            "id": 5,
+            "name": "hotkey_png",
+            "path": "../../res/png/hotkey.png"
+        },
+        {
+            "id": 6,
+            "name": "icon_128x128_png",
+            "path": "../../res/png/icon 128x128.png"
+        },
+        {
+            "id": 7,
+            "name": "load_png",
+            "path": "../../res/png/load.png"
+        },
+        {
+            "id": 8,
+            "name": "save_png",
+            "path": "../../res/png/save.png"
+        },
+        {
+            "id": 9,
+            "name": "search_png",
+            "path": "../../res/png/search.png"
+        },
+        {
+            "id": 10,
+            "name": "theme_png",
+            "path": "../../res/png/theme.png"
+        },
+        {
+            "id": 11,
+            "name": "color_png",
+            "path": "../../res/png/color.png"
+        },
+        {
+            "id": 100,
+            "name": "NotoSans_Medium_ttf",
+            "path": "../../res/fonts/NotoSans-Medium.ttf"
+        },
+        {
+            "id": 101,
+            "name": "NotoEmoji_Medium_ttf",
+            "path": "../../res/fonts/NotoEmoji-Medium.ttf"
+        },
+        {
+            "id": 102,
+            "name": "MPLUSRounded1c_Medium_ttf",
+            "path": "../../res/fonts/MPLUSRounded1c-Medium.ttf"
+        },
+        {
+            "id": 200,
+            "name": "MenuDownsample_shader",
+            "path": "../../res/shaders/out/MenuDownsample.shader"
+        },
+        {
+            "id": 201,
+            "name": "BackgroundBlur_shader",
+            "path": "../../res/shaders/out/BackgroundBlur.shader"
+        },
+        {
+            "id": 202,
+            "name": "BackgroundDownsample_shader",
+            "path": "../../res/shaders/out/BackgroundDownsample.shader"
+        },
+        {
+            "id": 203,
+            "name": "BackgroundVertexShader_shader",
+            "path": "../../res/shaders/out/BackgroundVertexShader.shader"
+        },
+        {
+            "id":204,
+            "name": "BackgroundComposition_shader",
+            "path": "../../res/shaders/out/BackgroundComposition.shader"
+        },
+        {
+            "id": 205,
+            "name": "OverlayComposition_shader",
+            "path": "../../res/shaders/out/OverlayComposition.shader"
+        },
+        {
+            "id": 206,
+            "name": "OverlayLiquidGlass_shader",
+            "path": "../../res/shaders/out/OverlayLiquidGlass.shader"
+        }
+    ],
+    "resources_namespace": "void_resources",
+    "resources_path": "../../include/resources/resources.h"
+}
