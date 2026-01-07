@@ -5,6 +5,7 @@
 #include <contents/sidebar.h>
 #include <util/resizing_type.h>
 #include <config/config.h>
+#include <theme/theme.h>
 
 #include "contents/container/tab_normal.h"
 #include "contents/container/label.h"
@@ -30,6 +31,7 @@ void_::void_()
     background_overlay_ = std::make_unique<_background_overlay>(this);
     sidebar_ = std::make_unique<sidebar>(this);
     config_ = std::make_unique<_config>(this);
+    theme_ = std::make_unique<_theme>(this);
 
     sidebar_->add_tab(
         std::make_unique<label>(this, xstr("Label"))
@@ -81,7 +83,7 @@ void void_::init(const r2::platform_init_data& pinit, const r2::backend_init_dat
 
     // config
     config_->init();
-    //theme_->init();
+    theme_->init();
 
     renderer_.restore_render_state();
 
@@ -121,7 +123,7 @@ void void_::destroy()
     renderer_.destroy();
 
     config_->destroy();
-    //theme_->destroy();
+    theme_->destroy();
 }
 
 void void_::pre_resize()
@@ -159,11 +161,15 @@ void void_::render()
         renderer_.setup_render_state();
     }
 
+    if (options().get<options::option_MenuMSAA>()) {
+        renderer_.set_multisampled(true);
+    }
+
     background_overlay_->reset_data();
 
     /// animation
     animation_ = util().lerp2(animation_, open_);
-    alpha_ = animation_ * animation_;
+    alpha_ = animation_;
 
     /// render menu
     const bool menu_rendered = alpha_ >= util::g_min_alpha;
@@ -175,7 +181,9 @@ void void_::render()
     if (menu_rendered)
         render_target().draw_menu();
 
-    renderer_.set_multisampled(false);
+    if (options().get<options::option_MenuMSAA>()) {
+        renderer_.set_multisampled(false);
+    }
 
     if (menu_rendered)
         render_overlays();
@@ -289,6 +297,8 @@ float void_::calculate_scale() noexcept
 
 void void_::render_menu()
 {
+    theme_->animate();
+
     /// clamp position
     {
         const sfloat kMinAreaInScreen = sfloat(100.f);

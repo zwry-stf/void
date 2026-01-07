@@ -1,6 +1,6 @@
-#include "config_drawable.h"
+#include "theme_drawable.h"
 #include <void/void.h>
-#include <config/config.h>
+#include <theme/theme.h>
 
 
 void_begin_
@@ -13,17 +13,16 @@ enum class drawable_selected_ids : std::int32_t {
     selected_max
 };
 
-config_drawable::config_drawable(void_* instance, input_owner* input_owner, _config* config_instance, 
-                                 const std::wstring& name, std::string&& modified_time)
+theme_drawable::theme_drawable(void_* instance, input_owner* input_owner, _theme* theme_instance, 
+	                           const std::wstring& name)
     : vobj(instance),
       input_receiver(input_owner,
           std::to_underlying(drawable_selected_ids::selected_max)),
-      config_instance_(config_instance),
-      name_(name),
-      modified_time_(std::move(modified_time))
+      theme_instance_(theme_instance),
+      name_(name)
 {
-    xstr x_config_extension;
-    x_config_extension.append(_config::kConfigExtension.data());
+    xstr x_theme_extension;
+    x_theme_extension.append(_theme::kThemeExtension.data());
 
     text_field_ = std::make_unique<textfield>(
         instance,
@@ -31,7 +30,7 @@ config_drawable::config_drawable(void_* instance, input_owner* input_owner, _con
         textfield_type::text,
         textfield_flags::stop_on_return | textfield_flags::faded_text,
         xstr(), /* default text */
-        x_config_extension,
+        x_theme_extension,
         60 /* max length */
     );
     text_field_->set_stop_callback(
@@ -43,7 +42,7 @@ config_drawable::config_drawable(void_* instance, input_owner* input_owner, _con
     generate_name_lowercase();
 }
 
-void config_drawable::update(float x, float y, float w, const render_input& input, bool selected, bool occluded)
+void theme_drawable::update(float x, float y, float w, const render_input& input, bool selected, bool occluded)
 {
     was_occluded_ = occluded;
 
@@ -53,7 +52,7 @@ void config_drawable::update(float x, float y, float w, const render_input& inpu
     last_pos_.x = x;
     last_pos_.y = y;
     last_pos_.w = w;
-    last_pos_.h = style.config_height.get(instance()->scale());
+    last_pos_.h = style.theme_height.get(instance()->scale());
 
     // animations
     animation_selected_ = util.lerp(
@@ -68,11 +67,10 @@ void config_drawable::update(float x, float y, float w, const render_input& inpu
 
     const float border_size = style.border_size.get(instance()->scale());
     const float rounding = style.rounding->get(instance()->scale());
+    const float spacing = style.spacing->get(instance()->scale());
 
     // buttons
     const float button_size = style.drawable_button_size.get(instance()->scale());
-
-    const float outer_spacing = std::round(last_pos_.h * 0.1f);
 
     const float delete_button_size = std::round(button_size * 0.5f);
 
@@ -80,6 +78,9 @@ void config_drawable::update(float x, float y, float w, const render_input& inpu
     const float offset = std::round(
         rounding - rounding / std::sqrt(2.f)
     );
+
+    const float side_spacing = spacing * 2.f;
+    const float button_spacing = spacing;
 
     update_button(
         void_resources::delete_png,
@@ -95,19 +96,19 @@ void config_drawable::update(float x, float y, float w, const render_input& inpu
     update_button(
         void_resources::save_png,
         r2::vec2{
-            button_delete_.pos.x - button_size - border_size,
-            y + outer_spacing
+            x + w - side_spacing - button_size,
+            y + last_pos_.h - side_spacing - button_size
         },
         button_size,
-        button_save_, 
+        button_save_,
         input,
         drawable_selected_ids::selected_save
     );
     update_button(
         void_resources::load_png,
         r2::vec2{
-            button_save_.pos.x,
-            y + last_pos_.h - outer_spacing - button_size
+            button_save_.pos.x - button_spacing - button_size,
+            button_save_.pos.y
         },
         button_size,
         button_load_,
@@ -117,19 +118,17 @@ void config_drawable::update(float x, float y, float w, const render_input& inpu
 
     // text
     const float text_size_large = style.text_size_large.get(instance()->scale());
-    const float text_size_small = style.text_size_small.get(instance()->scale());
-    const float spacing = style.spacing->get(instance()->scale());
-    const float text_spacing = std::round((last_pos_.h - text_size_large - text_size_small) * (1 / 3.f));
 
     instance()->fonts().bind_font_large();
 
+    const float text_x = x + side_spacing;
     text_field_->update(
         r2::rectf{
-            x + spacing,
-            y + text_spacing,
+            text_x,
+            y + last_pos_.h - side_spacing -
+                std::round((button_size + text_size_large) * 0.5f),
             std::max(
-                w - button_size - spacing - delete_button_size -
-                border_offset - offset - button_size - border_size,
+                button_load_.pos.x - text_x - border_size,
                 0.f
             ),
             text_size_large
@@ -139,7 +138,7 @@ void config_drawable::update(float x, float y, float w, const render_input& inpu
     );
 }
 
-void config_drawable::render(float alpha)
+void theme_drawable::render(float alpha)
 {
     auto& renderer = instance()->renderer();
     auto& style = instance()->style();
@@ -148,22 +147,67 @@ void config_drawable::render(float alpha)
     const float rounding = style.rounding->get(instance()->scale());
     const float spacing = style.spacing->get(instance()->scale());
 
+    const float outer_offset = std::round(spacing * 0.125f) * animation_selected_;
+    const float inner_offset = std::round(spacing * 1.5f);
+
     // background
     renderer.add_rect_filled(
-        r2::vec2(last_pos_.x, last_pos_.y),
-        r2::vec2(last_pos_.x + last_pos_.w, last_pos_.y + last_pos_.h),
+        r2::vec2(last_pos_.x - outer_offset,
+            last_pos_.y - outer_offset),
+        r2::vec2(last_pos_.x + last_pos_.w + outer_offset, 
+            last_pos_.y + last_pos_.h + outer_offset),
         style.group_background().alpha(0.8f * alpha),
         rounding
     );
 
     // border
     renderer.add_rect(
-        r2::vec2(last_pos_.x, last_pos_.y),
-        r2::vec2(last_pos_.x + last_pos_.w, last_pos_.y + last_pos_.h),
+        r2::vec2(last_pos_.x - outer_offset,
+            last_pos_.y - outer_offset),
+        r2::vec2(last_pos_.x + last_pos_.w + outer_offset,
+            last_pos_.y + last_pos_.h + outer_offset),
         style.border().interp(style.accent2(), animation_selected_ * 0.7f).alpha(
             0.7f * alpha + animation_selected_ * 0.3f),
         border_size,
         rounding
+    );
+
+    // colors
+    const r2::vec2 colors_min = r2::vec2(
+        last_pos_.x + inner_offset,
+        last_pos_.y + inner_offset
+    );
+    const r2::vec2 colors_max = r2::vec2(
+        last_pos_.x + last_pos_.w - inner_offset,
+        last_pos_.y + last_pos_.h - inner_offset
+    );
+
+    renderer.add_rect_filled(
+        colors_min, colors_max,
+        background_color_.alpha(alpha)
+    );
+
+    renderer.path_add_point(colors_min);
+    renderer.path_add_point(
+        r2::vec2(colors_min.x, colors_max.y)
+    );
+    renderer.path_add_point(
+        r2::vec2(colors_max.x, colors_min.y)
+    );
+
+    const auto vtx_index = renderer.vertex_ptr();
+    renderer.path_fill_convex(r2::color::white());
+
+    const r2::color accent2 = accent2_color_.alpha(alpha);
+    renderer.shade_vertices_col(
+        vtx_index,
+        renderer.vertex_ptr(),
+        colors_min,
+        colors_max,
+        accent_color_.alpha(alpha), // top left
+        accent2, // top right
+        accent2, // bottom right
+        accent2 // bottom left
     );
 
     // buttons
@@ -172,11 +216,6 @@ void config_drawable::render(float alpha)
     render_button(button_delete_, alpha);
 
     // text
-    const float text_size_large = style.text_size_large.get(instance()->scale());
-    const float text_size_small = style.text_size_small.get(instance()->scale());
-
-    const float text_spacing = std::round((last_pos_.h - text_size_large - text_size_small) * (1 / 3.f));
-
     const auto text_color = style.text().interp(
         style.text_accent(),
         0.4f + text_field_->animation_selected() * 0.6f
@@ -185,54 +224,9 @@ void config_drawable::render(float alpha)
     instance()->fonts().bind_font_large();
 
     text_field_->render(alpha, text_color);
-
-    instance()->fonts().bind_font_small();
-
-    // date
-    constexpr xstr kModifiedTitle = xstr("Modified: ");
-
-    if (!text_width_calculated_) {
-        if (renderer.get_text_width_strict(kModifiedTitle, text_width_))
-            text_width_calculated_ = true;
-        else
-            text_width_ = renderer.get_text_width(kModifiedTitle);
-        text_width_ = std::ceil(text_width_);
-    }
-
-    renderer.add_text(
-        r2::vec2(
-            last_pos_.x + spacing,
-            last_pos_.y + last_pos_.h - text_spacing - text_size_small
-        ),
-        style.text().alpha(0.7f * alpha), 
-        kModifiedTitle
-    );
-
-    const float text_end = last_pos_.x + spacing + text_width_;
-
-    if (modified_time_.empty()) {
-        renderer.add_text(
-            r2::vec2(
-                text_end,
-                last_pos_.y + last_pos_.h - text_spacing - text_size_small
-            ),
-            style.text().alpha(0.7f * alpha), 
-            xstr("<unknown>")
-        );
-    }
-    else {
-        renderer.add_text(
-            r2::vec2(
-                text_end,
-                last_pos_.y + last_pos_.h - text_spacing - text_size_small
-            ),
-            style.text().alpha(0.7f * alpha), 
-            modified_time_
-        );
-    }
 }
 
-input_response config_drawable::input(const input_base& input, std::int32_t& selected_config, std::int32_t config_id)
+input_response theme_drawable::input(const input_base& input, std::int32_t& selected_theme, std::int32_t theme_id)
 {
     auto res = text_field_->input(input);
     if (res.is_handled())
@@ -283,14 +277,14 @@ input_response config_drawable::input(const input_base& input, std::int32_t& sel
              input.event().get_mouse_button() == mouse_button::left) {
         if (util::is_in_rect(mouse_x, mouse_y, button_load_.pos)) {
             input.set_selected(this, drawable_selected_ids::selected_load);
-            selected_config = config_id;
+            selected_theme = theme_id;
 
             return input_response::handled();
         }
 
         else if (util::is_in_rect(mouse_x, mouse_y, button_save_.pos)) {
             input.set_selected(this, drawable_selected_ids::selected_save);
-            selected_config = config_id;
+            selected_theme = theme_id;
 
             return input_response::handled();
         }
@@ -302,7 +296,7 @@ input_response config_drawable::input(const input_base& input, std::int32_t& sel
         }
 
         else if (util::is_in_rect(mouse_x, mouse_y, last_pos_)) {
-            selected_config = config_id;
+            selected_theme = theme_id;
 
             return input_response::handled();
         }
@@ -312,7 +306,7 @@ input_response config_drawable::input(const input_base& input, std::int32_t& sel
              input.event().get_mouse_button() == mouse_button::left) {
         if (input.is_selected(this, drawable_selected_ids::selected_load)) {
             if (util::is_in_rect(mouse_x, mouse_y, button_load_.pos)) {
-                config_instance_->load(name_);
+                theme_instance_->load(name_);
             }
 
             input.clear_selected();
@@ -322,7 +316,7 @@ input_response config_drawable::input(const input_base& input, std::int32_t& sel
 
         else if (input.is_selected(this, drawable_selected_ids::selected_save)) {
             if (util::is_in_rect(mouse_x, mouse_y, button_save_.pos)) {
-                config_instance_->save(name_, this);
+                theme_instance_->save(name_, this);
             }
 
             input.clear_selected();
@@ -332,7 +326,7 @@ input_response config_drawable::input(const input_base& input, std::int32_t& sel
 
         else if (input.is_selected(this, drawable_selected_ids::selected_delete)) {
             if (util::is_in_rect(mouse_x, mouse_y, button_delete_.pos)) {
-                config_instance_->remove(name_, this);
+                theme_instance_->remove(name_, this);
             }
 
             input.clear_selected();
@@ -344,13 +338,12 @@ input_response config_drawable::input(const input_base& input, std::int32_t& sel
     return input_response::empty();
 }
 
-void config_drawable::on_scale_changed()
+void theme_drawable::on_scale_changed()
 {
-    text_width_calculated_ = false;
     text_field_->on_scale_changed();
 }
 
-void config_drawable::on_activate()
+void theme_drawable::on_activate()
 {
     animation_hovered_ = 0.f;
     animation_selected_ = 0.f;
@@ -365,7 +358,7 @@ void config_drawable::on_activate()
     text_field_->on_activate();
 }
 
-void config_drawable::search(const std::wstring& text)
+void theme_drawable::search(const std::wstring& text)
 {
     if (name_lowercase_.find(text) != std::wstring::npos)
         skipped_ = false;
@@ -373,7 +366,7 @@ void config_drawable::search(const std::wstring& text)
         skipped_ = true;
 }
 
-void config_drawable::on_stop_typing(const std::u32string& text)
+void theme_drawable::on_stop_typing(const std::u32string& text)
 {
     // convert to wstring
     std::wstring converted;
@@ -388,7 +381,7 @@ void config_drawable::on_stop_typing(const std::u32string& text)
     }
 
     if (converted != name_) {
-        if (config_instance_->rename(name_, converted)) {
+        if (theme_instance_->rename(name_, converted)) {
             name_ = converted;
             generate_name_lowercase();
         }
@@ -398,8 +391,8 @@ void config_drawable::on_stop_typing(const std::u32string& text)
     }
 }
 
-void config_drawable::update_button(int icon_id, const r2::vec2& pos, float button_size, config_button& button,
-                                    const render_input& input, drawable_selected_ids id)
+void theme_drawable::update_button(int icon_id, const r2::vec2& pos, float button_size, theme_button& button,
+                                   const render_input& input, drawable_selected_ids id)
 {
     auto& util = instance()->util();
 
@@ -424,7 +417,7 @@ void config_drawable::update_button(int icon_id, const r2::vec2& pos, float butt
     button.pos.h = button_size;
 }
 
-void config_drawable::render_button(const config_button& button, float alpha)
+void theme_drawable::render_button(const theme_button& button, float alpha)
 {
     auto& renderer = instance()->renderer();
     auto& style = instance()->style();
@@ -436,7 +429,7 @@ void config_drawable::render_button(const config_button& button, float alpha)
     renderer.add_shadow_rect_filled(
         min, max,
         style.accent2().alpha(alpha * (button.animation_hovered * 1.f) * 0.5f),
-        style.rounding->get(instance()->scale()), 
+        style.rounding->get(instance()->scale()),
         button.pos.h * 0.7f
     );
 
@@ -460,7 +453,7 @@ void config_drawable::render_button(const config_button& button, float alpha)
     );
 }
 
-void config_drawable::generate_name_lowercase()
+void theme_drawable::generate_name_lowercase()
 {
     name_lowercase_.resize(name_.size());
     std::transform(
@@ -469,12 +462,12 @@ void config_drawable::generate_name_lowercase()
         [](wchar_t c) -> wchar_t {
             return static_cast<wchar_t>(
                 std::tolower(static_cast<int>(c))
-            );
+                );
         }
     );
 }
 
-void config_drawable::update_textfield()
+void theme_drawable::update_textfield()
 {
     std::u32string buffer;
     const std::uint32_t length = static_cast<std::uint32_t>(name_.length());

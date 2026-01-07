@@ -4,6 +4,7 @@
 
 #include <contents/container/child_tab_normal.h>
 #include <config/config_tab.h>
+#include <theme/theme_tab.h>
 
 
 void_begin_
@@ -23,6 +24,9 @@ tab_normal::tab_normal(void_* instance, input_owner* input_owner, const xstr& na
     );
     add_child_tab(
         std::make_unique<config_tab>(instance, input_owner, overlay_owner, instance->config().get_config_instance(), xstr("Config"))
+    );
+    add_child_tab(
+        std::make_unique<theme_tab>(instance, input_owner, overlay_owner, instance->theme().get_theme_instance(), xstr("Theme"))
     );
 }
 

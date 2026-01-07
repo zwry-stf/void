@@ -97,6 +97,7 @@ int __stdcall WinMain(HINSTANCE /* instance */,
 
     g_void->options().set<vo::options::option_FullFrameUpdate>(false);
     g_void->options().set<vo::options::option_UpdateFrameTime>(false);
+    g_void->options().set<vo::options::option_MenuMSAA>(false);
 
     g_void->watermark().add_avarage_component(
         "fps",

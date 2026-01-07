@@ -22,7 +22,7 @@ namespace unicode {
     using get_char_t = std::remove_cv_t<
         std::remove_reference_t<decltype(std::declval<const S&>()[0])>
     >;
-
+    
     template <typename S>
     concept string_like =
         !std::is_reference_v<S> &&

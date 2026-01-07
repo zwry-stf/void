@@ -520,13 +520,14 @@ inline void renderer2d::shade_vertices_uv(std::uint32_t vtx_start, std::uint32_t
     assert(vtx_start <= vtx_end);
 
     const vec2 d_pos = max - min;
-    if (d_pos == vec2(0.f))
+    if (d_pos.x == 0.f || d_pos.y == 0.f)
         return;
 
     const vec2 inv_d_pos = vec2(1.f) / d_pos;
     const vec2 d_uv = uv_max - uv_min;
 
     const auto& curr_cmd = cmds_.back();
+    assert(curr_cmd.vertex_start + vtx_end <= vertices_.size());
 
     for (std::uint32_t i = curr_cmd.vertex_start + vtx_start;
          i < curr_cmd.vertex_start + vtx_end; i++) {
@@ -547,12 +548,13 @@ inline void renderer2d::shade_vertices_col(std::uint32_t vtx_start, std::uint32_
     assert(vtx_start <= vtx_end);
 
     const vec2 d_pos = max - min;
-    if (d_pos == vec2(0.f))
+    if (d_pos.x == 0.f || d_pos.y == 0.f)
         return;
 
     const vec2 inv_d_pos = vec2(1.f) / d_pos;
 
     const auto& curr_cmd = cmds_.back();
+    assert(curr_cmd.vertex_start + vtx_end <= vertices_.size());
 
     for (std::uint32_t i = curr_cmd.vertex_start + vtx_start;
          i < curr_cmd.vertex_start + vtx_end; i++) {
@@ -566,7 +568,7 @@ inline void renderer2d::shade_vertices_col(std::uint32_t vtx_start, std::uint32_
         const color a = col_tl.interp(col_tr, d.x);
         const color b = col_bl.interp(col_br, d.x);
 
-        vtx.col = a.interp(b, d.y);
+        vtx.col = a.interp(b, d.y).alpha((vtx.col >> (3u * 8u)) & 0xFFu);
     }
 }
 

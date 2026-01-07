@@ -122,6 +122,7 @@ public:
     _define_void_accessor(notifications, notifications);
     _define_void_accessor(watermark, watermark);
     _define_void_accessor(config, config);
+    _define_void_accessor(theme, theme);
 
 private:
     [[nodiscard]] float calculate_scale() noexcept;
@@ -138,7 +139,7 @@ private:
     std::unique_ptr<class _background_overlay> background_overlay_;
     std::unique_ptr<class sidebar> sidebar_;
     std::unique_ptr<class _config> config_;
-    //std::unique_ptr<class _theme> theme_;
+    std::unique_ptr<class _theme> theme_;
 
     friend class background;
     friend class config;

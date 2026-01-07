@@ -15,6 +15,7 @@
 #include "accessors/account.h"
 #include "accessors/notifications.h"
 #include "accessors/config.h"
+#include "accessors/theme.h"
 
 // contents
 #include "contents/input/input.h"

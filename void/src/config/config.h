@@ -20,6 +20,8 @@ public:
 	_config(void_* instance);
 	~_config();
 
+	inline static constexpr std::string_view kConfigExtension = ".cfg";
+
 public:
 	void init();
 	void destroy();
@@ -30,8 +32,6 @@ public:
 	[[nodiscard]] const auto& get_main_path() {
 		return main_path_; 
 	}
-
-	inline static constexpr std::string_view kConfigExtension = ".cfg";
 
 public:
 	bool create_new();

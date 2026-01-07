@@ -63,12 +63,18 @@ private:
     // Default: false
     // Mutable after init: no
     _new_void_option(StartMinimized,  bool,         false,                 false);
-
+    
     // Disable all blur effects (improves performance).
     // Type: bool
     // Default: false
     // Mutable after init: no
     _new_void_option(NoBlur,          bool,         false,                 false);
+
+    // Enable msaa of the menu's render target
+    // Type: bool
+    // Default: true
+    // Mutable after init: no
+    _new_void_option(MenuMSAA,        bool,         true,                 false);
 
     // Downsample factor used by blur passes (performance/quality tradeoff).
     // Supported values: 1.0, 0.5, 0.25, 0.125

@@ -366,6 +366,7 @@
     <ClInclude Include="include\void\accessors\render_target.h" />
     <ClInclude Include="include\void\accessors\resources.h" />
     <ClInclude Include="include\void\accessors\style.h" />
+    <ClInclude Include="include\void\accessors\theme.h" />
     <ClInclude Include="include\void\accessors\util.h" />
     <ClInclude Include="include\void\accessors\watermark.h" />
     <ClInclude Include="include\void\contents\container\child_tab.h" />
@@ -423,6 +424,9 @@
     <ClInclude Include="src\contents\widgets\multiselect\multiselect_child.h" />
     <ClInclude Include="src\contents\widgets\slider\slider.h" />
     <ClInclude Include="src\contents\widgets\toggle\toggle.h" />
+    <ClInclude Include="src\theme\theme.h" />
+    <ClInclude Include="src\theme\theme_drawable.h" />
+    <ClInclude Include="src\theme\theme_tab.h" />
     <ClInclude Include="src\util\clipboard.h" />
     <ClInclude Include="src\util\color.h" />
     <ClInclude Include="src\util\resizing_type.h" />
@@ -431,6 +435,7 @@
     <ClCompile Include="src\accessors\config_access.cpp" />
     <ClCompile Include="src\accessors\notifications.cpp" />
     <ClCompile Include="src\accessors\account.cpp" />
+    <ClCompile Include="src\accessors\theme_access.cpp" />
     <ClCompile Include="src\accessors\watermark.cpp" />
     <ClCompile Include="src\config\config.cpp" />
     <ClCompile Include="src\config\config_drawable.cpp" />
@@ -477,6 +482,9 @@
     <ClCompile Include="src\contents\widgets\toggle\toggle.cpp" />
     <ClCompile Include="src\contents\widgets\widget.cpp" />
     <ClCompile Include="src\contents\widgets\widget_child.cpp" />
+    <ClCompile Include="src\theme\theme.cpp" />
+    <ClCompile Include="src\theme\theme_drawable.cpp" />
+    <ClCompile Include="src\theme\theme_tab.cpp" />
     <ClCompile Include="src\util\clipboard.cpp" />
     <ClCompile Include="src\void.cpp" />
   </ItemGroup>

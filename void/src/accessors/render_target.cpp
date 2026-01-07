@@ -20,6 +20,9 @@ void render_target::init()
     auto* ctx = instance()->renderer().context();
     auto* background = instance()->background().get_background_instance();
 
+    if (!instance()->options().get<options::option_MenuMSAA>())
+        return; /* we'll use the 2d renderer instead */
+
     /// pixel shader
     auto ps_res = instance()->resources().load_resource(void_resources::MenuDownsample_shader);
     std::unique_ptr<r2::compiled_shader> cshader = ctx->compile_pixelshader(
@@ -119,12 +122,7 @@ void render_target::draw_menu() noexcept
 
     const auto render_size = renderer.get_render_size();
 
-    constexpr float kAnimationValue = 0.3f;
-    const float anim_x = (menu_pos.w * kAnimationValue *
-        (1.f - instance()->animation())) / render_size.x;
-    const float anim_y = (menu_pos.h * kAnimationValue * 
-        (1.f - instance()->animation())) / render_size.y;
-
+    constexpr float kAnimationValue = 0.15f;
     const r2::vec2 min = { 
         menu_pos.x - shadow_size, 
         menu_pos.y - shadow_size
@@ -137,48 +135,66 @@ void render_target::draw_menu() noexcept
     const r2::vec2 uv_min = min / render_size;
     const r2::vec2 uv_max = max / render_size;
 
-    downsample_data cdata;
-    cdata.resolution = render_size;
-    cdata.animation = instance()->animation();
-    menu_cb_->update(&cdata, sizeof(cdata));
-    assert(!menu_cb_->has_error());
-
-    r2::vec4 vertices[4] = {
-        { 0.f, 0.f, uv_min.x, uv_max.y },
-        { 0.f, 0.f, uv_min.x, uv_min.y },
-        { 0.f, 0.f, uv_max.x, uv_max.y },
-        { 0.f, 0.f, uv_max.x, uv_min.y },
+    const r2::vec2 offset = r2::vec2{
+        menu_pos.w * kAnimationValue * (1.f - instance()->animation()),
+        menu_pos.h * kAnimationValue * (1.f - instance()->animation())
     };
-    for (auto& v : vertices) {
-        v.x = v.z * 2.f - 1.f;
-        v.y = (1.f - v.w) * 2.f - 1.f;
 
-        v.x += (v.z < uv_max.x ? +anim_x : -anim_x);
-        v.y += (v.w > uv_min.y ? +anim_y : -anim_y);
-    }
+    if (instance()->options().get<options::option_MenuMSAA>()) {
+        r2::vec4 vertices[4] = {
+            { 0.f, 0.f, uv_min.x, uv_max.y },
+            { 0.f, 0.f, uv_min.x, uv_min.y },
+            { 0.f, 0.f, uv_max.x, uv_max.y },
+            { 0.f, 0.f, uv_max.x, uv_min.y },
+        };
+        const float anim_x = offset.x / render_size.x * 2.f;
+        const float anim_y = offset.y / render_size.y * 2.f;
+        for (auto& v : vertices) {
+            v.x = v.z * 2.f - 1.f;
+            v.y = (1.f - v.w) * 2.f - 1.f;
 
-    menu_vb_->update(vertices, sizeof(vertices));
-    assert(!menu_vb_->has_error());
-
-    ctx->set_inputlayout(background->data_inputlayout_.get());
-    ctx->set_vertex_buffer(menu_vb_.get());
-    ctx->set_index_buffer(background->data_quad_ib_.get());
-    ctx->set_shaderprogram(menu_shader_.get());
-    ctx->set_texture(menu_view_.get());
-    ctx->set_uniform_buffer(menu_cb_.get(),
-        r2::shader_bind_type::ps, 1u);
-
-    ctx->set_scissor_rect({
-            static_cast<long>(min.x),
-            static_cast<long>(min.y),
-            static_cast<long>(max.x),
-            static_cast<long>(max.y),
+            v.x += (v.z < uv_max.x ? +anim_x : -anim_x);
+            v.y += (v.w > uv_min.y ? +anim_y : -anim_y);
         }
-    );
 
-    ctx->draw_indexed(6u);
+        menu_vb_->update(vertices, sizeof(vertices));
+        assert(!menu_vb_->has_error());
 
-    background->restore_render_states();
+        downsample_data cdata;
+        cdata.resolution = render_size;
+        cdata.animation = instance()->alpha();
+        menu_cb_->update(&cdata, sizeof(cdata));
+        assert(!menu_cb_->has_error());
+
+        ctx->set_inputlayout(background->data_inputlayout_.get());
+        ctx->set_vertex_buffer(menu_vb_.get());
+        ctx->set_index_buffer(background->data_quad_ib_.get());
+        ctx->set_shaderprogram(menu_shader_.get());
+        ctx->set_texture(menu_view_.get());
+        ctx->set_uniform_buffer(menu_cb_.get(),
+            r2::shader_bind_type::ps, 1u);
+
+        ctx->set_scissor_rect({
+                static_cast<long>(min.x),
+                static_cast<long>(min.y),
+                static_cast<long>(max.x),
+                static_cast<long>(max.y),
+            }
+            );
+
+        ctx->draw_indexed(6u);
+
+        background->restore_render_states();
+    }
+    else {
+        renderer.add_image(
+            menu_view_->native_texture_handle(),
+            min + offset,
+            max - offset,
+            r2::color::white().alpha(instance()->alpha()),
+            uv_min, uv_max
+        );
+    }
 }
 
 void render_target::init_targets()
@@ -201,8 +217,8 @@ void render_target::init_targets()
         throw error(error_code::render_target_init,
             main_fbo_->get_error(), main_fbo_->get_detail());
 
-    const std::uint32_t msaa_count = 4;
-    std::uint32_t msaa_quality = 0;
+    const std::uint32_t msaa_count = 1u;
+    std::uint32_t msaa_quality = instance()->options().get<options::option_MenuMSAA>() ? 4u : 1u;
 #if defined(R2_BACKEND_D3D11)
     auto* context = to_native(ctx);
     auto* device = context->get_device();
@@ -214,7 +230,7 @@ void render_target::init_targets()
 #elif defined(R2_BACKEND_OPENGL)
     msaa_quality = 1u;
 #endif
-    assert(msaa_quality > 0);
+    assert(msaa_quality > 0u);
 
     const auto render_size = renderer.get_render_size();
 
