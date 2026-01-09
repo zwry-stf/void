@@ -196,7 +196,7 @@ void textfield_widget::on_scale_change()
 
 bool textfield_widget::matches_search(const xstr& search) noexcept
 {
-    return name_.find_ignore_case_f(search);
+    return name_.find_ignore_case_f(search) != xstr::npos;
 }
 
 void_end_

@@ -57,6 +57,7 @@ public:
     }
 
 protected:
+    void update_scrollbar();
     void render_scrollbar(float alpha);
 
     input_response input_scrollbar(const input_base& input);

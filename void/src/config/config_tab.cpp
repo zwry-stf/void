@@ -116,6 +116,8 @@ float config_tab::update(float x, float y, bool selected, const render_input& in
         0.f
     );
 
+    update_scrollbar();
+
     // add button
     add_animation_hovered_ = util.lerp(
         add_animation_hovered_,

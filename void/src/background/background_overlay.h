@@ -70,11 +70,6 @@ public:
         custom_overlays_.push_back(std::move(overlay));
         return custom_overlays_.back().get();
     }
-
-public:
-    default_value<sfloat> blur_radius = sfloat(40.f);
-    default_value<float> noise_scale = 0.55f;
-    default_value<bool> blur_enabled = true;
 };
 
 void_end_

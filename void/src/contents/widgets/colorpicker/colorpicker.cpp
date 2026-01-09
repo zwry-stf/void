@@ -72,7 +72,8 @@ void colorpicker::update(float x, float y, float w, const render_input& input, b
 
 	text_field_->update(
 		r2::rectf{
-			x + text_width_,
+			x + text_width_ +
+				std::round(style.spacing->get(instance()->scale()) * 0.5f),
 			y + text_spacing,
 			std::min(w - text_width_, color_pos_.x - x - text_width_ - border_size),
 			text_size_small
@@ -90,6 +91,8 @@ void colorpicker::render(float alpha)
 	if (was_occluded_) {
 		return;
 	}
+
+	instance()->fonts().bind_font_small();
 
 	auto& renderer = instance()->renderer();
 	auto& style = instance()->style();

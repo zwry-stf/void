@@ -73,6 +73,7 @@ float child_tab_normal::update(float x, float y, bool selected, const render_inp
 
     float substract_last = 0.f;
     no_results_found_ = true;
+    highest_pos_ = 0.f;
     for (auto& group : groups_) {
         auto area = group->area();
 
@@ -97,7 +98,14 @@ float child_tab_normal::update(float x, float y, bool selected, const render_inp
         positions_areas_[(int)area] += group_spacing;
     }
 
-    highest_pos_ = std::max(highest - pos_y - substract_last + side_spacing, 0.f);
+    highest_pos_ = std::max(
+        highest - pos_y - substract_last, 
+        0.f
+    );
+    if (highest_pos_ > 0.f)
+        highest_pos_ += side_spacing;
+
+    update_scrollbar();
 
     return ret;
 }

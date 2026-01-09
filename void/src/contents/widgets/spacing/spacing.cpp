@@ -60,7 +60,7 @@ void spacing::on_scale_change()
 
 bool spacing::matches_search(const xstr& search) noexcept
 {
-	return !search.empty();
+	return search.empty();
 }
 
 void_end_

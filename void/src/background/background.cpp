@@ -237,17 +237,18 @@ void _background::render()
     auto& renderer = instance()->renderer();
     auto& render_target = instance()->render_target();
     auto* ctx = renderer.context();
+    auto& bg = instance()->background();
 
     /// blur passes
     if (!instance()->options().get<options::option_NoBlur>() &&
-        blur_enabled() != 0) {
+        bg.blur_enabled() != 0) {
         const auto& menu_pos = instance()->pos();
 
         do_blur_pass(
             r2::vec4(menu_pos.x, menu_pos.y,
                 menu_pos.x + menu_pos.w, menu_pos.y + menu_pos.h),
             data_pass_fbo_.get(),
-            blur_radius->get(instance()->scale()),
+            bg.blur_radius->get(instance()->scale()),
             &blur_shader_constants_
         );
     }
@@ -269,7 +270,7 @@ void _background::render()
     ctx->set_shaderprogram(data_shader_composition_.get());
 
     const auto& menu_pos = instance()->pos();
-    const float ssize = shadow_size->get(instance()->scale());
+    const float ssize = bg.shadow_size->get(instance()->scale());
     
     ctx->set_scissor_rect(
         {
@@ -576,7 +577,8 @@ void _background::init_targets()
 
 void _background::update_constant_buffer(_shader_constants* data)
 {
-    data->blur_enabled = !instance()->options().get<options::option_NoBlur>() && blur_enabled();
+    auto& bg = instance()->background();
+    data->blur_enabled = !instance()->options().get<options::option_NoBlur>() && bg.blur_enabled();
 
     auto& style = instance()->style();
 
@@ -584,15 +586,15 @@ void _background::update_constant_buffer(_shader_constants* data)
     data->menu_pos = instance()->pos();
     data->rounding = style.rounding->get(instance()->scale());
     data->menu_background = style.background();
-    data->accent          = style.border();
-    data->border_size     = style.border_size.get(instance()->scale());
-    data->sidebar_width   = style.sidebar_width.get(instance()->scale());
-    data->shadow_size     = shadow_size->get(instance()->scale());
-    data->shadow_color    = shadow_color();
-    data->top_bar_height  = style.top_bar_height.get(instance()->scale());
-    data->noise_scale     = noise_scale();
-    data->blend_amount    = blend_amount();
-    data->down_scale      = instance()->options().get<options::option_DownsampleValue>();
+    data->accent = style.border();
+    data->border_size = style.border_size.get(instance()->scale());
+    data->sidebar_width = style.sidebar_width.get(instance()->scale());
+    data->shadow_size = bg.shadow_size->get(instance()->scale());
+    data->shadow_color = bg.shadow_color();
+    data->top_bar_height = style.top_bar_height.get(instance()->scale());
+    data->noise_scale = bg.noise_scale();
+    data->blend_amount = bg.blend_amount();
+    data->down_scale = instance()->options().get<options::option_DownsampleValue>();
 }
 
 void _background::update_blur_constant_buffer(std::uint32_t& radius, blur_shader_constants* data)

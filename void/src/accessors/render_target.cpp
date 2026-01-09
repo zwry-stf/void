@@ -117,7 +117,7 @@ void render_target::draw_menu() noexcept
 
     auto* background = instance()->background().get_background_instance();
 
-    const float shadow_size = background->shadow_size->get(instance()->scale());
+    const float shadow_size = instance()->background().shadow_size->get(instance()->scale());
     const auto& menu_pos = instance()->pos();
 
     const auto render_size = renderer.get_render_size();

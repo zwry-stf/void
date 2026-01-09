@@ -363,6 +363,7 @@
     <ClInclude Include="src\util\resizing_type.h">
       <Filter>src\util</Filter>
     </ClInclude>
+    <ClInclude Include="include\void\accessors\background.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\accessors\account.cpp">

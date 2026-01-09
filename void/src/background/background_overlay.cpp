@@ -90,12 +90,14 @@ void _background_overlay::render_custom_overlays(_background* background)
     auto& renderer = instance()->renderer();
     auto& style = instance()->style();
     auto* ctx = renderer.context();
+    auto& bg = instance()->background();
 
     /// custom overlays
     _shader_constants constants;
 
-    constants.blur_enabled = !instance()->options().get<options::option_NoBlur>() && blur_enabled();
-    constants.noise_scale = noise_scale();
+    constants.blur_enabled = !instance()->options().get<options::option_NoBlur>() && 
+        bg.overlay_blur_enabled();
+    constants.noise_scale = bg.overlay_noise_scale();
     constants.resolution = renderer.get_render_size();
 
     bool first_overlay = true;
@@ -116,7 +118,7 @@ void _background_overlay::render_custom_overlays(_background* background)
             constants.warp_size = o->cfg_.liquid_glass_size.get(instance()->scale()) :
             constants.border_size = style.border_size.get(instance()->scale());
 
-        constants.blend_amount = background->blend_amount();
+        constants.blend_amount = bg.blend_amount();
         data_constant_buffer_->update(&constants, sizeof(constants));
         assert(!data_constant_buffer_->has_error());
 
@@ -132,13 +134,13 @@ void _background_overlay::render_custom_overlays(_background* background)
 
         r2::textureview* input_tex = nullptr;
         if ((!instance()->options().get<options::option_NoBlur>() &&
-            blur_enabled() != 0) ||
+            constants.blur_enabled != 0) ||
             o->cfg_.liquid_glass)
         {
             background->do_blur_pass(
                 pos,
                 background->data_pass_fbo_.get(),
-                blur_radius->get(instance()->scale()),
+                bg.overlay_blur_radius->get(instance()->scale()),
                 &blur_shader_constants_,
                 first_overlay ? nullptr : background->data_offscreen_view_.get() // only resolve backbuffer on first overlay to save a little performance
             );
@@ -188,12 +190,14 @@ void _background_overlay::render(_background* background)
     auto& renderer = instance()->renderer();
     auto& style = instance()->style();
     auto* ctx = renderer.context();
+    auto& bg = instance()->background();
 
     /// immediate overlays
     _shader_constants constants;
 
-    constants.blur_enabled = !instance()->options().get<options::option_NoBlur>() && blur_enabled();
-    constants.noise_scale = noise_scale();
+    constants.blur_enabled = !instance()->options().get<options::option_NoBlur>() && 
+        bg.overlay_blur_enabled();
+    constants.noise_scale = bg.overlay_noise_scale();
     constants.resolution = renderer.get_render_size();
     constants.overlay.background = style.overlay_background();
     constants.overlay.border = style.border();
@@ -205,7 +209,7 @@ void _background_overlay::render(_background* background)
     for (auto& o : immediate_overlays_) {
         constants.overlay.animation = o.animation;
         constants.overlay.pos = o.pos;
-        constants.blend_amount = background->blend_amount();
+        constants.blend_amount = bg.blend_amount();
         data_constant_buffer_->update(&constants, sizeof(constants));
         assert(!data_constant_buffer_->has_error());
 
@@ -221,12 +225,12 @@ void _background_overlay::render(_background* background)
 
         r2::textureview* input_tex = nullptr;
         if (!instance()->options().get<options::option_NoBlur>() &&
-            blur_enabled() != 0)
+            constants.blur_enabled != 0)
         {
             background->do_blur_pass(
                 pos,
                 background->data_pass_fbo_.get(),
-                blur_radius->get(instance()->scale()),
+                bg.overlay_blur_radius->get(instance()->scale()),
                 &blur_shader_constants_,
                 first_overlay ? nullptr : background->data_offscreen_view_.get() // only resolve backbuffer on first overlay to save a little performance
             );

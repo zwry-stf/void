@@ -28,7 +28,6 @@ float child_tab::update(float x, float y, bool selected, const render_input& inp
     auto& util = instance()->util();
     auto& style = instance()->style();
     auto& renderer = instance()->renderer();
-    const auto& menu_pos = instance()->pos();
 
     if (!text_width_calculated_) {
         instance()->fonts().bind_font_large();
@@ -51,18 +50,6 @@ float child_tab::update(float x, float y, bool selected, const render_input& inp
     last_pos_.y = y + std::round((top_bar_height - text_size) * 0.5f);
     last_pos_.w = text_width_ + icon_offset;
     last_pos_.h = text_size;
-
-    const float border_size = style.border_size.get(instance()->scale());
-    const float spacing = style.spacing->get(instance()->scale());
-    scrollbar_->update(
-        r2::rectf{
-            menu_pos.x + menu_pos.w - scrollbar_width_ - border_size,
-            menu_pos.y + top_bar_height + spacing * 2.f,
-            scrollbar_width_,
-            menu_pos.h - top_bar_height - spacing * 4.f
-        },
-        highest_pos_
-    );
 
     return last_pos_.w;
 }
@@ -190,6 +177,25 @@ void child_tab::on_activate(bool parent_change, bool first)
 void child_tab::on_scale_change()
 {
     text_width_calculated_ = false;
+}
+
+void child_tab::update_scrollbar()
+{
+    auto& style = instance()->style();
+    const auto& menu_pos = instance()->pos();
+
+    const float top_bar_height = style.top_bar_height.get(instance()->scale());
+    const float border_size = style.border_size.get(instance()->scale());
+    const float spacing = style.spacing->get(instance()->scale());
+    scrollbar_->update(
+        r2::rectf{
+            menu_pos.x + menu_pos.w - scrollbar_width_ - border_size,
+            menu_pos.y + top_bar_height + spacing * 2.f,
+            scrollbar_width_,
+            menu_pos.h - top_bar_height - spacing * 4.f
+        },
+        highest_pos_
+    );
 }
 
 void child_tab::render_scrollbar(float alpha)

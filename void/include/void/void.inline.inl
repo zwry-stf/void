@@ -8,7 +8,7 @@
 #include "accessors/fonts.h"
 #include "accessors/icons.h"
 #include "accessors/render_target.h"
-#include "accessors/background_access.h"
+#include "accessors/background.h"
 #include "accessors/options.h"
 #include "accessors/util.h"
 #include "accessors/watermark.h"

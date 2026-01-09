@@ -1,7 +1,5 @@
 #include "theme.h"
 #include <void/void.h>
-#include <background/background.h>
-#include <background/background_overlay.h>
 #include "theme_drawable.h"
 #include "theme.h"
 
@@ -310,26 +308,24 @@ void theme_data::load(void_* instance)
     style.spacing->raw() = this->spacing;
     style.animation_speed = this->animation_speed;
 
-    auto* background_instance = instance->background().get_background_instance();
-    background_instance->shadow_color = this->shadow;
-    background_instance->shadow_size->raw() = this->shadow_size;
-    background_instance->blur_enabled = this->blur;
-    background_instance->blur_radius->raw() = this->blur_radius;
-    background_instance->noise_scale = this->noise;
-    background_instance->blend_amount = this->blend_amount;
+    auto& bg = instance->background();
+    bg.shadow_color = this->shadow;
+    bg.shadow_size->raw() = this->shadow_size;
+    bg.blur_enabled = this->blur;
+    bg.blur_radius->raw() = this->blur_radius;
+    bg.noise_scale = this->noise;
+    bg.blend_amount = this->blend_amount;
 
-    auto* overlay_background_instance = instance->background().get_background_overlay_instance();
-    overlay_background_instance->blur_enabled = this->overlay_blur;
-    overlay_background_instance->blur_radius->raw() = this->overlay_blur_radius;
-    overlay_background_instance->noise_scale = this->overlay_noise;
+    bg.overlay_blur_enabled = this->overlay_blur;
+    bg.overlay_blur_radius->raw() = this->overlay_blur_radius;
+    bg.overlay_noise_scale = this->overlay_noise;
 }
 
 void theme_data::save(void_* instance, bool create)
 {
     auto& style = instance->style();
 
-    auto* background_instance = instance->background().get_background_instance();
-    auto* overlay_background_instance = instance->background().get_background_overlay_instance();
+    auto& bg = instance->background();
 
     if (create) {
         this->accent = style.accent.get_default();
@@ -343,18 +339,18 @@ void theme_data::save(void_* instance, bool create)
         this->border = style.border.get_default();
         this->highlight = style.highlight.get_default();
         this->grey = style.grey.get_default();
-        this->shadow = background_instance->shadow_color.get_default();
-        this->shadow_size = background_instance->shadow_size.get_default().raw();
-        this->blur = background_instance->blur_enabled.get_default();
-        this->blur_radius = background_instance->blur_radius.get_default().raw();
-        this->noise = background_instance->noise_scale.get_default();
-        this->blend_amount = background_instance->blend_amount.get_default();
+        this->shadow = bg.shadow_color.get_default();
+        this->shadow_size = bg.shadow_size.get_default().raw();
+        this->blur = bg.blur_enabled.get_default();
+        this->blur_radius = bg.blur_radius.get_default().raw();
+        this->noise = bg.noise_scale.get_default();
+        this->blend_amount = bg.blend_amount.get_default();
         this->rounding = style.rounding.get_default().raw();
         this->spacing = style.spacing.get_default().raw();
         this->animation_speed = style.animation_speed.get_default();
-        this->overlay_blur = overlay_background_instance->blur_enabled.get_default();
-        this->overlay_blur_radius = overlay_background_instance->blur_radius.get_default().raw();
-        this->overlay_noise = overlay_background_instance->noise_scale.get_default();
+        this->overlay_blur = bg.overlay_blur_enabled.get_default();
+        this->overlay_blur_radius = bg.overlay_blur_radius.get_default().raw();
+        this->overlay_noise = bg.overlay_noise_scale.get_default();
     }
     else {
         this->accent = style.accent();
@@ -368,18 +364,18 @@ void theme_data::save(void_* instance, bool create)
         this->border = style.border();
         this->highlight = style.highlight();
         this->grey = style.grey();
-        this->shadow = background_instance->shadow_color();
-        this->shadow_size = background_instance->shadow_size->raw();
-        this->blur = background_instance->blur_enabled();
-        this->blur_radius = background_instance->blur_radius->raw();
-        this->noise = background_instance->noise_scale();
-        this->blend_amount = background_instance->blend_amount();
+        this->shadow = bg.shadow_color();
+        this->shadow_size = bg.shadow_size->raw();
+        this->blur = bg.blur_enabled();
+        this->blur_radius = bg.blur_radius->raw();
+        this->noise = bg.noise_scale();
+        this->blend_amount = bg.blend_amount();
         this->rounding = style.rounding->raw();
         this->spacing = style.spacing->raw();
         this->animation_speed = style.animation_speed();
-        this->overlay_blur = overlay_background_instance->blur_enabled();
-        this->overlay_blur_radius = overlay_background_instance->blur_radius->raw();
-        this->overlay_noise = overlay_background_instance->noise_scale();
+        this->overlay_blur = bg.overlay_blur_enabled();
+        this->overlay_blur_radius = bg.overlay_blur_radius->raw();
+        this->overlay_noise = bg.overlay_noise_scale();
     }
 }
 

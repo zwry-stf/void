@@ -131,6 +131,8 @@ float theme_tab::update(float x, float y, bool selected, const render_input& inp
         theme_id++;
     }
 
+    update_scrollbar();
+
     // add button
     add_animation_hovered_ = util.lerp(
         add_animation_hovered_,
