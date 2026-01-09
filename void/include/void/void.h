@@ -12,7 +12,7 @@ private:
     r2::renderer2d renderer_;
 
     bool initialized_{};
-    bool open_;
+    std::atomic<bool> open_;
     r2::rectf pos_;
     float animation_;
     float alpha_;
@@ -66,7 +66,7 @@ public:
         return scale_;
     }
     [[nodiscard]] bool is_open() const noexcept {
-        return open_;
+        return open_.load(std::memory_order_acquire);
     }
     [[nodiscard]] const auto& pos() const noexcept {
         return pos_;

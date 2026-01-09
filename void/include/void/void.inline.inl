@@ -26,6 +26,7 @@
 //
 #include "util/time_point.h"
 #include <r2/renderer.h>
+#include <atomic>
 
 
 // macros

@@ -67,7 +67,8 @@ input_response input::push_event(const message_event& event)
             pending_messages_.push_back(event);
         }
 
-        if (instance()->options().get<options::option_BlockInput>()) {
+        if (instance()->is_open() &&
+            instance()->options().get<options::option_BlockInput>()) {
             return input_response::handled();
         }
     }

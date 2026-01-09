@@ -92,7 +92,7 @@ void void_::init(const r2::platform_init_data& pinit, const r2::backend_init_dat
     pos_.y = (render_size.y - pos_.h) * 0.5f;
 
     open_ = !options().get<options::option_StartMinimized>();
-    animation_ = open_ ? 1.f : 0.f;
+    animation_ = is_open() ? 1.f : 0.f;
     alpha_ = animation_;
 
     initialized_ = true;
@@ -186,7 +186,7 @@ void void_::render()
     background_overlay_->reset_data();
 
     /// animation
-    animation_ = util().lerp2(animation_, open_);
+    animation_ = util().lerp2(animation_, is_open());
     alpha_ = animation_;
 
     /// render menu
@@ -275,7 +275,7 @@ input_response void_::on_input(const message_event& event)
 
     if (event.is_message(message_type::key_down) &&
         event.get_key() == options().get<options::option_MenuKey>()) {
-        toggle_menu(!open_);
+        toggle_menu(!is_open());
         return input_response::handled();
     }
 
@@ -287,8 +287,8 @@ void void_::toggle_menu(bool open)
 #if defined(_DEBUG)
     renderer_.assert_render_thread();
 #endif
-    open_ = open;
-    if (!open_)
+    open_.store(open, std::memory_order_release);
+    if (!open)
         input_reset_selected_state();
     input().clear_queue();
 }
