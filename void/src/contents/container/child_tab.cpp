@@ -64,26 +64,39 @@ void child_tab::render(float alpha, bool)
     const float border_size = style.border_size.get(instance()->scale());
     const bool has_icon = icon_ != icons::kInvalidHandle;
 
-    if (has_icon) {
-        const float icon_offset = border_size * 2.f;
-        const float icon_size = last_pos_.h - icon_offset * 2.f;
-        const auto* icon = instance()->icons().get_or_create(icon_, icon_size);
-        renderer.add_image(
-            icon->tex,
-            r2::vec2(last_pos_.x + icon_offset, last_pos_.y + icon_offset),
-            r2::vec2(last_pos_.x + icon_offset + icon_size, last_pos_.y + icon_offset + icon_size),
-            style.icon().interp(style.text_accent(), animation_selected_).alpha(alpha),
-            icon->uv_min, icon->uv_max
-        );
-    }
-
-    const float icon_offset = has_icon ?
-        style.text_size_large.get(instance()->scale()) : 0.f;
-
     const float spacing = style.spacing->get(instance()->scale());
     const float fade_width = spacing * 2.f;
     const float fade_end = instance()->search_pos().x - spacing;
     const float fade_start = fade_end - fade_width;
+
+    if (has_icon) {
+        const float icon_offset = border_size * 2.f;
+        const float icon_size = last_pos_.h - icon_offset * 2.f;
+        const auto* icon = instance()->icons().get_or_create(icon_, icon_size);
+        const r2::vec2 icon_min = r2::vec2(last_pos_.x + icon_offset, last_pos_.y + icon_offset);
+        const r2::vec2 icon_max = r2::vec2(last_pos_.x + icon_offset + icon_size, last_pos_.y + icon_offset + icon_size);
+        const r2::color icon_color = style.icon().interp(style.text_accent(), animation_selected_).alpha(alpha);
+
+        const auto vtx_start = renderer.vertex_ptr();
+        renderer.push_texture_id(icon->tex);
+        renderer.add_rect_filled_faded(
+            icon_min, icon_max,
+            icon_color,
+            icon_color.transparent(),
+            fade_start, fade_end
+        );
+
+        renderer.shade_vertices_uv(
+            vtx_start, 
+            renderer.vertex_ptr(),
+            icon_min, icon_max,
+            icon->uv_min, icon->uv_max
+        );
+        renderer.pop_texture_id();
+    }
+
+    const float icon_offset = has_icon ?
+        style.text_size_large.get(instance()->scale()) : 0.f;
 
     // Text
     const auto text_color = style.text().interp(style.text_accent(), animation_selected_);
