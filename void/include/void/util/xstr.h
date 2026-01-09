@@ -5,6 +5,7 @@
 #include <concepts>
 #include <assert.h>
 #include <cctype>
+#include <algorithm>
 
 
 void_begin_
