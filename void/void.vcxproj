@@ -372,7 +372,6 @@
     <ClInclude Include="include\void\builder\base.h" />
     <ClInclude Include="include\void\builder\builder.h" />
     <ClInclude Include="include\void\builder\group.h" />
-    <ClInclude Include="include\void\builder\group.inline.inl" />
     <ClInclude Include="include\void\builder\overlay.h" />
     <ClInclude Include="include\void\builder\tab.h" />
     <ClInclude Include="include\void\contents\container\child_tab.h" />

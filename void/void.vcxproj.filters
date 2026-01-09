@@ -162,9 +162,6 @@
     <ClInclude Include="include\void\builder\group.h">
       <Filter>include\void\builder</Filter>
     </ClInclude>
-    <ClInclude Include="include\void\builder\group.inline.inl">
-      <Filter>include\void\builder</Filter>
-    </ClInclude>
     <ClInclude Include="include\void\builder\overlay.h">
       <Filter>include\void\builder</Filter>
     </ClInclude>

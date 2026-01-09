@@ -294,6 +294,8 @@ bool initialize_backend()
 
 void add_widgets()
 {
+    using vo::xstr;
+
     g_void->watermark().add_avarage_component(
         "fps",
         []() -> float {
@@ -301,6 +303,9 @@ void add_widgets()
         },
         std::chrono::milliseconds(600)
     );
+
+    static xstr text_value = "Text";
+    g_void->watermark().add_text_component(&text_value);
 
     auto mb = g_void->get_builder();
 
@@ -343,7 +348,6 @@ void add_widgets()
             }
         );
 
-    using vo::xstr;
     static constexpr xstr kOptions[] = {
         xstr("Option 1"),
         xstr("Option 2"),
@@ -401,7 +405,31 @@ void add_widgets()
                 "Dropdown",
                 vo::list_options::create_vector_dynamic(&options_dynamic),
                 int_value
-            );
+            )
+            .textfield("Textfield",
+                [](const std::u32string& string) -> void 
+                {
+                    // convert utf8
+                    xstr out;
+                    for (const auto c : string) {
+                        char buf[4];
+                        const std::uint32_t l = r2::unicode::put_char_to_array<char>(c, buf);
+
+                        for (std::uint32_t i = 0u; i < l; i++) {
+                            if (out.length() == out.kMaxSize)
+                                goto converted;
+
+                            out += buf[i];
+                        }
+                    }
+
+                converted:
+                    text_value = out;
+                }
+            )
+            ->faded(true)
+            ->max_length(30)
+            ->default_text("Default text");
     }
 }
 

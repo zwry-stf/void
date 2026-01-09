@@ -103,11 +103,90 @@ group_item_options::owner_type& group_item_options::condition(std::function<bool
 }
 
 
+/// group_with_child_base_options
+
+group_with_child_base_options::group_with_child_base_options(void_* instance, menu_builder* builder, widget* widget_instance)
+    : group_base_options(instance, builder, widget_instance)
+{
+}
+
+void group_with_child_base_options::colorpicker(r2::color& value, bool has_alpha)
+{
+    const auto overlay_id = instance()->create_overlay(
+        std::make_unique<colorpicker_overlay>(
+            instance(), instance(), instance(),
+            &value, has_alpha
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<colorpicker_child>(
+            instance(), instance(), instance(),
+            overlay_id
+        )
+    );
+}
+
+void group_with_child_base_options::dropdown(list_options* options, std::size_t& selected)
+{
+    const auto overlay_id = instance()->create_overlay(
+        std::make_unique<dropdown_overlay>(
+            instance(), instance(), instance(),
+            std::unique_ptr<list_options>(options),
+            &selected
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<dropdown_child>(
+            instance(), instance(), instance(),
+            overlay_id
+        )
+    );
+}
+
+void group_with_child_base_options::multiselect(list_options* options, std::vector<bool>& selected)
+{
+    const auto overlay_id = instance()->create_overlay(
+        std::make_unique<multiselect_overlay>(
+            instance(), instance(), instance(),
+            std::unique_ptr<list_options>(options),
+            &selected
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<multiselect_child>(
+            instance(), instance(), instance(),
+            overlay_id
+        )
+    );
+}
+
+void group_with_child_base_options::last_childwindow(std::int32_t overlay_id)
+{
+
+    assert(instance()->get_overlay(overlay_id)->is_childwindow());
+
+    get_widget()->add_child(
+        std::make_unique<childwindow_child>(
+            instance(), instance(), instance(),
+            overlay_id
+        )
+    );
+}
+
+void group_with_child_base_options::custom_child(std::unique_ptr<widget_child>&& child)
+{
+    get_widget()->add_child(std::move(child));
+}
+
+
 /// group_with_child_options
 
 group_with_child_options::group_with_child_options(void_* instance, menu_builder* builder, 
                                                    owner_type* group_instance, widget* widget_instance)
-    : group_base_options(instance, builder, widget_instance),
+    : group_with_child_base_options(instance, builder, widget_instance),
       group_instance_(group_instance)
 {
 }
@@ -138,60 +217,19 @@ group_with_child_options::owner_type& group_with_child_options::condition(std::f
 
 group_with_child_options::owner_type& group_with_child_options::colorpicker(r2::color& value, bool has_alpha)
 {
-    const auto overlay_id = instance()->create_overlay(
-        std::make_unique<colorpicker_overlay>(
-            instance(), instance(), instance(),
-            &value, has_alpha
-        )
-    );
-
-    get_widget()->add_child(
-        std::make_unique<colorpicker_child>(
-            instance(), instance(), instance(),
-            overlay_id
-        )
-    );
-
+    group_with_child_base_options::colorpicker(value, has_alpha);
     return *group_instance_;
 }
 
 group_with_child_options::owner_type& group_with_child_options::dropdown(list_options* options, std::size_t& selected)
 {
-    const auto overlay_id = instance()->create_overlay(
-        std::make_unique<dropdown_overlay>(
-            instance(), instance(), instance(),
-            std::unique_ptr<list_options>(options),
-            &selected
-        )
-    );
-
-    get_widget()->add_child(
-        std::make_unique<dropdown_child>(
-            instance(), instance(), instance(),
-            overlay_id
-        )
-    );
-
+    group_with_child_base_options::dropdown(options, selected);
     return *group_instance_;
 }
 
 group_with_child_options::owner_type& group_with_child_options::multiselect(list_options* options, std::vector<bool>& selected)
 {
-    const auto overlay_id = instance()->create_overlay(
-        std::make_unique<multiselect_overlay>(
-            instance(), instance(), instance(),
-            std::unique_ptr<list_options>(options),
-            &selected
-        )
-    );
-
-    get_widget()->add_child(
-        std::make_unique<multiselect_child>(
-            instance(), instance(), instance(),
-            overlay_id
-        )
-    );
-
+    group_with_child_base_options::multiselect(options, selected);
     return *group_instance_;
 }
 
@@ -200,22 +238,124 @@ group_with_child_options::owner_type& group_with_child_options::last_childwindow
     const auto overlay_id = group_instance_->last_childwindow_;
     assert(overlay_id != -1);
 
-    assert(instance()->get_overlay(overlay_id)->is_childwindow());
-
-    get_widget()->add_child(
-        std::make_unique<childwindow_child>(
-            instance(), instance(), instance(),
-            overlay_id
-        )
-    );
-
+    group_with_child_base_options::last_childwindow(overlay_id);
     return *group_instance_;
 }
 
 group_with_child_options::owner_type& group_with_child_options::custom_child(std::unique_ptr<class widget_child>&& child)
 {
-    get_widget()->add_child(std::move(child));
+    group_with_child_base_options::custom_child(std::move(child));
+    return *group_instance_;
+}
 
+
+/// group_textfield_options
+
+group_textfield_options::group_textfield_options(void_* instance, menu_builder* builder, 
+                                                 owner_type* group_instance, widget* widget_instance)
+    : group_with_child_base_options(instance, builder, widget_instance),
+      group_instance_(group_instance)
+{
+}
+
+group_textfield_options::~group_textfield_options()
+{
+    // update textfield
+    textfield_flags flags = textfield_flags::mouse_in_rect | 
+        textfield_flags::movable_caret | textfield_flags::stop_on_return;
+    if (faded_text_)
+        flags = flags | textfield_flags::faded_text;
+
+    get_widget<textfield_widget>()->change_textfield(
+        std::make_unique<textfield>(
+            instance(), instance(),
+            type_,
+            flags,
+            default_text_,
+            xstr(), /* post text */
+            max_length_
+        )
+    );
+}
+
+group_textfield_options::owner_type& group_textfield_options::disabled(bool& state)
+{
+    group_base_options::disabled(state);
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::disabled_inverted(bool& state)
+{
+    group_base_options::disabled_inverted(state);
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::disabled(std::function<bool()>&& callback)
+{
+    group_base_options::disabled(std::move(callback));
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::condition(std::function<bool()>&& callback)
+{
+    group_base_options::condition(std::move(callback));
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::colorpicker(r2::color& value, bool has_alpha)
+{
+    group_with_child_base_options::colorpicker(value, has_alpha);
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::dropdown(list_options* options, std::size_t& selected)
+{
+    group_with_child_base_options::dropdown(options, selected);
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::multiselect(list_options* options, std::vector<bool>& selected)
+{
+    group_with_child_base_options::multiselect(options, selected);
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::last_childwindow()
+{
+    const auto overlay_id = group_instance_->last_childwindow_;
+    assert(overlay_id != -1);
+
+    group_with_child_base_options::last_childwindow(overlay_id);
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::custom_child(std::unique_ptr<class widget_child>&& child)
+{
+    group_with_child_base_options::custom_child(std::move(child));
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::default_text(const xstr& text)
+{
+    default_text_ = text;
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::type(textfield_type type)
+{
+    type_ = type;
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::faded(bool state)
+{
+    faded_text_ = state;
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::max_length(std::size_t length)
+{
+    max_length_ = length;
     return *group_instance_;
 }
 
@@ -309,14 +449,88 @@ overlay_item_options::owner_type& overlay_item_options::condition(std::function<
     return *group_instance_;
 }
 
+
+/// overlay_with_child_base_options
+
+overlay_with_child_base_options::overlay_with_child_base_options(void_* instance, menu_builder* builder, 
+                                                                 widget* widget_instance, childwindow* childwindow_instance)
+    : group_base_options(instance, builder, widget_instance),
+      childwindow_instance_(childwindow_instance)
+{
+}
+
+void overlay_with_child_base_options::colorpicker(r2::color& value, bool has_alpha)
+{
+    const auto overlay_id = childwindow_instance_->create_overlay(
+        std::make_unique<colorpicker_overlay>(
+            instance(), instance(),
+            childwindow_instance_,
+            &value, has_alpha
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<colorpicker_child>(
+            instance(), instance(),
+            childwindow_instance_,
+            overlay_id
+        )
+    );
+}
+
+void overlay_with_child_base_options::dropdown(list_options* options, std::size_t& selected)
+{
+    const auto overlay_id = childwindow_instance_->create_overlay(
+        std::make_unique<dropdown_overlay>(
+            instance(), instance(),
+            childwindow_instance_,
+            std::unique_ptr<list_options>(options),
+            &selected
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<dropdown_child>(
+            instance(), instance(),
+            childwindow_instance_,
+            overlay_id
+        )
+    );
+}
+
+void overlay_with_child_base_options::multiselect(list_options* options, std::vector<bool>& selected)
+{
+    const auto overlay_id = childwindow_instance_->create_overlay(
+        std::make_unique<multiselect_overlay>(
+            instance(), instance(),
+            childwindow_instance_,
+            std::unique_ptr<list_options>(options),
+            &selected
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<multiselect_child>(
+            instance(), instance(),
+            childwindow_instance_,
+            overlay_id
+        )
+    );
+}
+
+void overlay_with_child_base_options::custom_child(std::unique_ptr<widget_child>&& child)
+{
+    get_widget()->add_child(std::move(child));
+}
+
+
 /// overlay_with_child_options
 
 overlay_with_child_options::overlay_with_child_options(void_* instance, menu_builder* builder,
                                                        owner_type* group_instance, widget* widget_instance,
                                                        childwindow* childwindow_instance)
-    : group_base_options(instance, builder, widget_instance),
-      group_instance_(group_instance),
-      childwindow_instance_(childwindow_instance)
+    : overlay_with_child_base_options(instance, builder, widget_instance, childwindow_instance),
+      group_instance_(group_instance)
 {
 }
 
@@ -346,73 +560,128 @@ overlay_with_child_options::owner_type& overlay_with_child_options::condition(st
 
 overlay_with_child_options::owner_type& overlay_with_child_options::colorpicker(r2::color& value, bool has_alpha)
 {
-    const auto overlay_id = childwindow_instance_->create_overlay(
-        std::make_unique<colorpicker_overlay>(
-            instance(), instance(),
-            childwindow_instance_,
-            &value, has_alpha
-        )
-    );
-
-    get_widget()->add_child(
-        std::make_unique<colorpicker_child>(
-            instance(), instance(),
-            childwindow_instance_,
-            overlay_id
-        )
-    );
-
+    overlay_with_child_base_options::colorpicker(value, has_alpha);
     return *group_instance_;
 }
 
 overlay_with_child_options::owner_type& overlay_with_child_options::dropdown(list_options* options, std::size_t& selected)
 {
-    const auto overlay_id = childwindow_instance_->create_overlay(
-        std::make_unique<dropdown_overlay>(
-            instance(), instance(),
-            childwindow_instance_,
-            std::unique_ptr<list_options>(options),
-            &selected
-        )
-    );
-
-    get_widget()->add_child(
-        std::make_unique<dropdown_child>(
-            instance(), instance(),
-            childwindow_instance_,
-            overlay_id
-        )
-    );
-
+    overlay_with_child_base_options::dropdown(options, selected);
     return *group_instance_;
 }
 
 overlay_with_child_options::owner_type& overlay_with_child_options::multiselect(list_options* options, std::vector<bool>& selected)
 {
-    const auto overlay_id = childwindow_instance_->create_overlay(
-        std::make_unique<multiselect_overlay>(
-            instance(), instance(),
-            childwindow_instance_,
-            std::unique_ptr<list_options>(options),
-            &selected
-        )
-    );
-
-    get_widget()->add_child(
-        std::make_unique<multiselect_child>(
-            instance(), instance(),
-            childwindow_instance_,
-            overlay_id
-        )
-    );
-
+    overlay_with_child_base_options::multiselect(options, selected);
     return *group_instance_;
 }
 
 overlay_with_child_options::owner_type& overlay_with_child_options::custom_child(std::unique_ptr<class widget_child>&& child)
 {
-    get_widget()->add_child(std::move(child));
+    overlay_with_child_base_options::custom_child(std::move(child));
+    return *group_instance_;
+}
 
+
+/// overlay_textfield_options
+
+overlay_textfield_options::overlay_textfield_options(void_* instance, menu_builder* builder,
+                                                     owner_type* group_instance, widget* widget_instance,
+                                                     childwindow* childwindow_instance)
+    : overlay_with_child_base_options(instance, builder, widget_instance, childwindow_instance),
+      group_instance_(group_instance)
+{
+}
+
+overlay_textfield_options::~overlay_textfield_options()
+{
+    // update textfield
+    textfield_flags flags = textfield_flags::mouse_in_rect |
+        textfield_flags::movable_caret | textfield_flags::stop_on_return;
+    if (faded_text_)
+        flags = flags | textfield_flags::faded_text;
+
+    get_widget<textfield_widget>()->change_textfield(
+        std::make_unique<textfield>(
+            instance(), instance(),
+            type_,
+            flags,
+            default_text_,
+            xstr(), /* post text */
+            max_length_
+        )
+    );
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::disabled(bool& state)
+{
+    group_base_options::disabled(state);
+    return *group_instance_;
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::disabled_inverted(bool& state)
+{
+    group_base_options::disabled_inverted(state);
+    return *group_instance_;
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::disabled(std::function<bool()>&& callback)
+{
+    group_base_options::disabled(std::move(callback));
+    return *group_instance_;
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::condition(std::function<bool()>&& callback)
+{
+    group_base_options::condition(std::move(callback));
+    return *group_instance_;
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::colorpicker(r2::color& value, bool has_alpha)
+{
+    overlay_with_child_base_options::colorpicker(value, has_alpha);
+    return *group_instance_;
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::dropdown(list_options* options, std::size_t& selected)
+{
+    overlay_with_child_base_options::dropdown(options, selected);
+    return *group_instance_;
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::multiselect(list_options* options, std::vector<bool>& selected)
+{
+    overlay_with_child_base_options::multiselect(options, selected);
+    return *group_instance_;
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::custom_child(std::unique_ptr<class widget_child>&& child)
+{
+    overlay_with_child_base_options::custom_child(std::move(child));
+    return *group_instance_;
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::default_text(const xstr& text)
+{
+    default_text_ = text;
+    return *group_instance_;
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::type(textfield_type type)
+{
+    type_ = type;
+    return *group_instance_;
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::faded(bool state)
+{
+    faded_text_ = state;
+    return *group_instance_;
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::max_length(std::size_t length)
+{
+    max_length_ = length;
     return *group_instance_;
 }
 
@@ -762,6 +1031,23 @@ group_spacing_options::owner_type group_builder::spacing()
     );
 
     return group_spacing_options::owner_type(*this, widget);
+}
+
+group_textfield_options::owner_type group_builder::textfield(const xstr& name, std::function<void(const std::u32string& s)>&& callback)
+{
+    auto* widget = group_instance_->add_widget(
+        std::make_unique<::vo::textfield_widget>(
+            instance(), instance(),
+            name, std::move(callback),
+            textfield_type::text,
+            textfield_flags::mouse_in_rect | textfield_flags::stop_on_return |
+                textfield_flags::faded_text | textfield_flags::movable_caret,
+            xstr(), /* default text */
+            40u
+        )
+    );
+
+    return group_textfield_options::owner_type(*this, widget);
 }
 
 group_access<childwindow_options> group_builder::childwindow(const xstr& name)

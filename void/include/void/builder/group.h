@@ -9,6 +9,7 @@
 #include <r2/renderer_definitions.h>
 #include <void/contents/widgets/list_options.h>
 #include <void/util/xstr.h>
+#include <void/contents/widgets/textfield.h>
 
 
 void_begin_
@@ -73,7 +74,20 @@ public:
     owner_type& condition(std::function<bool()>&& callback);
 };
 
-class group_with_child_options : public group_base_options {
+class group_with_child_base_options : public group_base_options {
+public:
+    group_with_child_base_options(void_* instance, menu_builder* builder,
+                                  widget* widget_instance);
+
+protected:
+    void colorpicker(r2::color& value, bool has_alpha = true);
+    void dropdown(list_options* options, std::size_t& selected);
+    void multiselect(list_options* options, std::vector<bool>& selected);
+    void last_childwindow(std::int32_t);
+    void custom_child(std::unique_ptr<widget_child>&& child);
+};
+
+class group_with_child_options : public virtual group_with_child_base_options {
 public:
     using owner_type = group_access<group_with_child_options>;
 protected:
@@ -104,6 +118,63 @@ public:
     owner_type& last_childwindow();
     /// Add a custom child widget to the last created widget.
     owner_type& custom_child(std::unique_ptr<widget_child>&& child);
+};
+
+class group_textfield_options : public group_with_child_base_options {
+public:
+    using owner_type = group_access<group_textfield_options>;
+protected:
+    owner_type* group_instance_;
+
+private:
+    xstr default_text_{};
+    textfield_type type_{ textfield_type::text };
+    std::size_t max_length_{ 40u };
+    bool faded_text_{ true };
+
+public:
+    group_textfield_options(void_* instance, menu_builder* builder,
+                            owner_type* group_instance, widget* widget_instance);
+    virtual ~group_textfield_options();
+
+public:
+    /// Disable widget when state becomes true.
+    owner_type& disabled(bool& state);
+
+    /// Disable widget when state becomes false.
+    owner_type& disabled_inverted(bool& state);
+
+    /// Disable widget when callback returns true.
+    owner_type& disabled(std::function<bool()>&& callback);
+
+    /// Hide widget when callback returns false.
+    owner_type& condition(std::function<bool()>&& callback);
+
+public:
+    owner_type& colorpicker(r2::color& value, bool has_alpha = true);
+    owner_type& dropdown(list_options* options, std::size_t& selected);
+    owner_type& multiselect(list_options* options, std::vector<bool>& selected);
+    /// Adds the last created child window as child widget.
+    owner_type& last_childwindow();
+    /// Add a custom child widget to the last created widget.
+    owner_type& custom_child(std::unique_ptr<widget_child>&& child);
+
+public:
+    /// Set the default text shown when text is empty
+    // Default: empty
+    owner_type& default_text(const xstr& text);
+
+    /// Set the textfield's type
+    // Default: textfield_type::text
+    owner_type& type(textfield_type type);
+
+    /// Enable/Disable faded text
+    // Default: true
+    owner_type& faded(bool state = true);
+
+    /// Set the max string length
+    // Default: 40
+    owner_type& max_length(std::size_t length);
 };
 
 class group_slider_options : public group_base_options {
@@ -176,12 +247,25 @@ public:
     owner_type& condition(std::function<bool()>&& callback);
 };
 
-class overlay_with_child_options : public group_base_options {
+class overlay_with_child_base_options : public group_base_options {
+protected:
+    childwindow* const childwindow_instance_;
+    
+public:
+    overlay_with_child_base_options(void_* instance, menu_builder* builder,
+                                    widget* widget_instance, childwindow* childwindow_instance);
+public:
+    void colorpicker(r2::color& value, bool has_alpha = true);
+    void dropdown(list_options* options, std::size_t& selected);
+    void multiselect(list_options* options, std::vector<bool>& selected);
+    void custom_child(std::unique_ptr<widget_child>&& child);
+};
+
+class overlay_with_child_options : public overlay_with_child_base_options {
 public:
     using owner_type = childwindow_access<childwindow_options, overlay_with_child_options>;
 protected:
     owner_type* const group_instance_;
-    childwindow* const childwindow_instance_;
     
 public:
     overlay_with_child_options(void_* instance, menu_builder* builder,
@@ -207,6 +291,62 @@ public:
     owner_type& multiselect(list_options* options, std::vector<bool>& selected);
     /// Add a custom child widget to the last created widget.
     owner_type& custom_child(std::unique_ptr<widget_child>&& child);
+};
+
+class overlay_textfield_options : public overlay_with_child_base_options {
+public:
+    using owner_type = childwindow_access<childwindow_options, overlay_textfield_options>;
+protected:
+    owner_type* const group_instance_;
+
+private:
+    xstr default_text_{};
+    textfield_type type_{ textfield_type::text };
+    std::size_t max_length_{ 40u };
+    bool faded_text_{ true };
+    
+public:
+    overlay_textfield_options(void_* instance, menu_builder* builder,
+                              owner_type* group_instance, widget* widget_instance,
+                              childwindow* childwindow_instance);
+    virtual ~overlay_textfield_options() override;
+
+public:
+    /// Disable widget when state becomes true.
+    owner_type& disabled(bool& state);
+
+    /// Disable widget when state becomes false.
+    owner_type& disabled_inverted(bool& state);
+
+    /// Disable widget when callback returns true.
+    owner_type& disabled(std::function<bool()>&& callback);
+
+    /// Hide widget when callback returns false.
+    owner_type& condition(std::function<bool()>&& callback);
+
+public:
+    owner_type& colorpicker(r2::color& value, bool has_alpha = true);
+    owner_type& dropdown(list_options* options, std::size_t& selected);
+    owner_type& multiselect(list_options* options, std::vector<bool>& selected);
+    /// Add a custom child widget to the last created widget.
+    owner_type& custom_child(std::unique_ptr<widget_child>&& child);
+
+public:
+    /// Set the default text shown when text is empty
+    // Default: empty
+    owner_type& default_text(const xstr& text);
+
+    /// Set the textfield's type
+    // Default: textfield_type::text
+    owner_type& type(textfield_type type);
+
+    /// Enable/Disable faded text
+    // Default: true
+    owner_type& faded(bool state = true);
+
+    /// Set the max string length
+    // Default: 40
+    owner_type& max_length(std::size_t length);
 };
 
 class overlay_slider_options : public group_base_options {
@@ -287,6 +427,7 @@ protected:
     template <class T>
     friend class group_access;
     friend class group_with_child_options;
+    friend class group_textfield_options;
 
 protected:
     group_builder(const group_builder&) = default;
@@ -305,6 +446,7 @@ public:
     group_slider_options::owner_type slider(const xstr& name, float& value, float min = 0.f, float max = 1.f,
                                             const std::format_string<float>& format = "{:.2f}");
     group_spacing_options::owner_type spacing();
+    group_textfield_options::owner_type textfield(const xstr& name, std::function<void(const std::u32string& s)>&& callback);
     group_with_child_options::owner_type toggle(const xstr& name, bool& value);
 };
 
@@ -318,10 +460,10 @@ private:
     T options_;
 
 public:
-    template <class T>
-    group_access(const group_builder& v, T* item_instance)
+    template <class... Types>
+    group_access(const group_builder& v, Types&&... args)
         : group_builder(v.instance(), v.builder(), v.group_instance_),
-          options_(v.instance(), v.builder(), this, item_instance) { 
+          options_(v.instance(), v.builder(), this, std::forward<Types>(args)...) { 
         last_widget_name_ = v.last_widget_name_;
         last_childwindow_ = v.last_childwindow_;
     }
