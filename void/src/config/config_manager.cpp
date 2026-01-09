@@ -9,9 +9,7 @@ template<>
 struct std::formatter<vo::xstr> : std::formatter<std::string_view> {
     auto format(const vo::xstr& value, auto& ctx) const {
         char buffer[value.kMaxSize];
-        for (std::size_t i = 0u; i < value.length(); i++) {
-            buffer[i] = value[i];
-        }
+        value.get(buffer);
 
         std::string_view sv{ buffer, value.length() };
         return std::formatter<std::string_view>::format(sv, ctx);
