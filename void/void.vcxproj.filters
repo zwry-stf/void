@@ -114,7 +114,7 @@
     <ClInclude Include="include\void\accessors\account.h">
       <Filter>include\void\accessors</Filter>
     </ClInclude>
-    <ClInclude Include="include\void\accessors\background_access.h">
+    <ClInclude Include="include\void\accessors\background.h">
       <Filter>include\void\accessors</Filter>
     </ClInclude>
     <ClInclude Include="include\void\accessors\config.h">
@@ -363,7 +363,6 @@
     <ClInclude Include="src\util\resizing_type.h">
       <Filter>src\util</Filter>
     </ClInclude>
-    <ClInclude Include="include\void\accessors\background.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\accessors\account.cpp">

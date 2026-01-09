@@ -27,50 +27,14 @@ workspace "void"
         
     location ("out/" .. action .. "/" .. host)
     
-    flags { "MultiProcessorCompile" }
-    warnings "Extra"
-    fatalwarnings { "All" }
-
-    filter "action:vs*"
-        buildoptions { "/sdl" }
-    filter {}
-    
-    filter "configurations:Debug_*"
-        symbols "On"
-        defines { "_DEBUG" }
-    filter "configurations:Release_*"
-        optimize "On"
-        intrinsics "On"
-        linktimeoptimization "On"
-        defines { "NDEBUG" }
-
-        filter "action:vs*"
-            buildoptions { "/Gy" }
-        filter {}
-    filter {}
-    
-    -- platform
-    filter "system:windows"
-        systemversion "latest"
-        defines { "R2_PLATFORM_WINDOWS" }
-    filter { "system:windows", "platforms:x86" }
-        defines { "R2_PLATFORM_WINDOWS_X86" }
-    filter { "system:windows", "platforms:x64" }
-        defines { "R2_PLATFORM_WINDOWS_X64" }
-    filter {}
-    
-    -- backend
-    filter { "configurations:*_d3d11" }
-        defines { "R2_BACKEND_D3D11" }
-    filter { "configurations:*_opengl" }
-        defines { "R2_BACKEND_OPENGL" }
-    filter {}
-    
     if _OPTIONS["has-glfw"] then
         defines { "VOID_HAS_GLFW" }
     end
     
     local r2_dir = "ext/r2"
+dofile(path.join(r2_dir, "premake5_common.lua"))
+r2_define_common();
+
 group "deps"
 dofile(path.join(r2_dir, "premake5_projects.lua"))
 r2_define_projects(r2_dir, build_root, int_root)
@@ -179,7 +143,7 @@ project "TestRun"
         links { "TestRun/ext/gl/windows/x86/glew32s" }
     filter { }
 
-    links     { "r2", "backend" }
+    links { "r2", "backend" }
     filter { "configurations:*_d3d11" }
         links { "backend_d3d11", "d3d11", "d3dcompiler" }
     filter { }
