@@ -361,19 +361,21 @@ public:
     }
 
     template <std::size_t N>
-    void get(char(&out)[N]) const noexcept {
+    void get(Char(&out)[N]) const noexcept {
         get(&out[0], N);
     }
 
-    void get(char* out, std::size_t size) const noexcept {
-        const std::size_t count = (std::min)(length() + 1u, size);
-        if (count <= 1u) [[unlikely]]
+    void get(Char* out, std::size_t size) const noexcept {
+        if (size == 0u)
             return;
 
-        for (std::size_t i = 0u; i < count - 1u; i++) {
-            out[i] = (*this)[i];
-        }
-        out[count - 1u] = kNullTerminator;
+        std::size_t len2 = (size / sizeof(Char)) - 1u;
+        std::size_t len = length_ > len2 ? len2 : length_;
+
+        for (std::size_t i = 0u; i < len; i++)
+            out[i] = chars_[i] ^ key_;
+
+        out[len] = kNullTerminator;
     }
 };
 
