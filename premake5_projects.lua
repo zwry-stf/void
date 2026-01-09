@@ -40,7 +40,7 @@ project "resources"
     
     -- hlsl files
     local pp_out = "%{prj.location}/../resources/res/shaders/out"
-    filter { "files:" .. shader_glob, "configurations:*_d3d11" }
+    filter { "files:" .. shader_glob, "options:backend=d3d11" }
         buildaction "CustomBuild"
         buildmessage "Preprocessing %{file.name}"
         buildcommands {
@@ -48,7 +48,7 @@ project "resources"
             '"%{file.abspath}" > "' .. pp_out .. '/%{file.basename}.shader"'
         }
         buildoutputs { pp_out .. "/%{file.basename}.shader" }
-    filter { "files:" .. shader_glob, "configurations:*_opengl" }
+    filter { "files:" .. shader_glob, "options:backend=opengl" }
         buildaction "CustomBuild"
         buildmessage "Preprocessing %{file.name}"
         buildcommands {
