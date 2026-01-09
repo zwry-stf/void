@@ -622,7 +622,7 @@ void _background::update_blur_constant_buffer(std::uint32_t& radius, blur_shader
         std::uint32_t part_count = 0u;
 
         data->gaussianp[part_count].weight = weights[0];
-        data->gaussianp[part_count].offset = 0.0f;
+        data->gaussianp[part_count].offset = 0.f;
         ++part_count;
 
         for (std::uint32_t d = 1u; d + 1u <= radius; d += 2u) {
@@ -644,10 +644,10 @@ void _background::update_blur_constant_buffer(std::uint32_t& radius, blur_shader
 
         float total_weight = data->gaussianp[0].weight;
         for (std::uint32_t i = 1u; i < part_count; ++i) {
-            total_weight += 2.0f * data->gaussianp[i].weight;
+            total_weight += 2.f * data->gaussianp[i].weight;
         }
 
-        const float inv_total = (total_weight > 0.0f) ? (1.0f / total_weight) : 1.0f;
+        const float inv_total = (total_weight > 0.f) ? (1.f / total_weight) : 1.f;
         for (std::uint32_t i = 0u; i < part_count; ++i) {
             data->gaussianp[i].weight *= inv_total;
         }
