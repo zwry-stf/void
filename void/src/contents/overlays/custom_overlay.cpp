@@ -72,6 +72,12 @@ input_response custom_overlay::input(const input_base& input)
         !input.is_selected(this))
         return input_response::empty();
 
+    if (cfg_.resizable) {
+        auto res = resize_window(input);
+        if (res.is_handled())
+            return res;
+    }
+
     auto res = move_window(input);
     if (res.is_handled())
         return res;
@@ -143,9 +149,7 @@ e_resizing_type custom_overlay::get_resizing_type(float mouse_x, float mouse_y)
 input_response custom_overlay::move_window(const input_base& input)
 {
     if (!input.nothing_selected() &&
-        !input.is_range_selected(this,
-            overlay_selected_ids::selected_move,
-            overlay_selected_ids::selected_size))
+        !input.is_selected(this, overlay_selected_ids::selected_move))
         return input_response::empty();
 
     float mouse_x, mouse_y;
@@ -166,9 +170,43 @@ input_response custom_overlay::move_window(const input_base& input)
 
             return input_response::handled();
         }
+    }
 
+    else if (input.event().is_message(message_type::mouse_button_up) &&
+             input.event().get_mouse_button() == mouse_button::left) {
+        if (input.is_selected(this, overlay_selected_ids::selected_move)) {
+            input.clear_selected();
+
+            return input_response::handled();
+        }
+    }
+
+    else if (input.event().is_message(message_type::mouse_button_down) &&
+             input.event().get_mouse_button() == mouse_button::left) {
+        if (util::is_in_rect(mouse_x, mouse_y, last_pos_)) {
+            move_pos_.x = mouse_x - last_pos_.x;
+            move_pos_.y = mouse_y - last_pos_.y;
+
+            input.set_selected(this, overlay_selected_ids::selected_move);
+            return input_response::handled();
+        }
+    }
+
+    return input_response::empty();
+}
+
+input_response custom_overlay::resize_window(const input_base& input)
+{
+    if (!input.nothing_selected() &&
+        !input.is_selected(this, overlay_selected_ids::selected_size))
+        return input_response::empty();
+
+    float mouse_x, mouse_y;
+    input.event().get_cursor_pos(mouse_x, mouse_y);
+    
+    if (input.event().is_message(message_type::mouse_move)) {
         auto resizing_type = e_resizing_type::invalid;
-        // Resize
+
         if (input.is_selected(this, overlay_selected_ids::selected_size)) {
             r2::vec4 new_rect = move_pos_.to_vec4();
 
@@ -277,9 +315,7 @@ input_response custom_overlay::move_window(const input_base& input)
 
     else if (input.event().is_message(message_type::mouse_button_up) &&
              input.event().get_mouse_button() == mouse_button::left) {
-        if (input.is_range_selected(this,
-                overlay_selected_ids::selected_move,
-                overlay_selected_ids::selected_size)) {
+        if (input.is_selected(this, overlay_selected_ids::selected_size)) {
             input.clear_selected();
 
             return input_response::handled();
@@ -288,7 +324,6 @@ input_response custom_overlay::move_window(const input_base& input)
 
     else if (input.event().is_message(message_type::mouse_button_down) &&
              input.event().get_mouse_button() == mouse_button::left) {
-        
         e_resizing_type resizing_type = get_resizing_type(mouse_x, mouse_y);
         if (resizing_type != e_resizing_type::none) {
             resizing_type_ = resizing_type;
@@ -296,15 +331,6 @@ input_response custom_overlay::move_window(const input_base& input)
             move_pos_ = last_pos_;
 
             input.set_selected(this, overlay_selected_ids::selected_size);
-            return input_response::handled();
-        }
-
-        // Moving
-        if (util::is_in_rect(mouse_x, mouse_y, last_pos_)) {
-            move_pos_.x = mouse_x - last_pos_.x;
-            move_pos_.y = mouse_y - last_pos_.y;
-
-            input.set_selected(this, overlay_selected_ids::selected_move);
             return input_response::handled();
         }
     }

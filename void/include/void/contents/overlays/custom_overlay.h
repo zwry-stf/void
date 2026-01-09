@@ -116,6 +116,7 @@ public:
 private:
     e_resizing_type get_resizing_type(float mouse_x, float mouse_y);
     class input_response move_window(const class input_base& input);
+    class input_response resize_window(const class input_base& input);
 };
 
 void_end_
