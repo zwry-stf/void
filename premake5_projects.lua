@@ -23,11 +23,13 @@ project "resources"
     objdir    (int_root)
     location (P("resources"))
     
+    local shader_glob = P("resources/res/shaders/**.hlsl")
+
     files {
         P("resources/include/**.h"),
         P("resources/internal/**.cpp"),
         P("resources/internal/**.h"),
-        P("resources/res/shaders/**.hlsl")
+        shader_glob
     }
     
     includedirs {
@@ -37,7 +39,7 @@ project "resources"
     
     -- hlsl files
     local pp_out = "%{prj.location}/../resources/res/shaders/out"
-    filter { "files:resources/res/shaders/**.hlsl", "configurations:*_d3d11" }
+    filter { "files:" .. shader_glob, "configurations:*_d3d11" }
         buildaction "CustomBuild"
         buildmessage "Preprocessing %{file.name}"
         buildcommands {
@@ -45,7 +47,7 @@ project "resources"
             '"%{file.abspath}" > "' .. pp_out .. '/%{file.basename}.shader"'
         }
         buildoutputs { pp_out .. "/%{file.basename}.shader" }
-    filter { "files:resources/res/shaders/**.hlsl", "configurations:*_opengl" }
+        filter { "files:" .. shader_glob, "configurations:*_opengl" }
         buildaction "CustomBuild"
         buildmessage "Preprocessing %{file.name}"
         buildcommands {
