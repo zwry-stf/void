@@ -36,7 +36,7 @@ float group::update(float x, float y, float w, const render_input& input, float&
     const auto& menu_pos = instance()->pos();
 
     occluded_ = false;
-    const float lowest_pos = menu_pos.y + menu_pos.w;
+    const float lowest_pos = menu_pos.y + menu_pos.h;
     const float highest_pos = menu_pos.y + style.top_bar_height.get(instance()->scale());
     // out of screen bottom
     if (y > lowest_pos)
