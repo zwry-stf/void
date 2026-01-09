@@ -213,22 +213,21 @@ void config_tab::render(float alpha, bool selected)
             (add_pos_.h * 0.5f)
         );
 
-        renderer.add_rect_inner(
+        renderer.add_rect_inner_fast(
             button_min - outer_offset, button_max + outer_offset,
             button_color,
-            border_size * 2.f,
-            0.f /* rounding */
+            border_size * 2.f
         );
 
         const r2::vec2 mid = (button_min + button_max) * r2::vec2(0.5f);
 
-        renderer.add_rect_filled(
+        renderer.prim_rect(
             r2::vec2(mid.x - border_size, button_min.y + border_size * 2.f),
             r2::vec2(mid.x + border_size, button_max.y - border_size * 2.f),
             button_color
         );
 
-        renderer.add_rect_filled(
+        renderer.prim_rect(
             r2::vec2(button_min.x + border_size * 2.f, mid.y - border_size),
             r2::vec2(button_max.x - border_size * 2.f, mid.y + border_size),
             button_color

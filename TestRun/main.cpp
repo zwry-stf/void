@@ -431,6 +431,9 @@ void add_widgets()
             ->max_length(30)
             ->default_text("Default text");
     }
+
+    tab.config_tab("Config").set_icon(void_resources::config_png);
+    tab.theme_tab("Theme").set_icon(void_resources::theme_png);
 }
 
 template<typename ...Args>

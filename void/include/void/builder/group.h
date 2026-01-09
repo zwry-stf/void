@@ -416,6 +416,8 @@ public:
                                               const std::format_string<float>& format = "{:.2f}");
     overlay_spacing_options::owner_type spacing();
     overlay_with_child_options::owner_type toggle(const xstr& name, bool& value);
+
+    overlay_item_options::owner_type custom_widget(std::unique_ptr<widget>&& widget);
 };
 
 class group_builder : public base_builder_object {
@@ -448,6 +450,8 @@ public:
     group_spacing_options::owner_type spacing();
     group_textfield_options::owner_type textfield(const xstr& name, std::function<void(const std::u32string& s)>&& callback);
     group_with_child_options::owner_type toggle(const xstr& name, bool& value);
+
+    group_item_options::owner_type custom_widget(std::unique_ptr<widget>&& widget);
 };
 
 template <class T>

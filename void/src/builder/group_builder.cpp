@@ -768,6 +768,16 @@ overlay_with_child_options::owner_type childwindow_options::toggle(const xstr& n
     );
 }
 
+overlay_item_options::owner_type childwindow_options::custom_widget(std::unique_ptr<widget>&& w)
+{
+    auto* widget = childwindow_instance_->add_widget(std::move(w));
+
+    return overlay_item_options::owner_type(
+        *group_instance_,
+        widget
+    );
+}
+
 overlay_with_child_options::owner_type childwindow_options::button(const xstr& name, const xstr& button_text, std::function<void()>&& callback)
 {
     auto* widget = childwindow_instance_->add_widget(
@@ -925,6 +935,13 @@ group_with_child_options::owner_type group_builder::toggle(const xstr& name, boo
     );
 
     return group_with_child_options::owner_type(*this, widget);
+}
+
+group_item_options::owner_type group_builder::custom_widget(std::unique_ptr<widget>&& w)
+{
+    auto* widget = group_instance_->add_widget(std::move(w));
+
+    return group_item_options::owner_type(*this, widget);
 }
 
 group_with_child_options::owner_type group_builder::colorpicker(const xstr& name, r2::color& value, bool has_alpha)
