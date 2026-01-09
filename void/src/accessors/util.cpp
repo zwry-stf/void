@@ -44,6 +44,7 @@ void util::free_pixels(std::uint8_t* pixels)
 std::optional<r2::vec2> util::get_window_size() const noexcept
 {
 #if defined(R2_PLATFORM_WINDOWS)
+    assert(instance()->renderer().context());
     RECT rect;
     if (!GetClientRect(
         instance()->renderer().context()->get_hwnd(), 

@@ -95,17 +95,15 @@ void void_::init(const r2::platform_init_data& pinit, const r2::backend_init_dat
     animation_ = is_open() ? 1.f : 0.f;
     alpha_ = animation_;
 
-    initialized_ = true;
+    initialized_.store(true, std::memory_order_release);
 
     sidebar_->on_activate();
 }
 
 void void_::destroy()
 {
-    initialized_ = false;
-
-    icons().destroy();
     destroy_render();
+    icons().destroy();
 
     config_->destroy();
     theme_->destroy();
@@ -132,10 +130,14 @@ void void_::init_render(const r2::platform_init_data& pinit, const r2::backend_i
     render_target().init();
 
     renderer_.restore_render_state();
+
+    initialized_.store(true, std::memory_order_release);
 }
 
 void void_::destroy_render()
 {
+    initialized_.store(false, std::memory_order_release);
+
     render_target().destroy();
 
     background_->destroy();

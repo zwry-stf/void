@@ -11,7 +11,7 @@ class void_ : public input_owner,
 private:
     r2::renderer2d renderer_;
 
-    bool initialized_{};
+    std::atomic<bool> initialized_{ false };
     std::atomic<bool> open_;
     r2::rectf pos_;
     float animation_;
@@ -60,7 +60,7 @@ public:
 
 public:
     [[nodiscard]] bool is_initialized() const noexcept {
-        return initialized_;
+        return initialized_.load(std::memory_order_acquire);
     }
     [[nodiscard]] float scale() const noexcept {
         return scale_;

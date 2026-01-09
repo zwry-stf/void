@@ -146,6 +146,9 @@ int input::get_scan_code(key key)
 #if defined(R2_PLATFORM_WINDOWS)
 input_response input::input_win32(std::uint32_t msg, uint64_t wparam, int64_t lparam)
 {
+    if (!instance()->is_initialized())
+        return input_response::empty();
+
     message_event event = convert_message_win32(msg, wparam, lparam);
     return push_event(event);
 }
