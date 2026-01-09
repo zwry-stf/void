@@ -362,7 +362,7 @@ public:
 
     template <std::size_t N>
     void get(Char(&out)[N]) const noexcept {
-        get(&out[0], N);
+        get(&out[0], N * sizeof(Char));
     }
 
     void get(Char* out, std::size_t size) const noexcept {
