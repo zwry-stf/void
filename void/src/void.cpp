@@ -105,15 +105,43 @@ void void_::destroy()
     initialized_ = false;
 
     icons().destroy();
+    destroy_render();
+
+    config_->destroy();
+    theme_->destroy();
+}
+
+void void_::init_render(const r2::platform_init_data& pinit, const r2::backend_init_data& binit)
+{
+    // renderer
+    renderer_.init(pinit, binit);
+
+    renderer_.backup_render_state();
+
+    renderer_.create_font_texture();
+
+    icons().init();
+
+    // background
+    render_target().init_targets();
+
+    background_->init();
+    background_overlay_->init(background_.get());
+
+    // render_target
+    render_target().init();
+
+    renderer_.restore_render_state();
+}
+
+void void_::destroy_render()
+{
     render_target().destroy();
 
     background_->destroy();
     background_overlay_->destroy();
 
-    renderer_.destroy();
-
-    config_->destroy();
-    theme_->destroy();
+    renderer_.destroy_render();
 }
 
 void void_::pre_resize()

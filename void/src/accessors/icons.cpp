@@ -11,11 +11,13 @@ void_begin_
 
 void icons::init()
 {
+    auto& renderer = instance()->renderer();
     for (auto& i : icons_) {
         for (auto& s : i.sizes) {
             if (!s.created) {
                 create_icon(i.resource_id, s);
             }
+            s.icon_data.tex = renderer.font_texture();
         }
     }
 }
