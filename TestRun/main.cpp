@@ -61,7 +61,7 @@ struct GlobalData {
 
 inline static GlobalData g_data;
 
-inline static vo::void_* g_void = &vo::get();
+inline static vo::void_* g_void{};
 
 
 // function def
@@ -84,6 +84,10 @@ int __stdcall WinMain(HINSTANCE /* instance */,
             int /* show/hide */)
 {
 #endif
+
+    std::unique_ptr<vo::void_> instance =
+        std::make_unique<vo::void_>();
+    g_void = instance.get();
 
     if (!create_window("void - v1"))
         show_error_and_exit("failed to create window");

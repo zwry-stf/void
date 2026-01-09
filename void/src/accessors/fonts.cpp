@@ -44,19 +44,19 @@ void fonts::create()
     font_large_ = renderer.add_font(fcfg);
 
     // add fonts
-    const vo::loaded_resource font1 = vo::get().resources().load_resource(
+    const vo::loaded_resource font1 = instance()->resources().load_resource(
         void_resources::NotoSans_Medium_ttf
     );
     font_small_->add_font(font1.data(), font1.size());
     font_large_->add_font(font1.data(), font1.size());
 
-    const vo::loaded_resource font2 = vo::get().resources().load_resource(
+    const vo::loaded_resource font2 = instance()->resources().load_resource(
         void_resources::MPLUSRounded1c_Medium_ttf
     );
     font_small_->add_font(font2.data(), font2.size());
     font_large_->add_font(font2.data(), font2.size());
 
-    const vo::loaded_resource font3 = vo::get().resources().load_resource(
+    const vo::loaded_resource font3 = instance()->resources().load_resource(
         void_resources::NotoEmoji_Medium_ttf
     );
     font_small_->add_font(font3.data(), font3.size());

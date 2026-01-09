@@ -149,10 +149,4 @@ private:
     friend class menu_builder;
 };
 
-inline void_& get() noexcept {
-    static void_ i;
-
-    return i;
-}
-
 void_end_
