@@ -74,27 +74,21 @@ void dropdown::render(float alpha)
     renderer.add_text_faded(
         r2::vec2(last_pos_.x, last_pos_.y + text_spacing),
         style.text().transparent(),
-        style.text().alpha(
-            (alpha * (1.f - animation_disabled_)) *
-            (0.3f + animation_selected_ * 0.7f)),
+        style.text().alpha((alpha * (1.f - animation_disabled_)) *
+            (0.3f + animation_selected_ * 0.4f)),
         cliprect_left, std::max(cliprect_left, last_pos_.x + border_size),
         name_,
         true /* blurred */
     );
     
-    const auto text_color = util.disable_color(
-        style.text(), animation_disabled_).alpha(alpha);
-
     renderer.add_text(
         r2::vec2(last_pos_.x, last_pos_.y + text_spacing),
-        text_color,
+        util.disable_color(
+            style.text(), animation_disabled_).alpha(alpha),
         name_
     );
 
     renderer.pop_clip_rect();
-
-    if (*owned_overlay.selected() >= owned_overlay.options()->size())
-        *owned_overlay.selected() = 0;
 
     render_dropdown(
         instance(),
@@ -175,11 +169,13 @@ void dropdown::render_dropdown(void_* instance, const r2::rectf& pos, float anim
 
         const float f = std::round(remaining_space * 0.5f);
 
+        const float side_spacing = std::round(spacing * 0.1f);
+
         float pos_y = pos.y + icon_spacing + f;
         for (int i = 0; i < num_in_height; i++) {
-            renderer.add_rect_filled(
-                r2::vec2(icon_min.x, pos_y),
-                r2::vec2(icon_max.x, pos_y + icon_line_width),
+            renderer.prim_rect(
+                r2::vec2(icon_min.x + side_spacing, pos_y),
+                r2::vec2(icon_max.x - side_spacing, pos_y + icon_line_width),
                 icon_color
             );
             pos_y += space_per_line;
@@ -188,18 +184,56 @@ void dropdown::render_dropdown(void_* instance, const r2::rectf& pos, float anim
     else {
         const float icon_offset = std::round(icon_size * 0.25f);
 
-        renderer.add_line(
-            r2::vec2(icon_min.x, icon_min.y + icon_size * 0.5f - icon_offset),
-            r2::vec2(icon_min.x + icon_size * 0.5f, icon_min.y + icon_size * 0.5f + icon_offset),
-            icon_color,
-            border_size
+        const r2::vec2 left = r2::vec2{
+                icon_min.x,
+                icon_min.y + icon_size * 0.5f - icon_offset
+        };
+        const r2::vec2 mid = r2::vec2{
+                icon_min.x + icon_size * 0.5f,
+                icon_min.y + icon_size * 0.5f + icon_offset
+        };
+        const r2::vec2 right = r2::vec2{
+                icon_max.x,
+                icon_min.y + icon_size * 0.5f - icon_offset
+        };
+        const float line_width = std::round(border_size * 1.45f);
+
+        const r2::vec2 right_offset = (right - mid).normalize().perp() * r2::vec2(line_width);
+        const r2::vec2 left_offset = (mid - left).normalize().perp() * r2::vec2(line_width);
+        const r2::vec2 bottom_right = right + right_offset;
+        const r2::vec2 bottom_left = left + left_offset;
+
+        const r2::vec2 d1 = (left - mid);
+        const r2::vec2 d2 = (right - mid);
+
+        const float denom = d1.cross(d2);
+
+        r2::vec2 bottom_mid;
+        if (std::abs(denom) < 1e-6f) {
+            bottom_mid = mid + (left_offset + right_offset) * r2::vec2(0.5f);
+        }
+        else {
+            const r2::vec2 A = mid + left_offset;
+            const r2::vec2 B = mid + right_offset;
+
+            const float t = (B - A).cross(d2) / denom;
+            bottom_mid = A + d1 * r2::vec2(t);
+        }
+
+        renderer.add_quad_filled(
+            mid,
+            bottom_mid,
+            bottom_right,
+            right,
+            icon_color
         );
 
-        renderer.add_line(
-            r2::vec2(icon_max.x, icon_min.y + icon_size * 0.5f - icon_offset),
-            r2::vec2(icon_min.x + icon_size * 0.5f, icon_min.y + icon_size * 0.5f + icon_offset),
-            icon_color,
-            border_size
+        renderer.add_quad_filled(
+            bottom_mid,
+            mid,
+            left,
+            bottom_left,
+            icon_color
         );
     }
 

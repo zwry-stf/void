@@ -2,10 +2,6 @@
 #include <void/void.h>
 #include <void/contents/container/child_tab.h>
 
-#include <contents/container/child_tab_normal.h>
-#include <config/config_tab.h>
-#include <theme/theme_tab.h>
-
 
 void_begin_
 
@@ -14,20 +10,6 @@ tab_normal::tab_normal(void_* instance, input_owner* input_owner, const xstr& na
       input_receiver(input_owner, 1),
       name_(name)
 {
-    assert(name_.find('\n') == xstr::npos);
-
-    add_child_tab(
-        std::make_unique<child_tab_normal>(instance, input_owner, overlay_owner, xstr("Child 1"))
-    );
-    add_child_tab(
-        std::make_unique<child_tab_normal>(instance, input_owner, overlay_owner, xstr("Child 2"))
-    );
-    add_child_tab(
-        std::make_unique<config_tab>(instance, input_owner, overlay_owner, instance->config().get_config_instance(), xstr("Config"))
-    );
-    add_child_tab(
-        std::make_unique<theme_tab>(instance, input_owner, overlay_owner, instance->theme().get_theme_instance(), xstr("Theme"))
-    );
 }
 
 tab_normal::~tab_normal() = default;
@@ -130,9 +112,16 @@ void tab_normal::on_scale_change()
         child->on_scale_change();
 }
 
-void tab_normal::add_child_tab(std::unique_ptr<child_tab>&& child_tab)
+child_tab* tab_normal::add_child_tab(std::unique_ptr<child_tab>&& child_tab)
 {
     child_tabs_.push_back(std::move(child_tab));
+
+    return child_tabs_.back().get();
+}
+
+void tab_normal::set_icon(int resource_id)
+{
+    icon_ = instance()->icons().get_or_create_handle(resource_id);
 }
 
 void tab_normal::update_content(const render_input& input)
@@ -190,7 +179,7 @@ void tab_normal::render_header()
     const bool has_icon = icon_ != icons::kInvalidHandle;
     if (has_icon) {
         const float icon_offset = std::round(spacing * 0.5f) + border_size;
-        const float icon_size = last_pos_.w - icon_offset * 2.f - border_size * 2.f;
+        const float icon_size = last_pos_.h - icon_offset * 2.f - border_size * 2.f;
         const auto& icon = instance()->icons().get_or_create(icon_, icon_size);
         renderer.add_image(
             icon->tex,

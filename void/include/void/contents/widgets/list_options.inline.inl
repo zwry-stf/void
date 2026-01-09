@@ -115,11 +115,11 @@ public:
 template <typename T>
 class list_options_vector_member_dynamic : public list_options {
 private:
-    const std::vector<T>** data_;
+    const std::vector<T>* data_;
     xstr T::* member_;
 
 public:
-    list_options_vector_member_dynamic(const std::vector<T>** data, xstr T::* member)
+    list_options_vector_member_dynamic(const std::vector<T>* data, xstr T::* member)
         : data_(data),
           member_(member) { }
 
@@ -129,29 +129,19 @@ public:
     }
 
     std::size_t size() const noexcept override {
-        const std::vector<T>* vec = *data_;
-        if (vec == nullptr) {
-            return 0;
-        }
-        return static_cast<std::size_t>(vec->size());
+        return static_cast<std::size_t>(data_->size());
     }
 
     const xstr& element(std::size_t index) const override {
-        const std::vector<T>* vec = *data_;
-        v_assert(vec != nullptr);
         v_assert(index >= 0 && index < size());
-        return (*vec)[static_cast<std::size_t>(index)].*member_;
+        return (*data_)[static_cast<std::size_t>(index)].*member_;
     }
 
     const xstr& element_safe(std::size_t index) const override {
-        const std::vector<T>* vec = *data_;
-        if (vec == nullptr) {
-            return kNone;
-        }
         if (index < 0 || index >= size()) {
             return kNone;
         }
-        return (*vec)[static_cast<std::size_t>(index)].*member_;
+        return (*data_)[static_cast<std::size_t>(index)].*member_;
     }
 };
 
@@ -183,6 +173,35 @@ public:
             return kNone;
 
         return data_[index];
+    }
+};
+
+class list_options_vector_dynamic : public list_options {
+private:
+    const std::vector<xstr>* const data_;
+
+public:
+    list_options_vector_dynamic(const std::vector<xstr>* data)
+        : data_(data) { }
+
+public:
+    virtual bool is_dynamic() const noexcept {
+        return true;
+    }
+
+    virtual std::size_t size() const noexcept override {
+        return data_->size();
+    }
+
+    virtual const xstr& element(std::size_t index) const override {
+        assert(index < size());
+        return (*data_)[index];
+    }
+    virtual const xstr& element_safe(std::size_t index) const override {
+        if (index >= data_->size())
+            return kNone;
+
+        return (*data_)[index];
     }
 };
 
@@ -224,6 +243,11 @@ inline list_options* list_options::create_constant(
     return create_constant(&data[0], N);
 }
 
+inline list_options* list_options::create_vector_dynamic(const std::vector<xstr>* data)
+{
+    return new list_options_vector_dynamic(data);
+}
+
 template <typename T>
 list_options* list_options::create_vector_member_constant(
     const std::vector<T>& data, xstr T::* member)
@@ -233,7 +257,7 @@ list_options* list_options::create_vector_member_constant(
 
 template <typename T>
 list_options* list_options::create_vector_member_dynamic(
-    const std::vector<T>** data, xstr T::* member)
+    const std::vector<T>* data, xstr T::* member)
 {
     return new list_options_vector_member_dynamic<T>(data, member);
 }

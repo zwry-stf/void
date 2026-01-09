@@ -6,7 +6,7 @@
 void_begin_
 
 class multiselect_overlay : public overlay,
-	                     public input_receiver {
+	                        public input_receiver {
 private:
 	std::vector<bool>* const value_;
 	std::unique_ptr<list_options> options_;
@@ -21,7 +21,7 @@ private:
 	std::vector<member_animation> member_animations_;
 
 public:
-	multiselect_overlay(void_* instance, input_owner_overlay* input_owner,
+	multiselect_overlay(void_* instance, input_owner* input_owner, input_owner_overlay* overlay_owner,
 		                std::unique_ptr<list_options>&& options, std::vector<bool>* value);
 
 public:

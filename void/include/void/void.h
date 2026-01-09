@@ -146,6 +146,7 @@ private:
     friend class background;
     friend class config;
     friend class theme;
+    friend class menu_builder;
 };
 
 inline void_& get() noexcept {

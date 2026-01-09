@@ -47,9 +47,6 @@ void dropdown_child::render(const r2::rectf& full_pos, float alpha, float animat
     if (push_clip_rect)
         renderer.modify_clip_rect_x(full_pos.x, full_pos.x + full_pos.w);
 
-    if (*owned_overlay.selected() >= owned_overlay.options()->size())
-        *owned_overlay.selected() = 0;
-
     dropdown::render_dropdown(
         instance(),
         last_pos_,

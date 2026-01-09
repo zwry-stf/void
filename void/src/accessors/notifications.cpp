@@ -218,4 +218,15 @@ void notifications::render()
     }
 }
 
+void notifications::on_scale_changed()
+{
+    std::lock_guard<std::mutex> lock(mutex_);
+
+    for (auto& n : notifications_) {
+        for (auto& d : n.data) {
+            d->text_width_calculated = false;
+        }
+    }
+}
+
 void_end_

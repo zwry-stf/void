@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include <void/contents/overlays/overlay.h>
+#include <assert.h>
 
 
 void_begin_
@@ -40,6 +41,10 @@ public:
     [[nodiscard]] std::int32_t create_overlay(std::unique_ptr<overlay>&& overlay) {
         overlays_.push_back(std::move(overlay));
 
+        return last_overlay_id();
+    }
+    [[nodiscard]] std::int32_t last_overlay_id() const noexcept {
+        assert(overlays_.size() > 0u);
         return static_cast<std::int32_t>(overlays_.size()) - 1;
     }
 

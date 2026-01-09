@@ -7,25 +7,25 @@
 void_begin_
 
 enum class colorpicker_selected_ids : std::int32_t {
-	selected_square, // brightness square
-	selected_hue,
-	selected_alpha,
+    selected_square, // brightness square
+    selected_hue,
+    selected_alpha,
     selected_copy,
-	selected_max
+    selected_max
 };
 
-colorpicker_overlay::colorpicker_overlay(void_* instance, input_owner_overlay* input_owner, 
-                                         r2::color* color, bool has_alpha)
-	: overlay(instance, input_owner, false, false),
-	  input_receiver(this,
-		  std::to_underlying(colorpicker_selected_ids::selected_max)),
-	  color_(color),
-	  has_alpha_(has_alpha),
+colorpicker_overlay::colorpicker_overlay(void_* instance, input_owner* input_owner,
+                                         input_owner_overlay* overlay_owner, r2::color* color, bool has_alpha)
+    : overlay(instance, overlay_owner, false, false),
+      input_receiver(input_owner,
+          std::to_underlying(colorpicker_selected_ids::selected_max)),
+      color_(color),
+      has_alpha_(has_alpha),
       text_field_size_(26.f, true)
 {
     text_field_ = std::make_unique<textfield>(
         instance, 
-        this, /* input owner */
+        input_owner,
         textfield_type::color,
         textfield_flags::mouse_in_rect | textfield_flags::stop_on_return, /* flags */
         xstr(), /* default text */
@@ -57,7 +57,7 @@ void colorpicker_overlay::update(const overlay_render_input& input)
         last_color_ = *color_;
     }
 
-    auto render_input = input_get_render_input();
+    auto render_input = input_owner_->input_get_render_input();
 
     if (!render_input.is_selected(text_field_.get())) {
         std::u32string text;
@@ -157,7 +157,7 @@ input_response colorpicker_overlay::input(const overlay_input& input)
     float mouse_x, mouse_y;
     input.event().get_cursor_pos(mouse_x, mouse_y);
 
-    auto _input = input_get_input(input.event());
+    auto _input = input_owner_->input_get_input(input.event());
 
     if (input.event().is_message(message_type::key_down) &&
         _input.is_selected(text_field_.get())) {
@@ -538,7 +538,7 @@ void colorpicker_overlay::render_alpha_bar()
 
 void colorpicker_overlay::update_text_field()
 {
-    auto render_input = input_get_render_input();
+    auto render_input = input_owner_->input_get_render_input();
     auto& style = instance()->style();
     auto& util = instance()->util();
 

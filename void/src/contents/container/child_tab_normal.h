@@ -32,8 +32,9 @@ public:
     virtual void on_activate(bool parent_change, bool first = false) override;
     virtual void on_scale_change() override;
 
-    void add_group(std::unique_ptr<group>&& group) { 
+    group* add_group(std::unique_ptr<group>&& group) {
         groups_.push_back(std::move(group));
+        return groups_.back().get();
     }
     void disable_scroll(bool s) noexcept {
         scroll_disabled_ = s; 

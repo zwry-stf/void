@@ -5,15 +5,10 @@
 
 void_begin_
 
-child_tab_normal::child_tab_normal(void_* instance, input_owner* input_owner, input_owner_overlay* overlay_owner, const xstr& name)
+child_tab_normal::child_tab_normal(void_* instance, input_owner* input_owner, 
+                                   input_owner_overlay* overlay_owner, const xstr& name)
     : child_tab(instance, input_owner, 1, 0, overlay_owner, name)
 {
-    add_group(
-        std::make_unique<group>(instance, xstr("Group 1"), group_area::left)
-    );
-    add_group(
-        std::make_unique<group>(instance, xstr("Group 1"), group_area::right)
-    );
 }
 
 float child_tab_normal::update(float x, float y, bool selected, const render_input& input)

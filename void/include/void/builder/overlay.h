@@ -47,3 +47,5 @@ public:
 };
 
 void_end_
+
+#include "group.inline.inl"

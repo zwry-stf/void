@@ -5,7 +5,7 @@
 void_begin_
 
 list::list(void_* instance, input_owner* input_owner, std::unique_ptr<list_options>&& options, 
-	       const xstr& name, std::size_t* selected, std::int32_t num_rows, bool has_search)
+	       const xstr& name, std::size_t* selected, int num_rows, bool has_search)
 	: widget(instance, input_owner, static_cast<std::int32_t>(num_rows)),
 	  name_(name),
 	  value_(selected),

@@ -9,6 +9,10 @@ workspace "void"
         trigger = "has-glfw",
         description = "Enable GLFW integration"
     }
+    
+group "deps"
+    include "ext/r2/premake5.lua"
+group ""
 
     filter "platforms:x86"
         architecture "x86"
@@ -134,6 +138,7 @@ project "void"
     }
     
     dependson { "resources" }
+
     
 project "TestRun"
     kind "WindowedApp"

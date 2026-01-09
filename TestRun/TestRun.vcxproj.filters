@@ -4,11 +4,35 @@
     <Filter Include="ext">
       <UniqueIdentifier>{7670880B-E279-887C-6BF5-9E7CD7FD937C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ext\r2">
+      <UniqueIdentifier>{89FB33FC-759D-5ED2-5E58-72264A99E522}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\r2\TestRun">
+      <UniqueIdentifier>{ED8AC46E-D958-B874-C2EC-289BAE5994D9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\r2\TestRun\ext">
+      <UniqueIdentifier>{CDBCD502-B9A0-9658-2201-91AB0E0481DA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\r2\TestRun\ext\GLFW">
+      <UniqueIdentifier>{2C80777B-98B7-BF12-A1C1-23360D78E60B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext">
+      <UniqueIdentifier>{7670880B-E279-887C-6BF5-9E7CD7FD937C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ext\GLFW">
       <UniqueIdentifier>{75E509D9-61B2-64E4-8ACB-528C76F79972}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\ext\r2\TestRun\ext\GLFW\glfw3.h">
+      <Filter>ext\r2\TestRun\ext\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ext\r2\TestRun\ext\GLFW\glfw3native.h">
+      <Filter>ext\r2\TestRun\ext\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ext\r2\TestRun\resources.h">
+      <Filter>ext\r2\TestRun</Filter>
+    </ClInclude>
     <ClInclude Include="ext\GLFW\glfw3.h">
       <Filter>ext\GLFW</Filter>
     </ClInclude>
@@ -17,6 +41,18 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\ext\r2\TestRun\MPLUSRounded1c-Medium.cpp">
+      <Filter>ext\r2\TestRun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ext\r2\TestRun\NotoEmoji-Medium.cpp">
+      <Filter>ext\r2\TestRun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ext\r2\TestRun\NotoSans-Medium.cpp">
+      <Filter>ext\r2\TestRun</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ext\r2\TestRun\main.cpp">
+      <Filter>ext\r2\TestRun</Filter>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
 </Project>

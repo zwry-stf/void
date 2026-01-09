@@ -4,10 +4,10 @@
 
 void_begin_
 
-multiselect_overlay::multiselect_overlay(void_* instance, input_owner_overlay* input_owner, 
+multiselect_overlay::multiselect_overlay(void_* instance, input_owner* input_owner, input_owner_overlay* overlay_owner,
                                          std::unique_ptr<list_options>&& options, std::vector<bool>* value)
-	: overlay(instance, input_owner, false, false),
-	  input_receiver(this, static_cast<std::int32_t>(options->size())),
+	: overlay(instance, overlay_owner, false, false),
+	  input_receiver(input_owner, static_cast<std::int32_t>(options->size())),
 	  options_(std::move(options)),
 	  value_(value)
 {
@@ -55,7 +55,8 @@ void multiselect_overlay::update(const overlay_render_input& input)
     spacing_ = std::round(spacing * 0.4f);
     row_height_ = text_size_small + spacing_;
 
-    const float full_height = static_cast<float>(options_size) * row_height_ + spacing_;
+    const float full_height = std::max(static_cast<float>(options_size), 1.f) *
+        row_height_ + spacing_;
 
     last_pos_.w = parent_size_.x * (0.7f + std::sqrt(animation_) * 0.3f);
     last_pos_.h = full_height * animation_;
@@ -71,7 +72,7 @@ void multiselect_overlay::update(const overlay_render_input& input)
     }
 
     // items
-    auto render_input = input_get_render_input();
+    auto render_input = input_owner_->input_get_render_input();
     for (std::int32_t i = 0; i < options_size; i++) {
         member_animations_[i].hovered = util.lerp(
             member_animations_[i].hovered,
@@ -141,6 +142,14 @@ void multiselect_overlay::render()
 
         pos_y += row_height_;
     }
+    if (options_size == 0u) {
+        renderer.add_text(
+            r2::vec2(last_pos_.x + left_offset,
+                pos_y),
+            style.text().alpha(animation * 0.7f * 0.6f),
+            list_options::kNone
+        );
+    }
 
     renderer.pop_clip_rect();
 }
@@ -174,7 +183,7 @@ input_response multiselect_overlay::input(const overlay_input& input)
                 if (input.event().is_message(message_type::mouse_button_down))
                     value_->at(selected).flip();
                 else /* MouseMove */ {
-                    input_get_input(input.event()).set_hovered(this, selected);
+                    input_owner_->input_get_input(input.event()).set_hovered(this, selected);
 
                     instance()->cursors().set_cursor(cursor::hand);
                 }

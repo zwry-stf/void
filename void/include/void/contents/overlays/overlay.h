@@ -9,7 +9,6 @@
 void_begin_
 
 class overlay : protected vobj,
-                public input_owner,
                 public input_receiver_overlay {
 protected:
     const bool has_overlays_;

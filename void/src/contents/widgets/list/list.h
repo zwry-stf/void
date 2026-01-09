@@ -11,7 +11,7 @@ class list : public widget {
 private:
 	const xstr name_;
 	std::size_t* const value_;
-	const std::int32_t num_rows_;
+	const int num_rows_;
 	const bool has_search_;
 	std::unique_ptr<list_options> options_;
 
@@ -44,7 +44,7 @@ private:
 
 public:
 	list(void_* instance, input_owner* input_owner, std::unique_ptr<list_options>&& options,
-		 const xstr& name, std::size_t* selected, std::int32_t num_rows, bool has_search);
+		 const xstr& name, std::size_t* selected, int num_rows, bool has_search);
 
 public:
     virtual void update(float x, float y, float w, const render_input& input, bool occluded) override;

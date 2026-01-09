@@ -342,6 +342,67 @@ void add_widgets()
                 overlay.toggle_input(overlay_enabled);
             }
         );
+
+    using vo::xstr;
+    static constexpr xstr kOptions[] = {
+        xstr("Option 1"),
+        xstr("Option 2"),
+        xstr("Option 3"),
+        xstr("Option 4"),
+        xstr("Option 5"),
+        xstr("Option 6")
+    };
+
+    static std::vector<xstr> options_dynamic;
+    static bool bool_value = false;
+    static bool bool_value2 = false;
+    static float float_value = 0.f;
+    static std::size_t int_value = 0;
+    static r2::color color_value = r2::color::cyan();
+    static std::vector<bool> multiselect_value;
+
+
+    mb.label("Label 1");
+    auto tab = mb.tab("Tab 1");
+    tab.set_icon(void_resources::color_png);
+
+    // child 1
+    {
+        auto child = tab.child("Child 1");
+
+        child.left_group("Group left")
+            .toggle("Toggle 1", bool_value)
+                ->disabled(bool_value2)
+                ->colorpicker(color_value)
+                ->multiselect(vo::list_options::create_constant(kOptions), multiselect_value)
+            .toggle("Toggle 2", bool_value2)
+                ->disabled_inverted(bool_value)
+            .slider("Slider 1", float_value)
+                ->decimal_count(1)
+            .childwindow("Childwindow")
+                ->toggle("Toggle 3", bool_value2)
+                    .l()->disabled(bool_value)
+                    .l()->dropdown(vo::list_options::create_constant(kOptions), int_value)
+                ->slider("Slider 1", float_value, 0.f, 50.f)
+                    .l()->decimal_count(0)
+                ->button("Button 1", "Click", [](){})
+            .colorpicker("Colorpicker 1", color_value)
+                ->last_childwindow()
+                ->colorpicker(color_value);
+
+        child.right_group("Group right")
+            .button("Button", "Add Option",
+                []() -> void {
+                    options_dynamic.push_back(xstr("Option"));
+                })
+            .spacing()
+            ->condition([]()->bool { return options_dynamic.empty(); })
+            .dropdown(
+                "Dropdown",
+                vo::list_options::create_vector_dynamic(&options_dynamic),
+                int_value
+            );
+    }
 }
 
 template<typename ...Args>

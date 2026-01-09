@@ -1,21 +1,6 @@
 #include "group.h"
 #include <void/void.h>
 
-#include <contents/widgets/toggle/toggle.h>
-#include <contents/widgets/slider/slider.h>
-#include <contents/widgets/childwindow/childwindow_child.h>
-#include <contents/widgets/colorpicker/colorpicker_child.h>
-#include <contents/overlays/childwindow/childwindow.h>
-#include <contents/overlays/colorpicker/colorpicker.h>
-#include <contents/widgets/colorpicker/colorpicker.h>
-#include <contents/widgets/list/list.h>
-#include <contents/widgets/dropdown/dropdown.h>
-#include <contents/overlays/dropdown/dropdown.h>
-#include <contents/widgets/multiselect/multiselect.h>
-#include <contents/overlays/multiselect/multiselect.h>
-#include <contents/widgets/dropdown/dropdown_child.h>
-#include <contents/widgets/multiselect/multiselect_child.h>
-
 
 void_begin_
 
@@ -24,101 +9,6 @@ group::group(void_* instance, const xstr& name, group_area area)
       area_(area),
       name_(name)
 {
-    assert(name_.find('\n') == xstr::npos);
-
-    static constexpr xstr kOptions[] = {
-        xstr("Option 1"),
-        xstr("Option 2"),
-        xstr("Option 3"),
-        xstr("Option 4"),
-        xstr("Option 5"),
-        xstr("Option 6")
-    };
-
-    static bool bool_value = false;
-    static r2::color color_value = r2::color::cyan();
-    static float float_value = 0.f;
-    static std::size_t int_value = 0;
-    static std::vector<bool> multiselect_value;
-    add_widget(
-        std::make_unique<toggle>(instance, instance, xstr("Checkbox 1"), &bool_value)
-    );
-    {
-        const std::int32_t overlay_id = instance->create_overlay(
-            std::make_unique<childwindow>(instance, instance, xstr("Child Window"))
-        );
-        instance->get_overlay<childwindow>(overlay_id)->add_widget(
-            std::make_unique<toggle>(instance, instance, xstr("Checkbox"), &bool_value)
-        );
-        widgets_.back()->add_child(
-            std::make_unique<childwindow_child>(instance, instance, instance, overlay_id)
-        );
-    }
-    {
-        const std::int32_t overlay_id = instance->create_overlay(
-            std::make_unique<colorpicker_overlay>(instance, instance, &color_value, true)
-        );
-        widgets_.back()->add_child(
-            std::make_unique<colorpicker_child>(instance, instance, instance, overlay_id)
-        );
-    }
-    {
-        const std::int32_t overlay_id = instance->create_overlay(
-            std::make_unique<dropdown_overlay>(instance, instance,
-                std::unique_ptr<list_options>(list_options::create_constant(kOptions)),
-                &int_value)
-        );
-        widgets_.back()->add_child(
-            std::make_unique<dropdown_child>(instance, instance, instance, overlay_id)
-        );
-    }
-    {
-        const std::int32_t overlay_id = instance->create_overlay(
-            std::make_unique<multiselect_overlay>(instance, instance,
-                std::unique_ptr<list_options>(list_options::create_constant(kOptions)),
-                &multiselect_value)
-        );
-        widgets_.back()->add_child(
-            std::make_unique<multiselect_child>(instance, instance, instance, overlay_id)
-        );
-    }
-    {
-        const std::int32_t overlay_id = instance->create_overlay(
-            std::make_unique<colorpicker_overlay>(instance, instance, &color_value, true)
-        );
-        add_widget(
-            std::make_unique<colorpicker>(instance, instance, instance, overlay_id, xstr("Colorpicker 1"))
-        );
-    }
-    {
-        const std::int32_t overlay_id = instance->create_overlay(
-            std::make_unique<dropdown_overlay>(instance, instance,
-                std::unique_ptr<list_options>(list_options::create_constant(kOptions)),
-                &int_value)
-        );
-        add_widget(
-            std::make_unique<dropdown>(instance, instance, instance, overlay_id, xstr("Dropdown 1"))
-        );
-    }
-    {
-        const std::int32_t overlay_id = instance->create_overlay(
-            std::make_unique<multiselect_overlay>(instance, instance,
-                std::unique_ptr<list_options>(list_options::create_constant(kOptions)),
-                &multiselect_value)
-        );
-        add_widget(
-            std::make_unique<multiselect>(instance, instance, instance, overlay_id, xstr("Multiselect 1"))
-        );
-    }
-    add_widget(
-        std::make_unique<list>(instance, instance,
-            std::unique_ptr<list_options>(list_options::create_constant(kOptions)),
-            xstr("List 1"), &int_value, 7, true)
-    );
-    add_widget(
-        std::make_unique<slider>(instance, instance, xstr("Slider 1"), &float_value, -1.f, 50.f,
-            std::format_string<float>("{:.2f} t"))
-    );
 }
 
 float group::update(float x, float y, float w, const render_input& input, float& substract_last_widget)

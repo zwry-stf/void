@@ -1,11 +1,15 @@
 #include "childwindow.h"
 #include <void/void.h>
 
+#include <contents/overlays/dropdown/dropdown.h>
+
 
 void_begin_
 
-childwindow::childwindow(void_* instance, input_owner_overlay* input_owner, const xstr& name)
-    : overlay(instance, input_owner, true, true),
+childwindow::childwindow(void_* instance, input_owner* input_owner,
+                         input_owner_overlay* overlay_owner, const xstr& name)
+    : overlay(instance, overlay_owner, true, true),
+      input_receiver(input_owner, 0),
       name_(name)
 {
 }
@@ -47,13 +51,15 @@ void childwindow::update(const overlay_render_input& input)
     bool widget_found = false;
     const float pos_x = last_pos_.x + side_spacing;
     float pos_y = last_pos_.y + top_height + top_spacing;
+    auto render_input = input_owner_->input_get_render_input();
+
     for (auto& widget : widgets_) {
         if (widget->is_visible()) [[likely]] {
             widget->update(
                 pos_x,
                 pos_y,
                 last_pos_.w - side_spacing * 2.f,
-                input_get_render_input(),
+                render_input,
                 false /* occluded */
             );
 
@@ -190,7 +196,7 @@ input_response childwindow::input(const overlay_input& input)
     }
 
     // widgets
-    input_base _input = input_get_input(input.event());
+    input_base _input = input_owner_->input_get_input(input.event());
 
     for (auto& widget : widgets_) {
         if (widget->is_visible()) {

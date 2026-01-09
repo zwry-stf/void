@@ -39,8 +39,9 @@ public:
 
     void search(const xstr& text);
 
-    void add_widget(std::unique_ptr<widget>&& widget) {
+    widget* add_widget(std::unique_ptr<widget>&& widget) {
         widgets_.push_back(std::move(widget));
+        return widgets_.back().get();
     }
 
     [[nodiscard]] auto area() const noexcept {

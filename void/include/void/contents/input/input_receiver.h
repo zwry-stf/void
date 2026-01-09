@@ -7,12 +7,14 @@ void_begin_
 
 class input_receiver {
 private:
-    class input_owner* const input_owner_;
     std::int64_t id_min_;
     std::int64_t id_max_;
 
     friend class input_base;
     friend class render_input;
+
+protected:
+    class input_owner* const input_owner_;
 
 public:
     input_receiver(class input_owner* owner, std::int32_t num) noexcept;

@@ -137,7 +137,8 @@ void colorpicker::render(float alpha)
 	renderer.add_text_faded(
 		r2::vec2(last_pos_.x, last_pos_.y + text_spacing),
 		style.text().transparent(),
-		style.text().alpha((alpha * (1.f - animation_disabled_)) * (0.3f + animation_selected_ * 0.7f)),
+		style.text().alpha((alpha * (1.f - animation_disabled_)) *
+			(0.3f + animation_selected_ * 0.4f)),
 		cliprect_left, (std::max)(cliprect_left, last_pos_.x + border_size),
 		name_, true
 	);

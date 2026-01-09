@@ -37,13 +37,16 @@ public:
     static list_options* create_constant(
         const xstr(&data)[N]);
 
+    static list_options* create_vector_dynamic(
+        const std::vector<xstr>* data);
+
     template <typename T>
     static list_options* create_vector_member_constant(
         const std::vector<T>& data, xstr T::* member);
 
     template <typename T>
     static list_options* create_vector_member_dynamic(
-        const std::vector<T>** data, xstr T::* member);
+        const std::vector<T>* data, xstr T::* member);
 };
 
 void_end_

@@ -37,8 +37,8 @@ private:
     std::unique_ptr<textfield> text_field_;
 
 public:
-    colorpicker_overlay(void_* instance, input_owner_overlay* input_owner,
-                        r2::color* color, bool has_alpha);
+    colorpicker_overlay(void_* instance, input_owner* input_owner,
+                        input_owner_overlay* overlay_owner, r2::color* color, bool has_alpha);
 
 public:
     virtual void update(const overlay_render_input& input) override;

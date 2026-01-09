@@ -1,0 +1,797 @@
+#include <void/builder/group.h>
+#include <void/builder/builder.h>
+#include <void/void.h>
+#include <contents/container/group.h>
+
+// widgets
+#include <contents/widgets/toggle/toggle.h>
+#include <contents/widgets/slider/slider.h>
+#include <contents/widgets/colorpicker/colorpicker.h>
+#include <contents/widgets/dropdown/dropdown.h>
+#include <contents/widgets/multiselect/multiselect.h>
+#include <contents/widgets/list/list.h>
+#include <contents/widgets/button/button.h>
+#include <contents/widgets/spacing/spacing.h>
+#include <contents/widgets/textfield/textfield.h>
+
+// child widgets
+#include <contents/widgets/colorpicker/colorpicker_child.h>
+#include <contents/widgets/dropdown/dropdown_child.h>
+#include <contents/widgets/multiselect/multiselect_child.h>
+#include <contents/widgets/childwindow/childwindow_child.h>
+
+// overlays
+#include <contents/overlays/colorpicker/colorpicker.h>
+#include <contents/overlays/dropdown/dropdown.h>
+#include <contents/overlays/multiselect/multiselect.h>
+#include <contents/overlays/childwindow/childwindow.h>
+
+
+void_begin_
+
+/// group_base_options
+
+group_base_options::group_base_options(void_* instance, menu_builder* builder, widget* widget_instance)
+    : base_builder_object(instance, builder),
+      widget_instance_(widget_instance)
+{
+}
+
+void group_base_options::disabled(bool& state)
+{
+    get_widget()->set_disabled_callback(
+        [&state]() -> bool {
+            return state;
+        }
+    );
+}
+
+void group_base_options::disabled_inverted(bool& state)
+{
+    get_widget()->set_disabled_callback(
+        [&state]() -> bool {
+            return !state;
+        }
+    );
+}
+
+void group_base_options::disabled(std::function<bool()>&& callback)
+{
+    get_widget()->set_disabled_callback(std::move(callback));
+}
+
+void group_base_options::condition(std::function<bool()>&& callback)
+{
+    get_widget()->set_visible_callback(std::move(callback));
+}
+
+/// group_item_options
+
+group_item_options::group_item_options(void_* instance, menu_builder* builder, 
+                                       owner_type* group_instance, widget* widget_instance)
+    : group_base_options(instance, builder, widget_instance),
+      group_instance_(group_instance)
+{
+}
+
+group_item_options::owner_type& group_item_options::disabled(bool& state)
+{
+    group_base_options::disabled(state);
+
+    return *group_instance_;
+}
+
+group_item_options::owner_type& group_item_options::disabled_inverted(bool& state)
+{
+    group_base_options::disabled_inverted(state);
+
+    return *group_instance_;
+}
+
+group_item_options::owner_type& group_item_options::disabled(std::function<bool()>&& callback)
+{
+    group_base_options::disabled(std::move(callback));
+
+    return *group_instance_;
+}
+
+group_item_options::owner_type& group_item_options::condition(std::function<bool()>&& callback)
+{
+    group_base_options::condition(std::move(callback));
+
+    return *group_instance_;
+}
+
+
+/// group_with_child_options
+
+group_with_child_options::group_with_child_options(void_* instance, menu_builder* builder, 
+                                                   owner_type* group_instance, widget* widget_instance)
+    : group_base_options(instance, builder, widget_instance),
+      group_instance_(group_instance)
+{
+}
+
+group_with_child_options::owner_type& group_with_child_options::disabled(bool& state)
+{
+    group_base_options::disabled(state);
+    return *group_instance_;
+}
+
+group_with_child_options::owner_type& group_with_child_options::disabled_inverted(bool& state)
+{
+    group_base_options::disabled_inverted(state);
+    return *group_instance_;
+}
+
+group_with_child_options::owner_type& group_with_child_options::disabled(std::function<bool()>&& callback)
+{
+    group_base_options::disabled(std::move(callback));
+    return *group_instance_;
+}
+
+group_with_child_options::owner_type& group_with_child_options::condition(std::function<bool()>&& callback)
+{
+    group_base_options::condition(std::move(callback));
+    return *group_instance_;
+}
+
+group_with_child_options::owner_type& group_with_child_options::colorpicker(r2::color& value, bool has_alpha)
+{
+    const auto overlay_id = instance()->create_overlay(
+        std::make_unique<colorpicker_overlay>(
+            instance(), instance(), instance(),
+            &value, has_alpha
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<colorpicker_child>(
+            instance(), instance(), instance(),
+            overlay_id
+        )
+    );
+
+    return *group_instance_;
+}
+
+group_with_child_options::owner_type& group_with_child_options::dropdown(list_options* options, std::size_t& selected)
+{
+    const auto overlay_id = instance()->create_overlay(
+        std::make_unique<dropdown_overlay>(
+            instance(), instance(), instance(),
+            std::unique_ptr<list_options>(options),
+            &selected
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<dropdown_child>(
+            instance(), instance(), instance(),
+            overlay_id
+        )
+    );
+
+    return *group_instance_;
+}
+
+group_with_child_options::owner_type& group_with_child_options::multiselect(list_options* options, std::vector<bool>& selected)
+{
+    const auto overlay_id = instance()->create_overlay(
+        std::make_unique<multiselect_overlay>(
+            instance(), instance(), instance(),
+            std::unique_ptr<list_options>(options),
+            &selected
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<multiselect_child>(
+            instance(), instance(), instance(),
+            overlay_id
+        )
+    );
+
+    return *group_instance_;
+}
+
+group_with_child_options::owner_type& group_with_child_options::last_childwindow()
+{
+    const auto overlay_id = group_instance_->last_childwindow_;
+    assert(overlay_id != -1);
+
+    assert(instance()->get_overlay(overlay_id)->is_childwindow());
+
+    get_widget()->add_child(
+        std::make_unique<childwindow_child>(
+            instance(), instance(), instance(),
+            overlay_id
+        )
+    );
+
+    return *group_instance_;
+}
+
+group_with_child_options::owner_type& group_with_child_options::custom_child(std::unique_ptr<class widget_child>&& child)
+{
+    get_widget()->add_child(std::move(child));
+
+    return *group_instance_;
+}
+
+
+/// group_slider_options
+
+group_slider_options::group_slider_options(void_* instance, menu_builder* builder,
+                                           owner_type* group_instance, widget* widget_instance)
+    : group_base_options(instance, builder, widget_instance),
+      group_instance_(group_instance)
+{
+}
+
+group_slider_options::owner_type& group_slider_options::disabled(bool& state)
+{
+    group_base_options::disabled(state);
+    return *group_instance_;
+}
+
+group_slider_options::owner_type& group_slider_options::disabled_inverted(bool& state)
+{
+    group_base_options::disabled_inverted(state);
+    return *group_instance_;
+}
+
+group_slider_options::owner_type& group_slider_options::disabled(std::function<bool()>&& callback)
+{
+    group_base_options::disabled(std::move(callback));
+    return *group_instance_;
+}
+
+group_slider_options::owner_type& group_slider_options::condition(std::function<bool()>&& callback)
+{
+    group_base_options::condition(std::move(callback));
+    return *group_instance_;
+}
+
+group_slider_options::owner_type& group_slider_options::decimal_count(int count)
+{
+    get_widget<slider>()->set_decimal_count(count);
+    return *group_instance_;
+}
+
+
+/// group_spacing_options
+
+group_spacing_options::group_spacing_options(void_* instance, menu_builder* builder, 
+                                             owner_type* group_instance, widget* widget_instance)
+    : group_base_options(instance, builder, widget_instance),
+      group_instance_(group_instance)
+{
+}
+
+group_spacing_options::owner_type& group_spacing_options::condition(std::function<bool()>&& callback)
+{
+    group_base_options::condition(std::move(callback));
+    return *group_instance_;
+}
+
+
+/// overlay_item_options
+
+overlay_item_options::overlay_item_options(void_* instance, menu_builder* builder, 
+                                           owner_type* group_instance, widget* widget_instance)
+    : group_base_options(instance, builder, widget_instance),
+      group_instance_(group_instance)
+{
+}
+
+overlay_item_options::owner_type& overlay_item_options::disabled(bool& state)
+{
+    group_base_options::disabled(state);
+    return *group_instance_;
+}
+
+overlay_item_options::owner_type& overlay_item_options::disabled_inverted(bool& state)
+{
+    group_base_options::disabled_inverted(state);
+    return *group_instance_;
+}
+
+overlay_item_options::owner_type& overlay_item_options::disabled(std::function<bool()>&& callback)
+{
+    group_base_options::disabled(std::move(callback));
+    return *group_instance_;
+}
+
+overlay_item_options::owner_type& overlay_item_options::condition(std::function<bool()>&& callback)
+{
+    group_base_options::condition(std::move(callback));
+    return *group_instance_;
+}
+
+/// overlay_with_child_options
+
+overlay_with_child_options::overlay_with_child_options(void_* instance, menu_builder* builder,
+                                                       owner_type* group_instance, widget* widget_instance,
+                                                       childwindow* childwindow_instance)
+    : group_base_options(instance, builder, widget_instance),
+      group_instance_(group_instance),
+      childwindow_instance_(childwindow_instance)
+{
+}
+
+overlay_with_child_options::owner_type& overlay_with_child_options::disabled(bool& state)
+{
+    group_base_options::disabled(state);
+    return *group_instance_;
+}
+
+overlay_with_child_options::owner_type& overlay_with_child_options::disabled_inverted(bool& state)
+{
+    group_base_options::disabled_inverted(state);
+    return *group_instance_;
+}
+
+overlay_with_child_options::owner_type& overlay_with_child_options::disabled(std::function<bool()>&& callback)
+{
+    group_base_options::disabled(std::move(callback));
+    return *group_instance_;
+}
+
+overlay_with_child_options::owner_type& overlay_with_child_options::condition(std::function<bool()>&& callback)
+{
+    group_base_options::condition(std::move(callback));
+    return *group_instance_;
+}
+
+overlay_with_child_options::owner_type& overlay_with_child_options::colorpicker(r2::color& value, bool has_alpha)
+{
+    const auto overlay_id = childwindow_instance_->create_overlay(
+        std::make_unique<colorpicker_overlay>(
+            instance(), instance(),
+            childwindow_instance_,
+            &value, has_alpha
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<colorpicker_child>(
+            instance(), instance(),
+            childwindow_instance_,
+            overlay_id
+        )
+    );
+
+    return *group_instance_;
+}
+
+overlay_with_child_options::owner_type& overlay_with_child_options::dropdown(list_options* options, std::size_t& selected)
+{
+    const auto overlay_id = childwindow_instance_->create_overlay(
+        std::make_unique<dropdown_overlay>(
+            instance(), instance(),
+            childwindow_instance_,
+            std::unique_ptr<list_options>(options),
+            &selected
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<dropdown_child>(
+            instance(), instance(),
+            childwindow_instance_,
+            overlay_id
+        )
+    );
+
+    return *group_instance_;
+}
+
+overlay_with_child_options::owner_type& overlay_with_child_options::multiselect(list_options* options, std::vector<bool>& selected)
+{
+    const auto overlay_id = childwindow_instance_->create_overlay(
+        std::make_unique<multiselect_overlay>(
+            instance(), instance(),
+            childwindow_instance_,
+            std::unique_ptr<list_options>(options),
+            &selected
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<multiselect_child>(
+            instance(), instance(),
+            childwindow_instance_,
+            overlay_id
+        )
+    );
+
+    return *group_instance_;
+}
+
+overlay_with_child_options::owner_type& overlay_with_child_options::custom_child(std::unique_ptr<class widget_child>&& child)
+{
+    get_widget()->add_child(std::move(child));
+
+    return *group_instance_;
+}
+
+
+/// overlay_slider_options
+
+overlay_slider_options::overlay_slider_options(void_* instance, menu_builder* builder,
+                                               owner_type* group_instance, widget* widget_instance)
+    : group_base_options(instance, builder, widget_instance),
+      group_instance_(group_instance)
+{
+}
+
+overlay_slider_options::owner_type& overlay_slider_options::disabled(bool& state)
+{
+    group_base_options::disabled(state);
+    return *group_instance_;
+}
+
+overlay_slider_options::owner_type& overlay_slider_options::disabled_inverted(bool& state)
+{
+    group_base_options::disabled_inverted(state);
+    return *group_instance_;
+}
+
+overlay_slider_options::owner_type& overlay_slider_options::disabled(std::function<bool()>&& callback)
+{
+    group_base_options::disabled(std::move(callback));
+    return *group_instance_;
+}
+
+overlay_slider_options::owner_type& overlay_slider_options::condition(std::function<bool()>&& callback)
+{
+    group_base_options::condition(std::move(callback));
+    return *group_instance_;
+}
+
+overlay_slider_options::owner_type& overlay_slider_options::decimal_count(int count)
+{
+    get_widget<slider>()->set_decimal_count(count);
+    return *group_instance_;
+}
+
+
+/// overlay_spacing_options
+
+overlay_spacing_options::overlay_spacing_options(void_* instance, menu_builder* builder, 
+                                                 owner_type* group_instance, widget* widget_instance)
+    : group_base_options(instance, builder, widget_instance),
+      group_instance_(group_instance)
+{
+}
+
+overlay_spacing_options::owner_type& overlay_spacing_options::condition(std::function<bool()>&& callback)
+{
+    group_base_options::condition(std::move(callback));
+    return *group_instance_;
+}
+
+/// childwindow_options
+
+childwindow_options::childwindow_options(void_* instance, menu_builder* builder, 
+                                         owner_type* group_instance, childwindow* childwindow_instance)
+    : base_builder_object(instance, builder),
+      group_instance_(group_instance),
+      childwindow_instance_(childwindow_instance)
+{
+}
+
+overlay_with_child_options::owner_type childwindow_options::toggle(const xstr& name, bool& value)
+{
+    auto* widget = childwindow_instance_->add_widget(
+        std::make_unique<::vo::toggle>(
+            instance(), instance(),
+            name,
+            &value
+        )
+    );
+
+    return overlay_with_child_options::owner_type(
+        *group_instance_, 
+        widget,
+        childwindow_instance_
+    );
+}
+
+overlay_with_child_options::owner_type childwindow_options::button(const xstr& name, const xstr& button_text, std::function<void()>&& callback)
+{
+    auto* widget = childwindow_instance_->add_widget(
+        std::make_unique<::vo::button>(
+            instance(), instance(),
+            name, button_text,
+            std::move(callback)
+        )
+    );
+
+    return overlay_with_child_options::owner_type(
+        *group_instance_,
+        widget,
+        childwindow_instance_
+    );
+}
+
+overlay_with_child_options::owner_type childwindow_options::colorpicker(const xstr& name, r2::color& value, bool has_alpha)
+{
+    const auto overlay_id = childwindow_instance_->create_overlay(
+        std::make_unique<colorpicker_overlay>(
+            instance(), instance(),
+            childwindow_instance_,
+            &value, has_alpha
+        )
+    );
+
+    auto* widget = childwindow_instance_->add_widget(
+        std::make_unique<::vo::colorpicker>(
+            instance(), instance(),
+            childwindow_instance_,
+            overlay_id,
+            name
+        )
+    );
+
+    return overlay_with_child_options::owner_type(
+        *group_instance_,
+        widget,
+        childwindow_instance_
+    );
+}
+
+overlay_with_child_options::owner_type childwindow_options::dropdown(const xstr& name, list_options* options, std::size_t& selected)
+{
+    const auto overlay_id = childwindow_instance_->create_overlay(
+        std::make_unique<dropdown_overlay>(
+            instance(), instance(),
+            childwindow_instance_,
+            std::unique_ptr<list_options>(options),
+            &selected
+        )
+    );
+
+    auto* widget = childwindow_instance_->add_widget(
+        std::make_unique<::vo::dropdown>(
+            instance(), instance(),
+            childwindow_instance_,
+            overlay_id,
+            name
+        )
+    );
+
+    return overlay_with_child_options::owner_type(
+        *group_instance_,
+        widget,
+        childwindow_instance_
+    );
+}
+
+overlay_item_options::owner_type childwindow_options::list(const xstr& name, list_options* options, std::size_t& selected, bool has_search, int rows)
+{
+    auto* widget = childwindow_instance_->add_widget(
+        std::make_unique<::vo::list>(
+            instance(), instance(),
+            std::unique_ptr<list_options>(options),
+            name,
+            &selected,
+            rows,
+            has_search
+        )
+    );
+
+    return overlay_item_options::owner_type(*group_instance_, widget);
+}
+
+overlay_with_child_options::owner_type childwindow_options::multiselect(const xstr& name, list_options* options, std::vector<bool>& selected)
+{
+    const auto overlay_id = childwindow_instance_->create_overlay(
+        std::make_unique<multiselect_overlay>(
+            instance(), instance(), 
+            childwindow_instance_,
+            std::unique_ptr<list_options>(options),
+            &selected
+        )
+    );
+
+    auto* widget = childwindow_instance_->add_widget(
+        std::make_unique<::vo::multiselect>(
+            instance(), instance(),
+            childwindow_instance_,
+            overlay_id,
+            name
+        )
+    );
+
+    return overlay_with_child_options::owner_type(
+        *group_instance_,
+        widget,
+        childwindow_instance_
+    );
+}
+
+overlay_slider_options::owner_type childwindow_options::slider(const xstr& name, float& value, float min, float max, const std::format_string<float>& format)
+{
+    auto* widget = childwindow_instance_->add_widget(
+        std::make_unique<::vo::slider>(
+            instance(), instance(),
+            name,
+            &value,
+            min, max,
+            format
+        )
+    );
+
+    return overlay_slider_options::owner_type(*group_instance_, widget);
+}
+
+overlay_spacing_options::owner_type childwindow_options::spacing()
+{
+    auto* widget = childwindow_instance_->add_widget(
+        std::make_unique<::vo::spacing>(
+            instance(), instance()
+        )
+    );
+
+    return overlay_spacing_options::owner_type(*group_instance_, widget);
+}
+
+/// group_builder
+
+group_builder::group_builder(void_* instance, menu_builder* builder, group* group_instance)
+    : base_builder_object(instance, builder),
+      group_instance_(group_instance)
+{
+}
+
+group_with_child_options::owner_type group_builder::toggle(const xstr& name, bool& value)
+{
+    auto* widget = group_instance_->add_widget(
+        std::make_unique<::vo::toggle>(
+            instance(), instance(),
+            name, &value
+        )
+    );
+
+    return group_with_child_options::owner_type(*this, widget);
+}
+
+group_with_child_options::owner_type group_builder::colorpicker(const xstr& name, r2::color& value, bool has_alpha)
+{
+    const auto overlay_id = instance()->create_overlay(
+        std::make_unique<colorpicker_overlay>(
+            instance(), instance(), instance(),
+            &value, has_alpha
+        )
+    );
+
+    auto* widget = group_instance_->add_widget(
+        std::make_unique<::vo::colorpicker>(
+            instance(), instance(), instance(),
+            overlay_id,
+            name
+        )
+    );
+
+    return group_with_child_options::owner_type(*this, widget);
+}
+
+group_with_child_options::owner_type group_builder::dropdown(const xstr& name, list_options* options, std::size_t& selected)
+{
+    const auto overlay_id = instance()->create_overlay(
+        std::make_unique<dropdown_overlay>(
+            instance(), instance(), instance(),
+            std::unique_ptr<list_options>(options),
+            &selected
+        )
+    );
+
+    auto* widget = group_instance_->add_widget(
+        std::make_unique<::vo::dropdown>(
+            instance(), instance(), instance(),
+            overlay_id,
+            name
+        )
+    );
+
+    return group_with_child_options::owner_type(*this, widget);
+}
+
+group_item_options::owner_type group_builder::list(const xstr& name, list_options* options, std::size_t& selected,
+                                                     bool has_search, int rows)
+{
+    auto* widget = group_instance_->add_widget(
+        std::make_unique<::vo::list>(
+            instance(), instance(),
+            std::unique_ptr<list_options>(options),
+            name,
+            &selected,
+            rows,
+            has_search
+        )
+    );
+
+    return group_item_options::owner_type(*this, widget);
+}
+
+group_with_child_options::owner_type group_builder::multiselect(const xstr& name, list_options* options, std::vector<bool>& selected)
+{
+    const auto overlay_id = instance()->create_overlay(
+        std::make_unique<multiselect_overlay>(
+            instance(), instance(), instance(),
+            std::unique_ptr<list_options>(options),
+            &selected
+        )
+    );
+
+    auto* widget = group_instance_->add_widget(
+        std::make_unique<::vo::multiselect>(
+            instance(), instance(), instance(),
+            overlay_id,
+            name
+        )
+    );
+
+    return group_with_child_options::owner_type(*this, widget);
+}
+
+
+group_slider_options::owner_type group_builder::slider(const xstr& name, float& value, float min, float max,
+                                                       const std::format_string<float>& format)
+{
+    auto* widget = group_instance_->add_widget(
+        std::make_unique<::vo::slider>(
+            instance(), instance(),
+            name, &value,
+            min, max,
+            format
+        )
+    );
+
+    return group_slider_options::owner_type(*this, widget);
+}
+
+group_spacing_options::owner_type group_builder::spacing()
+{
+    auto* widget = group_instance_->add_widget(
+        std::make_unique<::vo::spacing>(
+            instance(), instance()
+        )
+    );
+
+    return group_spacing_options::owner_type(*this, widget);
+}
+
+group_access<childwindow_options> group_builder::childwindow(const xstr& name)
+{
+    const auto overlay_id = instance()->create_overlay(
+        std::make_unique<::vo::childwindow>(
+            instance(), instance(), instance(),
+            name
+        )
+    );
+
+    last_childwindow_ = overlay_id;
+
+    return group_access<childwindow_options>(
+        *this, 
+        instance()->get_overlay<::vo::childwindow>(overlay_id)
+    );
+}
+
+group_with_child_options::owner_type group_builder::button(const xstr& name, const xstr& button_text, std::function<void()>&& callback)
+{
+    auto* widget = group_instance_->add_widget(
+        std::make_unique<::vo::button>(
+            instance(), instance(),
+            name, button_text,
+            std::move(callback)
+        )
+    );
+
+    return group_with_child_options::owner_type(*this, widget);
+}
+
+void_end_

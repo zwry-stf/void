@@ -39,7 +39,9 @@ public:
     virtual void on_activate(bool first = false) override;
     virtual void on_scale_change() override;
 
-    void add_child_tab(std::unique_ptr<child_tab>&& child_tab);
+    child_tab* add_child_tab(std::unique_ptr<child_tab>&& child_tab);
+
+    void set_icon(int resource_id);
 
 private:
     void update_content(const render_input& input);

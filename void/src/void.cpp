@@ -8,8 +8,6 @@
 #include <theme/theme.h>
 #include <void/builder/builder.h>
 
-#include "contents/container/tab_normal.h"
-#include "contents/container/label.h"
 
 #if defined(R2_PLATFORM_WINDOWS)
 #include <Windows.h>
@@ -33,13 +31,6 @@ void_::void_()
     sidebar_ = std::make_unique<sidebar>(this);
     config_ = std::make_unique<_config>(this);
     theme_ = std::make_unique<_theme>(this);
-
-    sidebar_->add_tab(
-        std::make_unique<label>(this, xstr("Label"))
-    );
-    sidebar_->add_tab(
-        std::make_unique<tab_normal>(this, this, xstr("Tab 1"), nullptr)
-    );
 
     search_text_field_ = std::make_unique<textfield>(
         this, this,
@@ -404,9 +395,6 @@ void void_::update_frame_time()
 void void_::reset_hovered_state()
 {
     input_reset_hovered_state();
-
-    for (auto& o : overlays_)
-        o->input_reset_hovered_state();
 }
 
 void void_::render_search()
@@ -740,6 +728,7 @@ void void_::update_scale(float scale)
     // notify
     sidebar_->on_scale_change();
     watermark().on_scale_changed();
+    notifications().on_scale_changed();
 
     for (auto& o : overlays_)
         o->on_scale_changed();

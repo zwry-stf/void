@@ -21,8 +21,8 @@ private:
 	std::vector<member_animation> member_animations_;
 
 public:
-	dropdown_overlay(void_* instance, input_owner_overlay* input_owner,
-		             std::unique_ptr<list_options>&& options, std::size_t* value);
+	dropdown_overlay(void_* instance, input_owner* input_owner,
+		             input_owner_overlay* overlay_owner, std::unique_ptr<list_options>&& options, std::size_t* value);
 
 public:
 	virtual void update(const overlay_render_input& input) override;

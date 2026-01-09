@@ -22,12 +22,13 @@ public:
     void on_activate();
     void on_scale_change();
 
-    void add_tab(std::unique_ptr<tab>&& tab) {
+    tab* add_tab(std::unique_ptr<tab>&& tab) {
         if (selected_tab_ == -1 &&
             tab->is_container())
             selected_tab_ = static_cast<std::int32_t>(tabs_.size());
 
         tabs_.push_back(std::move(tab));
+        return tabs_.back().get();
     }
 };
 

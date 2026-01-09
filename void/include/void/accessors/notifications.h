@@ -114,6 +114,8 @@ public:
     void add_notification(std::vector<std::unique_ptr<notification_data>>&& data);
 
     void render();
+
+    void on_scale_changed();
 };
 
 void_end_

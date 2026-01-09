@@ -1,5 +1,6 @@
 #pragma once
 #include <void/util/vobj.h>
+#include <void/util/xstr.h>
 
 
 void_begin_
@@ -18,6 +19,11 @@ protected:
 	[[nodiscard]] auto* builder() const noexcept {
 		return builder_;
 	}
+
+	[[nodiscard]] const xstr& get_last_child_name() const;
+	[[nodiscard]] const xstr& get_last_group_name() const;
+	void set_last_child_name(const xstr& s);
+	void set_last_group_name(const xstr& s);
 };
 
 void_end_

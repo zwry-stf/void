@@ -15,8 +15,16 @@ overlay::overlay(void_* instance, input_owner_overlay* input_owner,
 
 void overlay::update(const overlay_render_input& input)
 {
-    des_animation_ = instance()->util().lerp2(des_animation_, input.is_opened(this), 0.8f);
-    animation_ = instance()->util().lerp(animation_, des_animation_, 3.f);
+    des_animation_ = instance()->util().lerp2(
+        des_animation_,
+        input.is_opened(this),
+        0.8f
+    );
+    animation_ = instance()->util().lerp(
+        animation_,
+        des_animation_,
+        3.f
+    );
 
     alpha_ = animation_ * animation_;
 }
