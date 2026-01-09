@@ -6,16 +6,16 @@ local function void_join(base_path, rel)
     return path.join(base, rel)
 end
 
-function void_define_projects(base_path, build_root, int_root, r2_dir, backend_name)
+function void_define_projects(base_path, build_root, int_root, r2_dir, backend_name, group_name)
     local function P(rel) return void_join(base_path, rel) end
     r2_dir = path.join(base_path, r2_dir)
 dofile(path.join(r2_dir, "premake5_common.lua"))
 r2_define_common(backend_name);
 
-group "deps"
+group (void_join(group_name, "deps"))
 dofile(path.join(r2_dir, "premake5_projects.lua"))
 r2_define_projects(r2_dir, build_root, int_root, backend_name)
-group ""
+group (group_name)
 
 project "resources"
     kind "StaticLib"
