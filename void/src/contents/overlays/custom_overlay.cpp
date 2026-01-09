@@ -176,6 +176,7 @@ input_response custom_overlay::move_window(const input_base& input)
             const float max_width = cfg_.max_width.get(instance()->scale());
             const float min_height = cfg_.min_height.get(instance()->scale());
             const float max_height = cfg_.max_height.get(instance()->scale());
+            const auto display_size = instance()->renderer().get_render_size();
 
             if (resizing_type_ & e_resizing_type::top) {
                 new_rect.y = mouse_y;
@@ -184,6 +185,8 @@ input_response custom_overlay::move_window(const input_base& input)
                     new_rect.y = new_rect.w - max_height;
                 if (new_rect.w - new_rect.y < min_height)
                     new_rect.y = new_rect.w - min_height;
+                if (new_rect.y < 0.f)
+                    new_rect.y = 0.f;
             }
             else if (resizing_type_ & e_resizing_type::bottom) {
                 new_rect.w = mouse_y;
@@ -192,6 +195,8 @@ input_response custom_overlay::move_window(const input_base& input)
                     new_rect.w = new_rect.y + max_height;
                 if (new_rect.w - new_rect.y < min_height)
                     new_rect.w = new_rect.y + min_height;
+                if (new_rect.w > display_size.y)
+                    new_rect.w = display_size.y;
             }
 
             if (resizing_type_ & e_resizing_type::left) {
@@ -201,6 +206,8 @@ input_response custom_overlay::move_window(const input_base& input)
                     new_rect.x = new_rect.z - max_width;
                 if (new_rect.z - new_rect.x < min_width)
                     new_rect.x = new_rect.z - min_width;
+                if (new_rect.x < 0.f)
+                    new_rect.x = 0.f;
             }
             else if (resizing_type_ & e_resizing_type::right) {
                 new_rect.z = mouse_x;
@@ -209,6 +216,8 @@ input_response custom_overlay::move_window(const input_base& input)
                     new_rect.z = new_rect.x + max_width;
                 if (new_rect.z - new_rect.x < min_width)
                     new_rect.z = new_rect.x + min_width;
+                if (new_rect.z > display_size.x)
+                    new_rect.z = display_size.x;
             }
 
             last_pos_ = r2::rectf{
