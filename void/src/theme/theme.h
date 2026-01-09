@@ -17,9 +17,7 @@ public:
     r2::color text_accent;
     r2::color border;
     r2::color highlight;
-    r2::color shadow;
     r2::color grey;
-    float shadow_size;
     bool blur;
     float blur_radius;
     float noise;

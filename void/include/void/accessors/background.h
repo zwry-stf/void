@@ -22,11 +22,9 @@ public:
 
 public:
     default_value<sfloat> blur_radius = sfloat(60.f);
-    default_value<sfloat> shadow_size = sfloat(16.f);
     default_value<float> noise_scale = 0.55f;
     default_value<float> blend_amount = 0.8f;
     default_value<bool> blur_enabled = true;
-    default_value<r2::color> shadow_color = r2::color(0.1f, 0.1f, 0.1f, 0.6f);
 
     default_value<sfloat> overlay_blur_radius = sfloat(40.f);
     default_value<float> overlay_noise_scale = 0.55f;

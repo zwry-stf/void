@@ -270,14 +270,13 @@ void _background::render()
     ctx->set_shaderprogram(data_shader_composition_.get());
 
     const auto& menu_pos = instance()->pos();
-    const float ssize = bg.shadow_size->get(instance()->scale());
-    
+
     ctx->set_scissor_rect(
         {
-            static_cast<std::int32_t>(std::floor(menu_pos.x - ssize)),
-            static_cast<std::int32_t>(std::floor(menu_pos.y - ssize)),
-            static_cast<std::int32_t>(std::ceil(menu_pos.x + menu_pos.w + ssize)),
-            static_cast<std::int32_t>(std::ceil(menu_pos.y + menu_pos.h + ssize))
+            static_cast<std::int32_t>(std::floor(menu_pos.x)),
+            static_cast<std::int32_t>(std::floor(menu_pos.y)),
+            static_cast<std::int32_t>(std::ceil(menu_pos.x + menu_pos.w)),
+            static_cast<std::int32_t>(std::ceil(menu_pos.y + menu_pos.h))
         }
     );
 
@@ -589,8 +588,6 @@ void _background::update_constant_buffer(_shader_constants* data)
     data->accent = style.border();
     data->border_size = style.border_size.get(instance()->scale());
     data->sidebar_width = style.sidebar_width.get(instance()->scale());
-    data->shadow_size = bg.shadow_size->get(instance()->scale());
-    data->shadow_color = bg.shadow_color();
     data->top_bar_height = style.top_bar_height.get(instance()->scale());
     data->noise_scale = bg.noise_scale();
     data->blend_amount = bg.blend_amount();

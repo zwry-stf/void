@@ -63,7 +63,6 @@ private:
         // colors
         r2::color menu_background;
         r2::color accent;
-        r2::color shadow_color;
 
         // globals
         r2::vec2 resolution;
@@ -77,11 +76,8 @@ private:
         // blur
         std::uint32_t blur_enabled;
         float noise_scale;
-        float shadow_size;
         float down_scale;
         float blend_amount;
-
-        float _pad1[3];
     };
 
 public:

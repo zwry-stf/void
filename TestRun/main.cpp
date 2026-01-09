@@ -445,8 +445,7 @@ void add_widgets()
         child.left_group("Background")
             .colorpicker("Background", style.background())
             .colorpicker("Overlay Background", style.overlay_background())
-            .colorpicker("Group Background", style.group_background())
-            .colorpicker("Shadow", background.shadow_color());
+            .colorpicker("Group Background", style.group_background());
 
         child.left_group("Colors")
             .colorpicker("Accent", style.accent())
@@ -479,7 +478,6 @@ void add_widgets()
                 ->last_childwindow()
                 ->disabled(g_void->options().get<vo::options::option_NoBlur>())
 
-            .slider("Shadow Size", background.shadow_size->raw(), 2.f, 50.f, "{:.1f} px")
             .slider("Blend Amount", background.blend_amount());
 
         child.right_group("Values")

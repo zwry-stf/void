@@ -309,8 +309,6 @@ void theme_data::load(void_* instance)
     style.animation_speed = this->animation_speed;
 
     auto& bg = instance->background();
-    bg.shadow_color = this->shadow;
-    bg.shadow_size->raw() = this->shadow_size;
     bg.blur_enabled = this->blur;
     bg.blur_radius->raw() = this->blur_radius;
     bg.noise_scale = this->noise;
@@ -339,8 +337,6 @@ void theme_data::save(void_* instance, bool create)
         this->border = style.border.get_default();
         this->highlight = style.highlight.get_default();
         this->grey = style.grey.get_default();
-        this->shadow = bg.shadow_color.get_default();
-        this->shadow_size = bg.shadow_size.get_default().raw();
         this->blur = bg.blur_enabled.get_default();
         this->blur_radius = bg.blur_radius.get_default().raw();
         this->noise = bg.noise_scale.get_default();
@@ -364,8 +360,6 @@ void theme_data::save(void_* instance, bool create)
         this->border = style.border();
         this->highlight = style.highlight();
         this->grey = style.grey();
-        this->shadow = bg.shadow_color();
-        this->shadow_size = bg.shadow_size->raw();
         this->blur = bg.blur_enabled();
         this->blur_radius = bg.blur_radius->raw();
         this->noise = bg.noise_scale();
@@ -394,9 +388,7 @@ void theme_data::interp(void_* instance, const theme_data& a, const theme_data& 
     this->border = a.border.interp(b.border, t);
     this->highlight = a.highlight.interp(b.highlight, t);
     this->grey = a.grey.interp(b.grey, t);
-    this->shadow = a.shadow.interp(b.shadow, t);
 
-    this->shadow_size = util.lerp_ex(a.shadow_size, b.shadow_size, t);
     this->blur = t < 0.05f ? a.blur : b.blur;
     this->blur_radius = util.lerp_ex(a.blur_radius, b.blur_radius, t);
     this->noise = util.lerp_ex(a.noise, b.noise, t);

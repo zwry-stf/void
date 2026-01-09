@@ -117,19 +117,18 @@ void render_target::draw_menu() noexcept
 
     auto* background = instance()->background().get_background_instance();
 
-    const float shadow_size = instance()->background().shadow_size->get(instance()->scale());
     const auto& menu_pos = instance()->pos();
 
     const auto render_size = renderer.get_render_size();
 
     constexpr float kAnimationValue = 0.15f;
     const r2::vec2 min = { 
-        menu_pos.x - shadow_size, 
-        menu_pos.y - shadow_size
+        menu_pos.x, 
+        menu_pos.y
     };
     const r2::vec2 max = { 
-        menu_pos.x + menu_pos.w + shadow_size, 
-        menu_pos.y + menu_pos.h + shadow_size 
+        menu_pos.x + menu_pos.w, 
+        menu_pos.y + menu_pos.h 
     };
 
     r2::vec2 uv_min = min / render_size;

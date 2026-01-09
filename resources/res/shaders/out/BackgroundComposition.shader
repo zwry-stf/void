@@ -121,7 +121,6 @@ struct CompositionData {
     
     float4 background_color;
     float4 accent_color;
-    float4 shadow_color;
     
     float4 resolution;
     
@@ -132,7 +131,6 @@ struct CompositionData {
     
     uint  blur_enabled;
     float noise_scale;
-    float shadow_size;
     float down_scale;
     float blend_amount;
 };
@@ -195,20 +193,6 @@ float4 main(PSInput input) : SV_TARGET {
     else {
         base_color.a = 0.0;
     }
-
-    
-    if (mask < 0.99) {
-        float4 shadowColor = g_data.shadow_color;
-        float radius = g_data.shadow_size * 0.5;
-        float shadowDist = dist + radius;
-        float shadowWeight = exp(-0.693  * (shadowDist * shadowDist) / (radius * radius));
-        shadowColor.a *= saturate(shadowWeight) * (1.0 - mask);
-    
-        if (shadowWeight < 0.004 && mask < 0.004)
-            discard;
-
-        base_color = blend_color(shadowColor, base_color);
-    }
     
     
     float2 inner_half_size = g_data.menu_pos.zw * 0.5 - g_data.border_size;
@@ -221,7 +205,7 @@ float4 main(PSInput input) : SV_TARGET {
     
     float _dist = frag_coord.x - g_data.menu_pos.x;
     float alpha = 1.0 - smoothstep_custom(g_data.sidebar_width - 0.5, g_data.sidebar_width + 0.5, _dist);
-    float4 bgColor = g_data.background_color;
+    float4 bg_color = g_data.background_color;
     float alpha2 = smoothstep_custom(g_data.sidebar_width - 0.5, g_data.sidebar_width + 0.5, _dist + g_data.border_size);
     float alpha3 = alpha2 * alpha;
     if (alpha3 > border_mask)
@@ -248,9 +232,9 @@ float4 main(PSInput input) : SV_TARGET {
     }
     
     
-    bgColor = blend_color(bgColor, float4(g_data.accent_color.rgb, g_data.accent_color.a * border_mask));
+    bg_color = blend_color(bg_color, float4(g_data.accent_color.rgb, g_data.accent_color.a * border_mask));
     
-    base_color = blend_color(base_color, bgColor);
+    base_color = blend_color(base_color, bg_color);
 
     
     base_color.a *= mask;
