@@ -3,7 +3,6 @@
 
 
 
-#version 420 core
 
 
 
@@ -18,97 +17,98 @@
 
 
 
-
-
-
-
-
-
-
-in vec2 g_uv;
-
-out vec4 o_frag_color;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-layout(binding = 0) uniform sampler2D inputTexture;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-layout(std140, binding = 1) uniform cb_down {
-    vec2 g_inv_src_size;
-    vec2 _pad;
+struct PSInput {
+    float4 pos : SV_POSITION;
+    float2 uv  : TEXCOORD0;
 };
 
-void main() {
-    vec2 uv = g_uv;
 
-    vec2 t = g_inv_src_size;
-    vec3 c = vec3(0.0, 0.0, 0.0);
 
-    c += texture(inputTexture, uv).rgb * 0.25;
 
-    c += texture(inputTexture, uv + t * vec2(-0.5, -0.5)).rgb * 0.125;
-    c += texture(inputTexture, uv + t * vec2( 0.5, -0.5)).rgb * 0.125;
-    c += texture(inputTexture, uv + t * vec2(-0.5, 0.5)).rgb * 0.125;
-    c += texture(inputTexture, uv + t * vec2( 0.5, 0.5)).rgb * 0.125;
 
-    c += texture(inputTexture, uv + t * vec2(-1.5, -1.5)).rgb * 0.0625;
-    c += texture(inputTexture, uv + t * vec2( 1.5, -1.5)).rgb * 0.0625;
-    c += texture(inputTexture, uv + t * vec2(-1.5, 1.5)).rgb * 0.0625;
-    c += texture(inputTexture, uv + t * vec2( 1.5, 1.5)).rgb * 0.0625;
 
-    o_frag_color = vec4(c, 1.0); return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Texture2D inputTexture : register(t0);
+SamplerState inputSampler : register(s0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+cbuffer cb_down : register(b1) {
+    float2 g_inv_src_size;
+    float2 _pad;
+};
+
+float4 main(PSInput input) : SV_TARGET {
+    float2 uv = input.uv;
+
+    float2 t = g_inv_src_size;
+    float3 c = float3(0.0, 0.0, 0.0);
+
+    c += inputTexture.Sample(inputSampler, uv).rgb * 0.25;
+
+    c += inputTexture.Sample(inputSampler, uv + t * float2(-0.5, -0.5)).rgb * 0.125;
+    c += inputTexture.Sample(inputSampler, uv + t * float2( 0.5, -0.5)).rgb * 0.125;
+    c += inputTexture.Sample(inputSampler, uv + t * float2(-0.5, 0.5)).rgb * 0.125;
+    c += inputTexture.Sample(inputSampler, uv + t * float2( 0.5, 0.5)).rgb * 0.125;
+
+    c += inputTexture.Sample(inputSampler, uv + t * float2(-1.5, -1.5)).rgb * 0.0625;
+    c += inputTexture.Sample(inputSampler, uv + t * float2( 1.5, -1.5)).rgb * 0.0625;
+    c += inputTexture.Sample(inputSampler, uv + t * float2(-1.5, 1.5)).rgb * 0.0625;
+    c += inputTexture.Sample(inputSampler, uv + t * float2( 1.5, 1.5)).rgb * 0.0625;
+
+    return float4(c, 1.0);
 }

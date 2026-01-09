@@ -3,7 +3,6 @@
 
 
 
-#version 420 core
 
 
 
@@ -18,16 +17,11 @@
 
 
 
+struct PSInput {
+    float4 pos : SV_POSITION;
+    float2 uv  : TEXCOORD0;
+};
 
-
-
-
-
-
-
-in vec2 g_uv;
-
-out vec4 o_frag_color;
 
 
 
@@ -52,7 +46,13 @@ out vec4 o_frag_color;
 
 
 
-layout(binding = 0) uniform sampler2D inputTexture;
+Texture2D inputTexture : register(t0);
+SamplerState inputSampler : register(s0);
+
+
+
+
+
 
 
 
@@ -90,38 +90,38 @@ layout(binding = 0) uniform sampler2D inputTexture;
 struct BlurSample {
     float weight;
     float offset;
-    vec2 _pad;
+    float2 _pad;
 };
 
 struct BlurData {
     uint samples;
     uint parts;
-    vec2 dir;
+    float2 dir;
     
     BlurSample gaussianp[51];
 };
 
-layout(std140, binding = 1) uniform cb {
+cbuffer cb : register(b1) {
     BlurData g_data;
 };
 
-void main() {
-    vec2 uv = g_uv;
+float4 main(PSInput input) : SV_TARGET {
+    float2 uv = input.uv;
     
-    vec3 color = g_data.gaussianp[0].weight * texture(inputTexture, uv).rgb;
+    float3 color = g_data.gaussianp[0].weight * inputTexture.Sample(inputSampler, uv).rgb;
     
-    #pragma unroll
+    [unroll]
     for (uint i = 1u; i < g_data.parts; ++i) {
         float w = g_data.gaussianp[i].weight;
         float o = g_data.gaussianp[i].offset;
-        vec2 du = g_data.dir * o;
+        float2 du = g_data.dir * o;
 
-        vec3 c_pos = texture(inputTexture, uv + du).rgb;
-        vec3 c_neg = texture(inputTexture, uv - du).rgb;
+        float3 c_pos = inputTexture.Sample(inputSampler, uv + du).rgb;
+        float3 c_neg = inputTexture.Sample(inputSampler, uv - du).rgb;
 
         color += w * c_pos;
         color += w * c_neg;
     }
 
-    o_frag_color = vec4(color, 1.0); return;
+    return float4(color, 1.0);
 }
