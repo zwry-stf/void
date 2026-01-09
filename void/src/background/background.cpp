@@ -612,14 +612,11 @@ void _background::update_blur_constant_buffer(std::uint32_t& radius, blur_shader
 
         const float sigma = static_cast<float>(samples) * 0.3f;
 
-        constexpr float kInvSqrtTwoPi = 1.f / 2.506628274631083f;
-        const float gaussian_normalization = kInvSqrtTwoPi / sigma;
-
         std::vector<float> weights(radius + 1u);
         for (std::uint32_t d = 0u; d <= radius; ++d) {
             const float x = static_cast<float>(d);
             const float t = x / sigma;
-            weights[d] = std::exp(-0.5f * (t * t)) * gaussian_normalization;
+            weights[d] = std::exp(-0.5f * (t * t));
         }
 
         std::uint32_t part_count = 0u;
@@ -629,9 +626,14 @@ void _background::update_blur_constant_buffer(std::uint32_t& radius, blur_shader
         ++part_count;
 
         for (std::uint32_t d = 1u; d + 1u <= radius; d += 2u) {
-            auto& s = data->gaussianp[part_count++];
-            s.weight = weights[d] + weights[d + 1u];
-            s.offset = static_cast<float>(d) + 0.5f;
+            auto& s = data->gaussianp[part_count++]; 
+            const float w0 = weights[d];
+            const float w1 = weights[d + 1u];
+            const float wsum = w0 + w1;
+
+            s.weight = wsum;
+            s.offset = static_cast<float>(d) +
+                ((wsum > 0.f) ? (w1 / wsum) : 0.5f);
         }
 
         if ((radius & 1u) != 0u) {
