@@ -9,10 +9,6 @@ workspace "void"
         trigger = "has-glfw",
         description = "Enable GLFW integration"
     }
-    
-group "deps"
-    include "ext/r2/premake5.lua"
-group ""
 
     filter "platforms:x86"
         architecture "x86"
@@ -74,6 +70,12 @@ group ""
         defines { "VOID_HAS_GLFW" }
     end
     
+    local r2_dir = "ext/r2"
+group "deps"
+dofile(path.join(r2_dir, "premake5_projects.lua"))
+r2_define_projects(r2_dir, build_root, int_root)
+group ""
+    
 project "resources"
     kind "StaticLib"
     targetname "%{prj.name}_%{cfg.buildcfg}_%{cfg.platform}"
@@ -131,13 +133,14 @@ project "void"
         "void/include",
         "void/ext",
         "void/src",
-        "r2/include",
-        "backend/include",
+        r2_dir .. "/r2/include",
+        r2_dir .. "/backend/include",
+        r2_dir .. "/backend_d3d11/include",
         "resources/include",
         "resources/internal"
     }
     
-    dependson { "resources" }
+    dependson { "r2", "resources" }
 
     
 project "TestRun"
@@ -155,9 +158,9 @@ project "TestRun"
     includedirs {
         "TestRun/ext",
         "void/include",
-        "r2/include",
-        "backend/include",
-        "backend_d3d11/include",
+        r2_dir .. "/r2/include",
+        r2_dir .. "/backend/include",
+        r2_dir .. "/backend_d3d11/include",
         "resources/include"
     }
 
@@ -176,15 +179,11 @@ project "TestRun"
         links { "TestRun/ext/gl/windows/x86/glew32s" }
     filter { }
 
-    links {
-        "r2/lib/r2_%{cfg.buildcfg}_%{cfg.platform}",
-        "r2/lib/backend_%{cfg.buildcfg}_%{cfg.platform}",
-    }
-    
+    links     { "r2", "backend" }
     filter { "configurations:*_d3d11" }
-        links { "r2/lib/backend_d3d11_%{cfg.buildcfg:match('^[^_]+')}_%{cfg.platform}", "d3d11", "d3dcompiler" }
+        links { "backend_d3d11", "d3d11", "d3dcompiler" }
     filter { }
     
     filter { "configurations:*_opengl" }
-        links { "r2/lib/backend_opengl_%{cfg.buildcfg:match('^[^_]+')}_%{cfg.platform}", "opengl32" }
+        links { "backend_opengl", "opengl32" }
     filter { }

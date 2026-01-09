@@ -132,8 +132,8 @@ void render_target::draw_menu() noexcept
         menu_pos.y + menu_pos.h + shadow_size 
     };
 
-    const r2::vec2 uv_min = min / render_size;
-    const r2::vec2 uv_max = max / render_size;
+    r2::vec2 uv_min = min / render_size;
+    r2::vec2 uv_max = max / render_size;
 
     const r2::vec2 offset = r2::vec2{
         menu_pos.w * kAnimationValue * (1.f - instance()->animation()),
@@ -190,6 +190,10 @@ void render_target::draw_menu() noexcept
         background->restore_render_states();
     }
     else {
+#if defined(R2_BACKEND_OPENGL)
+        uv_min.y = 1.f - uv_min.y;
+        uv_max.y = 1.f - uv_max.y;
+#endif
         renderer.add_image(
             menu_view_->native_texture_handle(),
             min + offset,

@@ -184,7 +184,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_DEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X86;R2_BACKEND_D3D11;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ext\r2\TestRun\ext;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;ext;..\void\include;..\r2\include;..\backend\include;..\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>ext;..\void\include;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -197,7 +197,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\ext\r2\build\r2\r2_Debug_d3d11_x86.lib;..\ext\r2\build\backend\backend_Debug_d3d11_x86.lib;..\ext\r2\build\backend_d3d11\backend_d3d11_Debug_x86.lib;..\build\void\void_Debug_d3d11_x86.lib;..\build\resources\resources_Debug_d3d11_x86.lib;..\ext\r2\TestRun\ext\GLFW\windows\x86\glfw3.lib;ext\GLFW\windows\x86\glfw3.lib;..\r2\lib\r2_Debug_d3d11_x86.lib;..\r2\lib\backend_Debug_d3d11_x86.lib;..\r2\lib\backend_d3d11_Debug_x86.lib;d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\build\void\void_Debug_d3d11_x86.lib;..\build\resources\resources_Debug_d3d11_x86.lib;..\build\r2\r2_Debug_d3d11_x86.lib;..\build\backend\backend_Debug_d3d11_x86.lib;..\build\backend_d3d11\backend_d3d11_Debug_x86.lib;ext\GLFW\windows\x86\glfw3.lib;d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -209,7 +209,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_DEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X64;R2_BACKEND_D3D11;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ext\r2\TestRun\ext;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;ext;..\void\include;..\r2\include;..\backend\include;..\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>ext;..\void\include;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -222,7 +222,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\ext\r2\build\r2\r2_Debug_d3d11_x64.lib;..\ext\r2\build\backend\backend_Debug_d3d11_x64.lib;..\ext\r2\build\backend_d3d11\backend_d3d11_Debug_x64.lib;..\build\void\void_Debug_d3d11_x64.lib;..\build\resources\resources_Debug_d3d11_x64.lib;..\ext\r2\TestRun\ext\GLFW\windows\x64\glfw3.lib;ext\GLFW\windows\x64\glfw3.lib;..\r2\lib\r2_Debug_d3d11_x64.lib;..\r2\lib\backend_Debug_d3d11_x64.lib;..\r2\lib\backend_d3d11_Debug_x64.lib;d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\build\void\void_Debug_d3d11_x64.lib;..\build\resources\resources_Debug_d3d11_x64.lib;..\build\r2\r2_Debug_d3d11_x64.lib;..\build\backend\backend_Debug_d3d11_x64.lib;..\build\backend_d3d11\backend_d3d11_Debug_x64.lib;ext\GLFW\windows\x64\glfw3.lib;d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -234,7 +234,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_DEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X86;R2_BACKEND_OPENGL;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ext\r2\TestRun\ext;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;ext;..\void\include;..\r2\include;..\backend\include;..\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>ext;..\void\include;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -247,7 +247,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\ext\r2\build\r2\r2_Debug_opengl_x86.lib;..\ext\r2\build\backend\backend_Debug_opengl_x86.lib;..\ext\r2\build\backend_opengl\backend_opengl_Debug_x86.lib;..\build\void\void_Debug_opengl_x86.lib;..\build\resources\resources_Debug_opengl_x86.lib;..\ext\r2\TestRun\ext\GLFW\windows\x86\glfw3.lib;..\ext\r2\TestRun\ext\gl\windows\x86\glew32s.lib;ext\GLFW\windows\x86\glfw3.lib;ext\gl\windows\x86\glew32s.lib;..\r2\lib\r2_Debug_opengl_x86.lib;..\r2\lib\backend_Debug_opengl_x86.lib;..\r2\lib\backend_opengl_Debug_x86.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\build\void\void_Debug_opengl_x86.lib;..\build\resources\resources_Debug_opengl_x86.lib;..\build\r2\r2_Debug_opengl_x86.lib;..\build\backend\backend_Debug_opengl_x86.lib;..\build\backend_opengl\backend_opengl_Debug_x86.lib;ext\GLFW\windows\x86\glfw3.lib;ext\gl\windows\x86\glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -259,7 +259,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>_DEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X64;R2_BACKEND_OPENGL;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ext\r2\TestRun\ext;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;ext;..\void\include;..\r2\include;..\backend\include;..\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>ext;..\void\include;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <MinimalRebuild>false</MinimalRebuild>
@@ -272,7 +272,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\ext\r2\build\r2\r2_Debug_opengl_x64.lib;..\ext\r2\build\backend\backend_Debug_opengl_x64.lib;..\ext\r2\build\backend_opengl\backend_opengl_Debug_x64.lib;..\build\void\void_Debug_opengl_x64.lib;..\build\resources\resources_Debug_opengl_x64.lib;..\ext\r2\TestRun\ext\GLFW\windows\x64\glfw3.lib;..\ext\r2\TestRun\ext\gl\windows\x64\glew32s.lib;ext\GLFW\windows\x64\glfw3.lib;ext\gl\windows\x64\glew32s.lib;..\r2\lib\r2_Debug_opengl_x64.lib;..\r2\lib\backend_Debug_opengl_x64.lib;..\r2\lib\backend_opengl_Debug_x64.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\build\void\void_Debug_opengl_x64.lib;..\build\resources\resources_Debug_opengl_x64.lib;..\build\r2\r2_Debug_opengl_x64.lib;..\build\backend\backend_Debug_opengl_x64.lib;..\build\backend_opengl\backend_opengl_Debug_x64.lib;ext\GLFW\windows\x64\glfw3.lib;ext\gl\windows\x64\glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -284,7 +284,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>NDEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X86;R2_BACKEND_D3D11;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ext\r2\TestRun\ext;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;ext;..\void\include;..\r2\include;..\backend\include;..\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>ext;..\void\include;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -301,7 +301,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalDependencies>..\ext\r2\build\r2\r2_Release_d3d11_x86.lib;..\ext\r2\build\backend\backend_Release_d3d11_x86.lib;..\ext\r2\build\backend_d3d11\backend_d3d11_Release_x86.lib;..\build\void\void_Release_d3d11_x86.lib;..\build\resources\resources_Release_d3d11_x86.lib;..\ext\r2\TestRun\ext\GLFW\windows\x86\glfw3.lib;ext\GLFW\windows\x86\glfw3.lib;..\r2\lib\r2_Release_d3d11_x86.lib;..\r2\lib\backend_Release_d3d11_x86.lib;..\r2\lib\backend_d3d11_Release_x86.lib;d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\build\void\void_Release_d3d11_x86.lib;..\build\resources\resources_Release_d3d11_x86.lib;..\build\r2\r2_Release_d3d11_x86.lib;..\build\backend\backend_Release_d3d11_x86.lib;..\build\backend_d3d11\backend_d3d11_Release_x86.lib;ext\GLFW\windows\x86\glfw3.lib;d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -313,7 +313,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>NDEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X64;R2_BACKEND_D3D11;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ext\r2\TestRun\ext;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;ext;..\void\include;..\r2\include;..\backend\include;..\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>ext;..\void\include;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -330,7 +330,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalDependencies>..\ext\r2\build\r2\r2_Release_d3d11_x64.lib;..\ext\r2\build\backend\backend_Release_d3d11_x64.lib;..\ext\r2\build\backend_d3d11\backend_d3d11_Release_x64.lib;..\build\void\void_Release_d3d11_x64.lib;..\build\resources\resources_Release_d3d11_x64.lib;..\ext\r2\TestRun\ext\GLFW\windows\x64\glfw3.lib;ext\GLFW\windows\x64\glfw3.lib;..\r2\lib\r2_Release_d3d11_x64.lib;..\r2\lib\backend_Release_d3d11_x64.lib;..\r2\lib\backend_d3d11_Release_x64.lib;d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\build\void\void_Release_d3d11_x64.lib;..\build\resources\resources_Release_d3d11_x64.lib;..\build\r2\r2_Release_d3d11_x64.lib;..\build\backend\backend_Release_d3d11_x64.lib;..\build\backend_d3d11\backend_d3d11_Release_x64.lib;ext\GLFW\windows\x64\glfw3.lib;d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -342,7 +342,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>NDEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X86;R2_BACKEND_OPENGL;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ext\r2\TestRun\ext;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;ext;..\void\include;..\r2\include;..\backend\include;..\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>ext;..\void\include;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -359,7 +359,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalDependencies>..\ext\r2\build\r2\r2_Release_opengl_x86.lib;..\ext\r2\build\backend\backend_Release_opengl_x86.lib;..\ext\r2\build\backend_opengl\backend_opengl_Release_x86.lib;..\build\void\void_Release_opengl_x86.lib;..\build\resources\resources_Release_opengl_x86.lib;..\ext\r2\TestRun\ext\GLFW\windows\x86\glfw3.lib;..\ext\r2\TestRun\ext\gl\windows\x86\glew32s.lib;ext\GLFW\windows\x86\glfw3.lib;ext\gl\windows\x86\glew32s.lib;..\r2\lib\r2_Release_opengl_x86.lib;..\r2\lib\backend_Release_opengl_x86.lib;..\r2\lib\backend_opengl_Release_x86.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\build\void\void_Release_opengl_x86.lib;..\build\resources\resources_Release_opengl_x86.lib;..\build\r2\r2_Release_opengl_x86.lib;..\build\backend\backend_Release_opengl_x86.lib;..\build\backend_opengl\backend_opengl_Release_x86.lib;ext\GLFW\windows\x86\glfw3.lib;ext\gl\windows\x86\glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -371,7 +371,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PreprocessorDefinitions>NDEBUG;R2_PLATFORM_WINDOWS;R2_PLATFORM_WINDOWS_X64;R2_BACKEND_OPENGL;VOID_HAS_GLFW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\ext\r2\TestRun\ext;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;ext;..\void\include;..\r2\include;..\backend\include;..\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>ext;..\void\include;..\ext\r2\r2\include;..\ext\r2\backend\include;..\ext\r2\backend_d3d11\include;..\resources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -388,29 +388,26 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <AdditionalDependencies>..\ext\r2\build\r2\r2_Release_opengl_x64.lib;..\ext\r2\build\backend\backend_Release_opengl_x64.lib;..\ext\r2\build\backend_opengl\backend_opengl_Release_x64.lib;..\build\void\void_Release_opengl_x64.lib;..\build\resources\resources_Release_opengl_x64.lib;..\ext\r2\TestRun\ext\GLFW\windows\x64\glfw3.lib;..\ext\r2\TestRun\ext\gl\windows\x64\glew32s.lib;ext\GLFW\windows\x64\glfw3.lib;ext\gl\windows\x64\glew32s.lib;..\r2\lib\r2_Release_opengl_x64.lib;..\r2\lib\backend_Release_opengl_x64.lib;..\r2\lib\backend_opengl_Release_x64.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\build\void\void_Release_opengl_x64.lib;..\build\resources\resources_Release_opengl_x64.lib;..\build\r2\r2_Release_opengl_x64.lib;..\build\backend\backend_Release_opengl_x64.lib;..\build\backend_opengl\backend_opengl_Release_x64.lib;ext\GLFW\windows\x64\glfw3.lib;ext\gl\windows\x64\glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\ext\r2\TestRun\ext\GLFW\glfw3.h" />
-    <ClInclude Include="..\ext\r2\TestRun\ext\GLFW\glfw3native.h" />
-    <ClInclude Include="..\ext\r2\TestRun\resources.h" />
     <ClInclude Include="ext\GLFW\glfw3.h" />
     <ClInclude Include="ext\GLFW\glfw3native.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\ext\r2\TestRun\MPLUSRounded1c-Medium.cpp" />
-    <ClCompile Include="..\ext\r2\TestRun\NotoEmoji-Medium.cpp" />
-    <ClCompile Include="..\ext\r2\TestRun\NotoSans-Medium.cpp" />
-    <ClCompile Include="..\ext\r2\TestRun\main.cpp" />
-    <ClCompile Include="main.cpp">
-      <ObjectFileName>$(IntDir)\main1.obj</ObjectFileName>
-    </ClCompile>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\void\void.vcxproj">
+      <Project>{57AA9F7C-43E1-A00D-ECCD-8610D8E31C0F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\resources\resources.vcxproj">
+      <Project>{202B5BA7-8C95-0F1E-D5D3-C0C3417DED72}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\ext\r2\r2\r2.vcxproj">
       <Project>{29795900-1505-880B-7EB3-880B6A5E880B}</Project>
     </ProjectReference>
@@ -419,12 +416,6 @@
     </ProjectReference>
     <ProjectReference Include="..\ext\r2\backend_d3d11\backend_d3d11.vcxproj">
       <Project>{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\void\void.vcxproj">
-      <Project>{57AA9F7C-43E1-A00D-ECCD-8610D8E31C0F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\resources\resources.vcxproj">
-      <Project>{202B5BA7-8C95-0F1E-D5D3-C0C3417DED72}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ext\r2\backend_opengl\backend_opengl.vcxproj">
       <Project>{11A02305-FD6D-170B-E601-8831D26EF36F}</Project>

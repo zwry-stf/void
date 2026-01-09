@@ -36,7 +36,7 @@ main_entry(main)
 #ifdef R2_BACKEND_D3D11
     float2 frag_coord = uv * g_data.resolution.xy;
 #elif R2_BACKEND_OPENGL
-    float2 frag_coord = float2(uv.x, 1.0 - uv.y) * g_data.resolution.xy;
+    float2 frag_coord = float2(uv.x, uv.y) * g_data.resolution.xy;
 #endif
 
     float4 base_color = float4(0.0, 0.0, 0.0, 1.0);

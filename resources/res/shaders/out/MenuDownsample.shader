@@ -4,6 +4,7 @@
 
 
 
+#version 420 core
 
 
 
@@ -18,10 +19,6 @@
 
 
 
-struct PSInput {
-    float4 pos : SV_POSITION;
-    float2 uv  : TEXCOORD0;
-};
 
 
 
@@ -29,7 +26,9 @@ struct PSInput {
 
 
 
+in vec2 g_uv;
 
+out vec4 o_frag_color;
 
 
 
@@ -91,37 +90,38 @@ struct PSInput {
 
 
 
-Texture2DMS<float4, 4u> inputTexture;
 
 
+
+uniform sampler2DMS inputTexture;
 
 
 struct DownsampleData {
-    float2 resolution;
+    vec2 resolution;
     float animation;
 };
 
-cbuffer cb : register(b1) {
+layout(std140, binding = 1) uniform cb {
     DownsampleData g_data;
 };
 
-float4 main(PSInput input) : SV_TARGET {
-
-    float2 uv = input.uv;
+void main() {
 
 
 
+    vec2 uv = vec2(g_uv.x, g_uv.y);
 
-    int2 pixelCoord = int2(uv * g_data.resolution);
 
-    float4 sum = float4(0.0, 0.0, 0.0, 0.0);
+    ivec2 pixelCoord = ivec2(uv * g_data.resolution);
 
-    [unroll]
+    vec4 sum = vec4(0.0, 0.0, 0.0, 0.0);
+
+    #pragma unroll
     for (uint i = 0u; i < 4u; ++i) {
 
-        sum += inputTexture.Load(pixelCoord, i);
 
 
+        sum += texelFetch(inputTexture, pixelCoord, int(i));
 
     }
 
@@ -130,5 +130,5 @@ float4 main(PSInput input) : SV_TARGET {
         sum.rgb /= sum.a;
     sum.a *= g_data.animation;
 
-    return sum;
+    o_frag_color = sum; return;
 }

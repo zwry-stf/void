@@ -1,19 +1,7 @@
 
 
 
-
-
-
-
-struct VSInput {
-    float2 pos : POSITION;
-    float2 uv  : TEXCOORD0;
-};
-
-struct PSInput {
-    float4 pos : SV_Position;
-    float2 uv  : TEXCOORD0;
-};
+#version 330 core
 
 
 
@@ -23,18 +11,30 @@ struct PSInput {
 
 
 
-PSInput main(VSInput input)
 
 
+
+
+layout(location = 0) in vec2 a_pos;
+layout(location = 1) in vec2 i_uv;
+
+out vec2 g_uv;
+
+
+
+
+
+
+void main()
 
 {
 
-    PSInput output;
-    output.pos = float4(input.pos, 0.0, 1.0);
-    output.uv = input.uv;
-    return output;
 
 
 
+
+
+    gl_Position = vec4(a_pos.x, a_pos.y, 0.0, 1.0);
+    g_uv = vec2(i_uv.x, i_uv.y);
 
 }

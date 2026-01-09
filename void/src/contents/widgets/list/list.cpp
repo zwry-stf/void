@@ -146,7 +146,7 @@ void list::update(float x, float y, float w, const render_input& input, bool occ
 
                 bool found_selected = false;
                 float pos_until_selected = 0.f;
-                for (std::int32_t i = 0; i < options_size; i++) {
+                for (std::size_t i = 0u; i < options_size; i++) {
                     const xstr& element = options_->element(i);
 
                     member_states_[i].skipped = !last_search_.empty() &&

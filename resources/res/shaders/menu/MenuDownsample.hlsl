@@ -23,7 +23,7 @@ main_entry(main) {
 #ifdef R2_BACKEND_D3D11
     float2 uv = input.uv;
 #elif R2_BACKEND_OPENGL
-    float2 uv = g_uv;
+    float2 uv = float2(g_uv.x, g_uv.y);
 #endif
 
     int2 pixelCoord = int2(uv * g_data.resolution);

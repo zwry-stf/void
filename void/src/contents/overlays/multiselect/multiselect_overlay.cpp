@@ -73,7 +73,7 @@ void multiselect_overlay::update(const overlay_render_input& input)
 
     // items
     auto render_input = input_owner_->input_get_render_input();
-    for (std::int32_t i = 0; i < options_size; i++) {
+    for (std::size_t i = 0u; i < options_size; i++) {
         member_animations_[i].hovered = util.lerp(
             member_animations_[i].hovered,
             render_input.is_hovered(this, i)

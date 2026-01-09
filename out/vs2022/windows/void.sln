@@ -6,10 +6,26 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestRun", "..\..\..\TestRun
 		{57AA9F7C-43E1-A00D-ECCD-8610D8E31C0F} = {57AA9F7C-43E1-A00D-ECCD-8610D8E31C0F}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deps", "deps", "{D88DD55D-C445-17AB-2D4D-F0061924B29B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "backend", "..\..\..\ext\r2\backend\backend.vcxproj", "{ED260B65-5906-8A00-621E-15D7CE7CF061}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "backend_d3d11", "..\..\..\ext\r2\backend_d3d11\backend_d3d11.vcxproj", "{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "backend_opengl", "..\..\..\ext\r2\backend_opengl\backend_opengl.vcxproj", "{11A02305-FD6D-170B-E601-8831D26EF36F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "r2", "..\..\..\ext\r2\r2\r2.vcxproj", "{29795900-1505-880B-7EB3-880B6A5E880B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ED260B65-5906-8A00-621E-15D7CE7CF061} = {ED260B65-5906-8A00-621E-15D7CE7CF061}
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321} = {0932C30E-75F2-3E45-3E2D-88C2AAAC8321}
+		{11A02305-FD6D-170B-E601-8831D26EF36F} = {11A02305-FD6D-170B-E601-8831D26EF36F}
+	EndProjectSection
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "resources", "..\..\..\resources\resources.vcxproj", "{202B5BA7-8C95-0F1E-D5D3-C0C3417DED72}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "void", "..\..\..\void\void.vcxproj", "{57AA9F7C-43E1-A00D-ECCD-8610D8E31C0F}"
 	ProjectSection(ProjectDependencies) = postProject
+		{29795900-1505-880B-7EB3-880B6A5E880B} = {29795900-1505-880B-7EB3-880B6A5E880B}
 		{202B5BA7-8C95-0F1E-D5D3-C0C3417DED72} = {202B5BA7-8C95-0F1E-D5D3-C0C3417DED72}
 	EndProjectSection
 EndProject
@@ -41,6 +57,62 @@ Global
 		{7A9ED639-E67D-55D5-EF95-E0AB5BF4BB36}.Release_opengl|Win32.Build.0 = Release_opengl|Win32
 		{7A9ED639-E67D-55D5-EF95-E0AB5BF4BB36}.Release_opengl|x64.ActiveCfg = Release_opengl|x64
 		{7A9ED639-E67D-55D5-EF95-E0AB5BF4BB36}.Release_opengl|x64.Build.0 = Release_opengl|x64
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Debug_d3d11|Win32.ActiveCfg = Debug_d3d11|Win32
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Debug_d3d11|Win32.Build.0 = Debug_d3d11|Win32
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Debug_d3d11|x64.ActiveCfg = Debug_d3d11|x64
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Debug_d3d11|x64.Build.0 = Debug_d3d11|x64
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Debug_opengl|Win32.ActiveCfg = Debug_opengl|Win32
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Debug_opengl|Win32.Build.0 = Debug_opengl|Win32
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Debug_opengl|x64.ActiveCfg = Debug_opengl|x64
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Debug_opengl|x64.Build.0 = Debug_opengl|x64
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Release_d3d11|Win32.ActiveCfg = Release_d3d11|Win32
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Release_d3d11|Win32.Build.0 = Release_d3d11|Win32
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Release_d3d11|x64.ActiveCfg = Release_d3d11|x64
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Release_d3d11|x64.Build.0 = Release_d3d11|x64
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Release_opengl|Win32.ActiveCfg = Release_opengl|Win32
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Release_opengl|Win32.Build.0 = Release_opengl|Win32
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Release_opengl|x64.ActiveCfg = Release_opengl|x64
+		{ED260B65-5906-8A00-621E-15D7CE7CF061}.Release_opengl|x64.Build.0 = Release_opengl|x64
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}.Debug_d3d11|Win32.ActiveCfg = Debug_d3d11|Win32
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}.Debug_d3d11|Win32.Build.0 = Debug_d3d11|Win32
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}.Debug_d3d11|x64.ActiveCfg = Debug_d3d11|x64
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}.Debug_d3d11|x64.Build.0 = Debug_d3d11|x64
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}.Debug_opengl|Win32.ActiveCfg = Debug_opengl|Win32
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}.Debug_opengl|x64.ActiveCfg = Debug_opengl|x64
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}.Release_d3d11|Win32.ActiveCfg = Release_d3d11|Win32
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}.Release_d3d11|Win32.Build.0 = Release_d3d11|Win32
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}.Release_d3d11|x64.ActiveCfg = Release_d3d11|x64
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}.Release_d3d11|x64.Build.0 = Release_d3d11|x64
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}.Release_opengl|Win32.ActiveCfg = Release_opengl|Win32
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321}.Release_opengl|x64.ActiveCfg = Release_opengl|x64
+		{11A02305-FD6D-170B-E601-8831D26EF36F}.Debug_d3d11|Win32.ActiveCfg = Debug_d3d11|Win32
+		{11A02305-FD6D-170B-E601-8831D26EF36F}.Debug_d3d11|x64.ActiveCfg = Debug_d3d11|x64
+		{11A02305-FD6D-170B-E601-8831D26EF36F}.Debug_opengl|Win32.ActiveCfg = Debug_opengl|Win32
+		{11A02305-FD6D-170B-E601-8831D26EF36F}.Debug_opengl|Win32.Build.0 = Debug_opengl|Win32
+		{11A02305-FD6D-170B-E601-8831D26EF36F}.Debug_opengl|x64.ActiveCfg = Debug_opengl|x64
+		{11A02305-FD6D-170B-E601-8831D26EF36F}.Debug_opengl|x64.Build.0 = Debug_opengl|x64
+		{11A02305-FD6D-170B-E601-8831D26EF36F}.Release_d3d11|Win32.ActiveCfg = Release_d3d11|Win32
+		{11A02305-FD6D-170B-E601-8831D26EF36F}.Release_d3d11|x64.ActiveCfg = Release_d3d11|x64
+		{11A02305-FD6D-170B-E601-8831D26EF36F}.Release_opengl|Win32.ActiveCfg = Release_opengl|Win32
+		{11A02305-FD6D-170B-E601-8831D26EF36F}.Release_opengl|Win32.Build.0 = Release_opengl|Win32
+		{11A02305-FD6D-170B-E601-8831D26EF36F}.Release_opengl|x64.ActiveCfg = Release_opengl|x64
+		{11A02305-FD6D-170B-E601-8831D26EF36F}.Release_opengl|x64.Build.0 = Release_opengl|x64
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Debug_d3d11|Win32.ActiveCfg = Debug_d3d11|Win32
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Debug_d3d11|Win32.Build.0 = Debug_d3d11|Win32
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Debug_d3d11|x64.ActiveCfg = Debug_d3d11|x64
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Debug_d3d11|x64.Build.0 = Debug_d3d11|x64
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Debug_opengl|Win32.ActiveCfg = Debug_opengl|Win32
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Debug_opengl|Win32.Build.0 = Debug_opengl|Win32
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Debug_opengl|x64.ActiveCfg = Debug_opengl|x64
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Debug_opengl|x64.Build.0 = Debug_opengl|x64
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Release_d3d11|Win32.ActiveCfg = Release_d3d11|Win32
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Release_d3d11|Win32.Build.0 = Release_d3d11|Win32
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Release_d3d11|x64.ActiveCfg = Release_d3d11|x64
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Release_d3d11|x64.Build.0 = Release_d3d11|x64
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Release_opengl|Win32.ActiveCfg = Release_opengl|Win32
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Release_opengl|Win32.Build.0 = Release_opengl|Win32
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Release_opengl|x64.ActiveCfg = Release_opengl|x64
+		{29795900-1505-880B-7EB3-880B6A5E880B}.Release_opengl|x64.Build.0 = Release_opengl|x64
 		{202B5BA7-8C95-0F1E-D5D3-C0C3417DED72}.Debug_d3d11|Win32.ActiveCfg = Debug_d3d11|Win32
 		{202B5BA7-8C95-0F1E-D5D3-C0C3417DED72}.Debug_d3d11|Win32.Build.0 = Debug_d3d11|Win32
 		{202B5BA7-8C95-0F1E-D5D3-C0C3417DED72}.Debug_d3d11|x64.ActiveCfg = Debug_d3d11|x64
@@ -76,5 +148,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ED260B65-5906-8A00-621E-15D7CE7CF061} = {D88DD55D-C445-17AB-2D4D-F0061924B29B}
+		{0932C30E-75F2-3E45-3E2D-88C2AAAC8321} = {D88DD55D-C445-17AB-2D4D-F0061924B29B}
+		{11A02305-FD6D-170B-E601-8831D26EF36F} = {D88DD55D-C445-17AB-2D4D-F0061924B29B}
+		{29795900-1505-880B-7EB3-880B6A5E880B} = {D88DD55D-C445-17AB-2D4D-F0061924B29B}
 	EndGlobalSection
 EndGlobal

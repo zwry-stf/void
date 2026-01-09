@@ -14,7 +14,7 @@ main_entry(main) {
 #endif
 
     float2 t = g_inv_src_size;
-    float3 c = 0.0;
+    float3 c = float3(0.0, 0.0, 0.0);
 
     c += sample_texture(uv).rgb * 0.25;
 
