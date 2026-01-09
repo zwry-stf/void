@@ -1,0 +1,3 @@
+[submodule "ext/r2"]
+	path = ext/r2
+	url = https://github.com/zwry-stf/r2.git
