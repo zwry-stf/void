@@ -32,14 +32,7 @@ workspace "void"
     end
     
     local r2_dir = "ext/r2"
-dofile(path.join(r2_dir, "premake5_common.lua"))
-r2_define_common();
-
-group "deps"
-dofile(path.join(r2_dir, "premake5_projects.lua"))
-r2_define_projects(r2_dir, build_root, int_root)
-group ""
-
+    
 dofile("premake5_projects.lua")
 void_define_projects(nil, build_root, int_root, r2_dir)
     

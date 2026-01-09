@@ -8,6 +8,14 @@ end
 
 function void_define_projects(base_path, build_root, int_root, r2_dir)
     local function P(rel) return void_join(base_path, rel) end
+dofile(P(path.join(r2_dir, "premake5_common.lua")))
+r2_define_common();
+
+group "deps"
+dofile(P(path.join(r2_dir, "premake5_projects.lua")))
+r2_define_projects(r2_dir, build_root, int_root)
+group ""
+
 project "resources"
     kind "StaticLib"
     targetname "%{prj.name}_%{cfg.buildcfg}_%{cfg.platform}"
