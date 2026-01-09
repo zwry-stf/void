@@ -373,6 +373,7 @@ public:
         for (std::size_t i = 0u; i < count - 1u; i++) {
             out[i] = (*this)[i];
         }
+        out[count - 1u] = kNullTerminator;
     }
 };
 
