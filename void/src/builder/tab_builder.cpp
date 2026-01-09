@@ -17,7 +17,7 @@ child_tab_base_builder::child_tab_base_builder(void_* instance, menu_builder* bu
 {
 }
 
-child_tab_base_builder& child_tab_base_builder::set_icon(int resource_id)
+child_tab_base_builder& child_tab_base_builder::icon(int resource_id)
 {
     get_child_tab()->set_icon(resource_id);
     return *this;
@@ -25,9 +25,9 @@ child_tab_base_builder& child_tab_base_builder::set_icon(int resource_id)
 
 /// child_tab_normal_builder
 
-child_tab_normal_builder& child_tab_normal_builder::set_icon(int resource_id)
+child_tab_normal_builder& child_tab_normal_builder::icon(int resource_id)
 {
-    child_tab_base_builder::set_icon(resource_id);
+    child_tab_base_builder::icon(resource_id);
     return *this;
 }
 
@@ -118,7 +118,7 @@ child_tab_base_builder tab_builder::custom_tab(std::unique_ptr<child_tab>&& tab)
     return child_tab_base_builder(instance(), builder(), child_tab);
 }
 
-tab_builder& tab_builder::set_icon(int resource_id)
+tab_builder& tab_builder::icon(int resource_id)
 {
     tab_instance_->set_icon(resource_id);
 

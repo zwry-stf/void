@@ -368,7 +368,7 @@ void add_widgets()
 
     mb.label("Label 1");
     auto tab = mb.tab("Tab 1");
-    tab.set_icon(void_resources::color_png);
+    tab.icon(void_resources::color_png);
 
     // child 1
     {
@@ -432,12 +432,12 @@ void add_widgets()
             ->default_text("Default text");
     }
 
-    tab.config_tab("Config").set_icon(void_resources::config_png);
-    tab.theme_tab("Theme").set_icon(void_resources::theme_png);
+    tab.config_tab("Config").icon(void_resources::config_png);
+    tab.theme_tab("Theme").icon(void_resources::theme_png);
 
     {
         auto child = tab.child("Advanced");
-        child.set_icon(void_resources::child_png);
+        child.icon(void_resources::child_png);
 
         auto& style = g_void->style();
         auto& background = g_void->background();

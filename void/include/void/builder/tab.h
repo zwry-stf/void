@@ -14,7 +14,7 @@ public:
 	child_tab_base_builder(void_* instance, menu_builder* builder, class child_tab* tab_instance);
 
 public:
-	child_tab_base_builder& set_icon(int resource_id);
+	child_tab_base_builder& icon(int resource_id);
 
 protected:
 	template <typename T = child_tab>
@@ -29,7 +29,7 @@ public:
 	using child_tab_base_builder::child_tab_base_builder;
 
 public:
-	child_tab_normal_builder& set_icon(int resource_id);
+	child_tab_normal_builder& icon(int resource_id);
 	child_tab_normal_builder& disable_scroll();
 
 	group_builder left_group(const xstr& name);
@@ -50,7 +50,7 @@ public:
 
 	child_tab_base_builder custom_tab(std::unique_ptr<child_tab>&& tab);
 
-	tab_builder& set_icon(int resource_id);
+	tab_builder& icon(int resource_id);
 };
 
 void_end_
