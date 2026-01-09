@@ -62,6 +62,8 @@ void multiselect::render(float alpha)
         owned_overlay.get_text(),
         true /* is multiselect */
     );
+
+    render_child_widgets(alpha);
 }
 
 void_end_
