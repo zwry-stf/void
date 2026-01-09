@@ -61,8 +61,8 @@ public:
 
     const xstr& element(std::size_t index) const override {
         auto* data = *data_;
-        v_assert(data != nullptr);
-        v_assert(index >= 0 && index < size());
+        assert(data != nullptr);
+        assert(index >= 0 && index < size());
 
         return data[index].*member_;
     }
@@ -100,7 +100,7 @@ public:
     }
 
     const xstr& element(std::size_t index) const override {
-        v_assert(index >= 0 && index < size());
+        assert(index >= 0 && index < size());
         return data_[static_cast<std::size_t>(index)].*member_;
     }
 
@@ -133,7 +133,7 @@ public:
     }
 
     const xstr& element(std::size_t index) const override {
-        v_assert(index >= 0 && index < size());
+        assert(index >= 0 && index < size());
         return (*data_)[static_cast<std::size_t>(index)].*member_;
     }
 
