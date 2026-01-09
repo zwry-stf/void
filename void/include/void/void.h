@@ -117,6 +117,7 @@ public:
     _define_void_accessor(icons, icons);
     _define_void_accessor(render_target, render_target);
     _define_void_accessor(options, options);
+    _define_void_accessor(callbacks, callbacks);
     _define_void_accessor(background, background);
     _define_void_accessor(util, util);
     _define_void_accessor(input, input);

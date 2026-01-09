@@ -187,6 +187,7 @@
   <ItemGroup>
     <ClInclude Include="include\void\accessors\account.h" />
     <ClInclude Include="include\void\accessors\background.h" />
+    <ClInclude Include="include\void\accessors\callbacks.h" />
     <ClInclude Include="include\void\accessors\config.h" />
     <ClInclude Include="include\void\accessors\cursors.h" />
     <ClInclude Include="include\void\accessors\fonts.h" />

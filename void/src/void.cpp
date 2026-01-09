@@ -191,6 +191,8 @@ void void_::render()
     animation_ = util().lerp2(animation_, is_open());
     alpha_ = animation_;
 
+    callbacks().invoke<callbacks::callback_OnPreRender>();
+
     /// render menu
     const bool menu_rendered = alpha_ >= util::g_min_alpha;
     if (menu_rendered)
@@ -216,6 +218,8 @@ void void_::render()
     /// misc rendering
     watermark().render();
     notifications().render();
+
+    callbacks().invoke<callbacks::callback_OnPostRender>();
 
     renderer_.render();
     renderer_.reset_render_data();
@@ -293,6 +297,8 @@ void void_::toggle_menu(bool open)
     if (!open)
         input_reset_selected_state();
     input().clear_queue();
+
+    callbacks().invoke<callbacks::callback_OnToggleMenu>(open);
 }
 
 void void_::set_scale(float scale)
@@ -384,6 +390,8 @@ void void_::render_menu()
 
 void void_::render_overlays()
 {
+    callbacks().invoke<callbacks::callback_OnPreRenderOverlay>();
+
     /// render overlays
     for (auto& overlay : overlays_) {
         overlay->render();
@@ -405,6 +413,8 @@ void void_::render_overlays()
 
     background_overlay_->render(background_.get());
     background_->restore_render_states();
+
+    callbacks().invoke<callbacks::callback_OnPostRenderOverlay>();
 
     renderer_.render();
     renderer_.reset_render_data();

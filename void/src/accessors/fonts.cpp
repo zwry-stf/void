@@ -61,6 +61,8 @@ void fonts::create()
     );
     font_small_->add_font(font3.data(), font3.size());
     font_large_->add_font(font3.data(), font3.size());
+
+    instance()->callbacks().invoke<callbacks::callback_OnCreateFonts>();
 }
 
 void fonts::build()

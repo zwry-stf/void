@@ -10,6 +10,7 @@
 #include "accessors/render_target.h"
 #include "accessors/background.h"
 #include "accessors/options.h"
+#include "accessors/callbacks.h"
 #include "accessors/util.h"
 #include "accessors/watermark.h"
 #include "accessors/account.h"

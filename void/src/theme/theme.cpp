@@ -95,6 +95,8 @@ bool _theme::load(const std::wstring& name, bool first)
             << style.text() << xstr(".");
     }
 
+    instance()->callbacks().invoke<callbacks::callback_OnLoadTheme>();
+
     return true;
 }
 
@@ -128,6 +130,8 @@ bool _theme::save(const std::wstring& name, theme_drawable* drawable, bool creat
             << style.grey() << name
             << style.text() << xstr(".");
     }
+
+    instance()->callbacks().invoke<callbacks::callback_OnSaveTheme>();
 
     return true;
 }

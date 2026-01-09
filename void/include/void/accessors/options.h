@@ -169,12 +169,12 @@ public:
     }
 
     template <typename T>
-    typename option_type<T>::type& get() noexcept {
+    [[nodiscard]] typename option_type<T>::type& get() noexcept {
         return this->*(option_type<T>::member);
     }
 
     template <typename T>
-    const typename option_type<T>::type& get() const noexcept {
+    [[nodiscard]] const typename option_type<T>::type& get() const noexcept {
         if constexpr (option_type<T>::allow_after_init)
             assert_noinit();
         return this->*(option_type<T>::member);

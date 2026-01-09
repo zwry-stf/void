@@ -253,6 +253,8 @@ done:
             << style.text() << xstr(".");
     }
 
+    instance()->callbacks().invoke<callbacks::callback_OnLoadConfig>();
+
     return true;
 }
 
@@ -302,6 +304,8 @@ done:
         << style.text_accent() << type_name_pascal_ << xstr(" saved ")
         << style.grey() << name
         << style.text() << xstr(".");
+
+    instance()->callbacks().invoke<callbacks::callback_OnSaveConfig>();
 
     return true;
 }
