@@ -358,6 +358,21 @@ public:
         }
         return npos;
     }
+
+    template <std::size_t N>
+    void get(char(&out)[N]) const noexcept {
+        get(&out[0], N);
+    }
+
+    void get(char* out, std::size_t size) const noexcept {
+        const std::size_t count = (std::min)(length() + 1u, size);
+        if (count <= 1u) [[unlikely]]
+            return;
+
+        for (std::size_t i = 0u; i < count - 1u; i++) {
+            out[i] = (*this)[i];
+        }
+    }
 };
 
 using xstr  = basic_xstr<char,    64u>;
