@@ -73,9 +73,9 @@ project "void"
         P("void/include"),
         P("void/ext"),
         P("void/src"),
-        r2_dir .. "/r2/include",
-        r2_dir .. "/backend/include",
-        r2_dir .. "/backend_d3d11/include",
+        P(r2_dir .. "/r2/include"),
+        P(r2_dir .. "/backend/include"),
+        P(r2_dir .. "/backend_d3d11/include"),
         P("resources/include"),
         P("resources/internal")
     }
