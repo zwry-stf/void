@@ -3,6 +3,7 @@
 #include <resources/resources.h>
 #include <cstdint>
 #include <cstddef>
+#include <vector>
 
 
 void_begin_
@@ -32,10 +33,18 @@ public:
 };
 
 class resources : protected vobj {
+private:
+    struct resource_source {
+        const std::uint8_t* data;
+        const std::size_t size;
+    };
+    std::vector<resource_source> sources_;
+
 public:
     using vobj::vobj;
 
 public:
+    void add_source(const std::uint8_t* data, std::size_t size);
     [[nodiscard]] loaded_resource load_resource(int id);
 };
 
