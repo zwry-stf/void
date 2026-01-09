@@ -142,14 +142,13 @@ layout(std140, binding = 1) uniform cb {
 };
 
 
-void main()
-{
+void main() {
     vec2 uv = g_uv;
 
 
 
 
-    vec2 frag_coord = vec2(uv.x, uv.y) * g_data.resolution.xy;
+    vec2 frag_coord = vec2(uv.x, 1.0 - uv.y) * g_data.resolution.xy;
 
 
     vec4 base_color = vec4(0.0, 0.0, 0.0, 1.0);
@@ -189,7 +188,7 @@ void main()
 
     vec2 center_uv = center / g_data.resolution.xy;
 
-
+    center_uv.y = 1.f - center_uv.y;
 
     
     float factor = 0.5 + 0.5 * smoothstep_custom(0.1, 1.0, box_disp);

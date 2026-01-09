@@ -93,11 +93,7 @@ layout(std140, binding = 1) uniform cb_down {
 };
 
 void main() {
-
-
-
     vec2 uv = g_uv;
-
 
     vec2 t = g_inv_src_size;
     vec3 c = vec3(0.0, 0.0, 0.0);

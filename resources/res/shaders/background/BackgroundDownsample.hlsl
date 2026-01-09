@@ -7,11 +7,7 @@ constant_buffer(cb_down, 1) {
 };
 
 main_entry(main) {
-#ifdef R2_BACKEND_D3D11
-    float2 uv = input.uv;
-#elif R2_BACKEND_OPENGL
-    float2 uv = g_uv;
-#endif
+    main_get_uv(uv);
 
     float2 t = g_inv_src_size;
     float3 c = float3(0.0, 0.0, 0.0);

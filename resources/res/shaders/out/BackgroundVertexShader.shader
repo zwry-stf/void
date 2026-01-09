@@ -35,6 +35,6 @@ void main()
 
 
     gl_Position = vec4(a_pos.x, a_pos.y, 0.0, 1.0);
-    g_uv = vec2(i_uv.x, i_uv.y);
+    g_uv = vec2(i_uv.x, 1.0 - i_uv.y);
 
 }

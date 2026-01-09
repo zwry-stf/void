@@ -145,7 +145,11 @@ layout(std140, binding = 1) uniform cb {
 void main() {
     vec2 uv = g_uv;
 
-    vec2 frag_coord = uv * g_data.resolution.xy;
+
+
+
+    vec2 frag_coord = vec2(uv.x, 1.f - uv.y) * g_data.resolution.xy;
+
     
     vec4 base_color = vec4(0.0, 0.0, 0.0, 1.0);
     

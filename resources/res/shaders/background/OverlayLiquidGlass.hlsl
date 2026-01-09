@@ -29,14 +29,13 @@ constant_buffer(cb, 1) {
 };
 
 
-main_entry(main)
-{
+main_entry(main) {
     main_get_uv(uv);
 
 #ifdef R2_BACKEND_D3D11
     float2 frag_coord = uv * g_data.resolution.xy;
 #elif R2_BACKEND_OPENGL
-    float2 frag_coord = float2(uv.x, uv.y) * g_data.resolution.xy;
+    float2 frag_coord = float2(uv.x, 1.0 - uv.y) * g_data.resolution.xy;
 #endif
 
     float4 base_color = float4(0.0, 0.0, 0.0, 1.0);
@@ -75,7 +74,7 @@ main_entry(main)
     }
 
     float2 center_uv = center / g_data.resolution.xy;
-#if vane_backend_opengl
+#if R2_BACKEND_OPENGL
     center_uv.y = 1.f - center_uv.y;
 #endif
     
