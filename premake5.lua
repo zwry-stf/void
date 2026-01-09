@@ -44,7 +44,7 @@ workspace "void"
     local r2_dir = "ext/r2"
     
 dofile("premake5_projects.lua")
-void_define_projects(nil, build_root, int_root, r2_dir)
+void_define_projects(nil, build_root, int_root, r2_dir, _OPTIONS["backend"])
     
 project "TestRun"
     kind "WindowedApp"

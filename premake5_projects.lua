@@ -6,15 +6,15 @@ local function void_join(base_path, rel)
     return path.join(base, rel)
 end
 
-function void_define_projects(base_path, build_root, int_root, r2_dir)
+function void_define_projects(base_path, build_root, int_root, r2_dir, backend_name)
     local function P(rel) return void_join(base_path, rel) end
     r2_dir = path.join(base_path, r2_dir)
 dofile(path.join(r2_dir, "premake5_common.lua"))
-r2_define_common();
+r2_define_common(backend_name);
 
 group "deps"
 dofile(path.join(r2_dir, "premake5_projects.lua"))
-r2_define_projects(r2_dir, build_root, int_root)
+r2_define_projects(r2_dir, build_root, int_root, backend_name)
 group ""
 
 project "resources"
@@ -40,21 +40,20 @@ project "resources"
     
     -- hlsl files
     local pp_out = "%{prj.location}/../resources/res/shaders/out"
-    filter { "files:" .. shader_glob, "options:backend=d3d11" }
+    filter { "files:" .. shader_glob }
         buildaction "CustomBuild"
         buildmessage "Preprocessing %{file.name}"
-        buildcommands {
-            'cl.exe /nologo /EP /DR2_BACKEND_D3D11 ' ..
-            '"%{file.abspath}" > "' .. pp_out .. '/%{file.basename}.shader"'
-        }
-        buildoutputs { pp_out .. "/%{file.basename}.shader" }
-    filter { "files:" .. shader_glob, "options:backend=opengl" }
-        buildaction "CustomBuild"
-        buildmessage "Preprocessing %{file.name}"
-        buildcommands {
-            'cl.exe /nologo /EP /DR2_BACKEND_OPENGL ' ..
-            '"%{file.abspath}" > "' .. pp_out .. '/%{file.basename}.shader"'
-        }
+        if backend_name == "d3d11" then
+            buildcommands {
+                'cl.exe /nologo /EP /DR2_BACKEND_D3D11 ' ..
+                '"%{file.abspath}" > "' .. pp_out .. '/%{file.basename}.shader"'
+            }
+        elseif backend_name == "opengl" then
+            buildcommands {
+                'cl.exe /nologo /EP /DR2_BACKEND_OPENGL ' ..
+                '"%{file.abspath}" > "' .. pp_out .. '/%{file.basename}.shader"'
+            }
+        end
         buildoutputs { pp_out .. "/%{file.basename}.shader" }
     filter {}
     
