@@ -39,73 +39,9 @@ group "deps"
 dofile(path.join(r2_dir, "premake5_projects.lua"))
 r2_define_projects(r2_dir, build_root, int_root)
 group ""
-    
-project "resources"
-    kind "StaticLib"
-    targetname "%{prj.name}_%{cfg.buildcfg}_%{cfg.platform}"
-    targetdir (build_root)
-    objdir    (int_root)
-    location "resources"
-    
-    files {
-        "resources/include/**.h",
-        "resources/internal/**.cpp",
-        "resources/internal/**.h",
-        "resources/res/shaders/**.hlsl"
-    }
-    
-    includedirs {
-        "resources/ext",
-        "resources/include"
-    }
-    
-    -- hlsl files
-    local pp_out = "%{prj.location}/../resources/res/shaders/out"
-    filter { "files:resources/res/shaders/**.hlsl", "configurations:*_d3d11" }
-        buildaction "CustomBuild"
-        buildmessage "Preprocessing %{file.name}"
-        buildcommands {
-            'cl.exe /nologo /EP /DR2_BACKEND_D3D11 ' ..
-            '"%{file.abspath}" > "' .. pp_out .. '/%{file.basename}.shader"'
-        }
-        buildoutputs { pp_out .. "/%{file.basename}.shader" }
-    filter { "files:resources/res/shaders/**.hlsl", "configurations:*_opengl" }
-        buildaction "CustomBuild"
-        buildmessage "Preprocessing %{file.name}"
-        buildcommands {
-            'cl.exe /nologo /EP /DR2_BACKEND_OPENGL ' ..
-            '"%{file.abspath}" > "' .. pp_out .. '/%{file.basename}.shader"'
-        }
-        buildoutputs { pp_out .. "/%{file.basename}.shader" }
-    filter {}
-    
-project "void"
-    kind "StaticLib"
-    targetname "%{prj.name}_%{cfg.buildcfg}_%{cfg.platform}"
-    targetdir (build_root)
-    objdir    (int_root)
-    location "void"
 
-    files {
-        "void/include/**.h",
-        "void/include/**.inl",
-        "void/src/**.h",
-        "void/src/**.cpp"
-    }
-
-    includedirs {
-        "void/include",
-        "void/ext",
-        "void/src",
-        r2_dir .. "/r2/include",
-        r2_dir .. "/backend/include",
-        r2_dir .. "/backend_d3d11/include",
-        "resources/include",
-        "resources/internal"
-    }
-    
-    dependson { "r2", "resources" }
-
+dofile("premake5_projects.lua")
+void_define_projects(nil, build_root, int_root, r2_dir)
     
 project "TestRun"
     kind "WindowedApp"
