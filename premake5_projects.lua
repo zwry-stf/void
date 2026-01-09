@@ -8,11 +8,12 @@ end
 
 function void_define_projects(base_path, build_root, int_root, r2_dir)
     local function P(rel) return void_join(base_path, rel) end
-dofile(P(path.join(r2_dir, "premake5_common.lua")))
+    r2_dir = path.join(base_path, r2_dir)
+dofile(path.join(r2_dir, "premake5_common.lua"))
 r2_define_common();
 
 group "deps"
-dofile(P(path.join(r2_dir, "premake5_projects.lua")))
+dofile(path.join(r2_dir, "premake5_projects.lua"))
 r2_define_projects(r2_dir, build_root, int_root)
 group ""
 
@@ -47,7 +48,7 @@ project "resources"
             '"%{file.abspath}" > "' .. pp_out .. '/%{file.basename}.shader"'
         }
         buildoutputs { pp_out .. "/%{file.basename}.shader" }
-        filter { "files:" .. shader_glob, "configurations:*_opengl" }
+    filter { "files:" .. shader_glob, "configurations:*_opengl" }
         buildaction "CustomBuild"
         buildmessage "Preprocessing %{file.name}"
         buildcommands {
@@ -75,9 +76,9 @@ project "void"
         P("void/include"),
         P("void/ext"),
         P("void/src"),
-        P(r2_dir .. "/r2/include"),
-        P(r2_dir .. "/backend/include"),
-        P(r2_dir .. "/backend_d3d11/include"),
+        r2_dir .. "/r2/include",
+        r2_dir .. "/backend/include",
+        r2_dir .. "/backend_d3d11/include",
         P("resources/include"),
         P("resources/internal")
     }
