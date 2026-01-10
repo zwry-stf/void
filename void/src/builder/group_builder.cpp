@@ -18,6 +18,7 @@
 
 // child widgets
 #include <contents/widgets/colorpicker/colorpicker_child.h>
+#include <contents/widgets/colorpicker/optional_colorpicker_child.h>
 #include <contents/widgets/dropdown/dropdown_child.h>
 #include <contents/widgets/multiselect/multiselect_child.h>
 #include <contents/widgets/childwindow/childwindow_child.h>
@@ -158,6 +159,38 @@ void group_with_child_base_options::colorpicker(r2::color& value, bool has_alpha
     );
 }
 
+void group_with_child_base_options::optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha)
+{
+    const auto overlay_id = instance()->create_overlay(
+        std::make_unique<colorpicker_overlay>(
+            instance(), instance(), instance(),
+            &value, has_alpha
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<optional_colorpicker_child>(
+            instance(), instance(), instance(),
+            overlay_id,
+            &enabled
+        )
+    );
+
+    instance()->config().add_module(
+        std::make_unique<default_config_module<r2::color>>(
+            build_child_config_path("color_ocolor"),
+            &value
+        )
+    );
+
+    instance()->config().add_module(
+        std::make_unique<default_config_module<bool>>(
+            build_child_config_path("enabled_ocolor"),
+            &enabled
+        )
+    );
+}
+
 void group_with_child_base_options::dropdown(list_options* options, std::size_t& selected)
 {
     const auto overlay_id = instance()->create_overlay(
@@ -276,6 +309,12 @@ group_with_child_options::owner_type& group_with_child_options::colorpicker(r2::
     return *group_instance_;
 }
 
+group_with_child_options::owner_type& group_with_child_options::optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha)
+{
+    group_with_child_base_options::optional_colorpicker(value, enabled, has_alpha);
+    return *group_instance_;
+}
+
 group_with_child_options::owner_type& group_with_child_options::dropdown(list_options* options, std::size_t& selected)
 {
     group_with_child_base_options::dropdown(
@@ -367,6 +406,12 @@ group_textfield_options::owner_type& group_textfield_options::condition(std::fun
 group_textfield_options::owner_type& group_textfield_options::colorpicker(r2::color& value, bool has_alpha)
 {
     group_with_child_base_options::colorpicker(value, has_alpha);
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha)
+{
+    group_with_child_base_options::optional_colorpicker(value, enabled, has_alpha);
     return *group_instance_;
 }
 
@@ -571,6 +616,40 @@ void overlay_with_child_base_options::colorpicker(r2::color& value, bool has_alp
     );
 }
 
+void overlay_with_child_base_options::optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha)
+{
+    const auto overlay_id = childwindow_instance_->create_overlay(
+        std::make_unique<colorpicker_overlay>(
+            instance(), instance(),
+            childwindow_instance_,
+            &value, has_alpha
+        )
+    );
+
+    get_widget()->add_child(
+        std::make_unique<optional_colorpicker_child>(
+            instance(), instance(),
+            childwindow_instance_,
+            overlay_id,
+            &enabled
+        )
+    );
+
+    instance()->config().add_module(
+        std::make_unique<default_config_module<r2::color>>(
+            build_overlay_child_config_path("color_ocolor"),
+            &value
+        )
+    );
+
+    instance()->config().add_module(
+        std::make_unique<default_config_module<bool>>(
+            build_overlay_child_config_path("enabled_ocolor"),
+            &enabled
+        )
+    );
+}
+
 void overlay_with_child_base_options::dropdown(list_options* options, std::size_t& selected)
 {
     const auto overlay_id = childwindow_instance_->create_overlay(
@@ -679,6 +758,12 @@ overlay_with_child_options::owner_type& overlay_with_child_options::colorpicker(
     return *group_instance_;
 }
 
+overlay_with_child_options::owner_type& overlay_with_child_options::optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha)
+{
+    overlay_with_child_base_options::optional_colorpicker(value, enabled, has_alpha);
+    return *group_instance_;
+}
+
 overlay_with_child_options::owner_type& overlay_with_child_options::dropdown(list_options* options, std::size_t& selected)
 {
     overlay_with_child_base_options::dropdown(options, selected);
@@ -757,6 +842,12 @@ overlay_textfield_options::owner_type& overlay_textfield_options::condition(std:
 overlay_textfield_options::owner_type& overlay_textfield_options::colorpicker(r2::color& value, bool has_alpha)
 {
     overlay_with_child_base_options::colorpicker(value, has_alpha);
+    return *group_instance_;
+}
+
+overlay_textfield_options::owner_type& overlay_textfield_options::optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha)
+{
+    overlay_with_child_base_options::optional_colorpicker(value, enabled, has_alpha);
     return *group_instance_;
 }
 

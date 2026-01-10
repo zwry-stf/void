@@ -396,7 +396,8 @@ void add_widgets()
                 ->button("Button 1", "Click", [](){})
             .colorpicker("Colorpicker 1", color_value)
                 ->last_childwindow()
-                ->colorpicker(color_value);
+                ->colorpicker(color_value)
+                ->optional_colorpicker(color_value, bool_value);
 
         child.right_group("Group right")
             .button("Button", "Add Option",

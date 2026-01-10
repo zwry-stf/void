@@ -365,6 +365,7 @@
     </ClInclude>
     <ClInclude Include="include\void\accessors\callbacks.h" />
     <ClInclude Include="src\contents\overlays\multiselect\config_module.h" />
+    <ClInclude Include="src\contents\widgets\colorpicker\optional_colorpicker_child.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\accessors\account.cpp">
@@ -556,5 +557,6 @@
     <ClCompile Include="src\void.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\contents\widgets\colorpicker\optional_colorpicker_child.cpp" />
   </ItemGroup>
 </Project>

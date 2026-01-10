@@ -94,6 +94,7 @@ public:
 
 protected:
     void colorpicker(r2::color& value, bool has_alpha = true);
+    void optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha = true);
     void dropdown(list_options* options, std::size_t& selected);
     void multiselect(list_options* options, std::vector<bool>& selected);
     void last_childwindow(std::int32_t);
@@ -129,6 +130,7 @@ public:
 
 public:
     owner_type& colorpicker(r2::color& value, bool has_alpha = true);
+    owner_type& optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha = true);
     owner_type& dropdown(list_options* options, std::size_t& selected);
     owner_type& multiselect(list_options* options, std::vector<bool>& selected);
     /// Adds the last created child window as child widget.
@@ -170,6 +172,7 @@ public:
 
 public:
     owner_type& colorpicker(r2::color& value, bool has_alpha = true);
+    owner_type& optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha = true);
     owner_type& dropdown(list_options* options, std::size_t& selected);
     owner_type& multiselect(list_options* options, std::vector<bool>& selected);
     /// Adds the last created child window as child widget.
@@ -287,6 +290,7 @@ public:
                                     const xstr& config_path, std::size_t config_id);
 public:
     void colorpicker(r2::color& value, bool has_alpha = true);
+    void optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha = true);
     void dropdown(list_options* options, std::size_t& selected);
     void multiselect(list_options* options, std::vector<bool>& selected);
     void custom_child(std::unique_ptr<widget_child>&& child);
@@ -322,6 +326,7 @@ public:
 
 public:
     owner_type& colorpicker(r2::color& value, bool has_alpha = true);
+    owner_type& optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha = true);
     owner_type& dropdown(list_options* options, std::size_t& selected);
     owner_type& multiselect(list_options* options, std::vector<bool>& selected);
     /// Add a custom child widget to the last created widget.
@@ -362,6 +367,7 @@ public:
 
 public:
     owner_type& colorpicker(r2::color& value, bool has_alpha = true);
+    owner_type& optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha = true);
     owner_type& dropdown(list_options* options, std::size_t& selected);
     owner_type& multiselect(list_options* options, std::vector<bool>& selected);
     /// Add a custom child widget to the last created widget.

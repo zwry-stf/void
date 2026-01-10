@@ -256,6 +256,7 @@
     <ClInclude Include="src\contents\widgets\childwindow\childwindow_child.h" />
     <ClInclude Include="src\contents\widgets\colorpicker\colorpicker.h" />
     <ClInclude Include="src\contents\widgets\colorpicker\colorpicker_child.h" />
+    <ClInclude Include="src\contents\widgets\colorpicker\optional_colorpicker_child.h" />
     <ClInclude Include="src\contents\widgets\dropdown\dropdown.h" />
     <ClInclude Include="src\contents\widgets\dropdown\dropdown_child.h" />
     <ClInclude Include="src\contents\widgets\list\list.h" />
@@ -318,6 +319,7 @@
     <ClCompile Include="src\contents\widgets\childwindow\childwindow_child.cpp" />
     <ClCompile Include="src\contents\widgets\colorpicker\colorpicker.cpp" />
     <ClCompile Include="src\contents\widgets\colorpicker\colorpicker_child.cpp" />
+    <ClCompile Include="src\contents\widgets\colorpicker\optional_colorpicker_child.cpp" />
     <ClCompile Include="src\contents\widgets\dropdown\dropdown.cpp" />
     <ClCompile Include="src\contents\widgets\dropdown\dropdown_child.cpp" />
     <ClCompile Include="src\contents\widgets\list\list.cpp" />
