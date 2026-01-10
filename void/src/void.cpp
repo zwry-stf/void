@@ -49,7 +49,9 @@ void void_::init(const r2::platform_init_data& pinit, const r2::backend_init_dat
 {
     renderer_.init(pinit, binit);
 
+#if defined(R2_BACKEND_OPENGL)
     renderer_.backup_render_state();
+#endif // R2_BACKEND_OPENGL
 
     // scale
     scale_ = calculate_scale();
@@ -77,7 +79,9 @@ void void_::init(const r2::platform_init_data& pinit, const r2::backend_init_dat
     config_->init();
     theme_->init();
 
+#if defined(R2_BACKEND_OPENGL)
     renderer_.restore_render_state();
+#endif // R2_BACKEND_OPENGL
 
     // menu pos
     pos_.w = std::round(
@@ -114,7 +118,9 @@ void void_::init_render(const r2::platform_init_data& pinit, const r2::backend_i
     // renderer
     renderer_.init(pinit, binit);
 
+#if defined(R2_BACKEND_OPENGL)
     renderer_.backup_render_state();
+#endif // R2_BACKEND_OPENGL
 
     renderer_.create_font_texture();
 
@@ -129,7 +135,9 @@ void void_::init_render(const r2::platform_init_data& pinit, const r2::backend_i
     // render_target
     render_target().init();
 
+#if defined(R2_BACKEND_OPENGL)
     renderer_.restore_render_state();
+#endif
 
     initialized_.store(true, std::memory_order_release);
 }
