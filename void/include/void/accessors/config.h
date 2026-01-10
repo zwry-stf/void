@@ -35,7 +35,8 @@ public:
 	using vobj::vobj;
 
 public:
-	void add_module(std::unique_ptr<config_module>&& module);
+	std::size_t add_module(std::unique_ptr<config_module>&& module);
+	void remove_module(std::size_t module);
 	[[nodiscard]] std::string get_main_path() const;
 	[[nodiscard]] class _config* get_config_instance() const;
 };

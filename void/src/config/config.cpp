@@ -107,14 +107,34 @@ void _config::destroy()
     main_path_.clear();
 }
 
-void _config::add_module(std::unique_ptr<config_module>&& module)
+std::size_t _config::add_module(std::unique_ptr<config_module>&& module)
 {
 #ifdef _DEBUG
     for (auto& m : modules_)
-        assert(m->get_name() != module->get_name());
+        assert(!m || m->get_name() != module->get_name());
 #endif
 
-    modules_.push_back(std::move(module));
+    if (!freed_modules_.empty()) {
+        const std::size_t id = freed_modules_.back();
+        assert(id < modules_.size());
+        assert(!modules_[id]);
+        modules_[id] = std::move(module);
+
+        return id;
+    }
+    else {
+        modules_.push_back(std::move(module));
+
+        return modules_.size() - 1u;
+    }
+}
+
+void _config::remove_module(std::size_t module)
+{
+    assert(module < modules_.size());
+
+    modules_[module].reset();
+    freed_modules_.push_back(module);
 }
 
 bool _config::create_new()
@@ -158,8 +178,10 @@ bool _config::load(const std::wstring& name, bool first)
         return false;
     
     // reset
-    for (auto& mod : modules_)
-        mod->reset();
+    for (auto& mod : modules_) {
+        if (mod)
+            mod->reset();
+    }
 
     auto data = buffer.begin();
 
@@ -174,6 +196,9 @@ bool _config::load(const std::wstring& name, bool first)
         auto data_backup = data;
         bool found = false;
         for (auto& mod : modules_) {
+            if (!mod)
+                continue;
+
             if (reinterpret_cast<const std::uint8_t*>(
                     module_name + mod->get_name().length() + 1) >
                 buffer.data() + buffer.size()) {
@@ -264,6 +289,9 @@ bool _config::save(const std::wstring& name, config_drawable* drawable)
     data.reserve(modules_.size() * 10); // default estimated size
 
     for (auto& mod : modules_) {
+        if (!mod)
+            continue;
+
         // save name
         for (std::uint8_t i = 0; i < mod->get_name().length(); i++)
             data.push_back(mod->get_name()[i]);

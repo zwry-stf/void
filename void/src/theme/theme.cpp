@@ -311,6 +311,8 @@ void theme_data::load(void_* instance)
     style.rounding->raw() = this->rounding;
     style.spacing->raw() = this->spacing;
     style.animation_speed = this->animation_speed;
+    style.overlay_width->raw() = this->overlay_size;
+    style.notification_time = this->notification_time;
 
     auto& bg = instance->background();
     bg.blur_enabled = this->blur;
@@ -348,6 +350,8 @@ void theme_data::save(void_* instance, bool create)
         this->rounding = style.rounding.get_default().raw();
         this->spacing = style.spacing.get_default().raw();
         this->animation_speed = style.animation_speed.get_default();
+        this->overlay_size = style.overlay_width.get_default().raw();
+        this->notification_time = style.notification_time.get_default();
         this->overlay_blur = bg.overlay_blur_enabled.get_default();
         this->overlay_blur_radius = bg.overlay_blur_radius.get_default().raw();
         this->overlay_noise = bg.overlay_noise_scale.get_default();
@@ -371,6 +375,8 @@ void theme_data::save(void_* instance, bool create)
         this->rounding = style.rounding->raw();
         this->spacing = style.spacing->raw();
         this->animation_speed = style.animation_speed();
+        this->overlay_size = style.overlay_width->raw();
+        this->notification_time = style.notification_time();
         this->overlay_blur = bg.overlay_blur_enabled();
         this->overlay_blur_radius = bg.overlay_blur_radius->raw();
         this->overlay_noise = bg.overlay_noise_scale();

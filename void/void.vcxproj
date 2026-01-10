@@ -249,6 +249,7 @@
     <ClInclude Include="src\contents\overlays\childwindow\childwindow.h" />
     <ClInclude Include="src\contents\overlays\colorpicker\colorpicker.h" />
     <ClInclude Include="src\contents\overlays\dropdown\dropdown.h" />
+    <ClInclude Include="src\contents\overlays\multiselect\config_module.h" />
     <ClInclude Include="src\contents\overlays\multiselect\multiselect.h" />
     <ClInclude Include="src\contents\sidebar.h" />
     <ClInclude Include="src\contents\widgets\button\button.h" />

@@ -37,6 +37,7 @@ class _config : public config_manager {
 private:
 	std::filesystem::path main_path_;
 	std::vector<std::unique_ptr<config_module>> modules_;
+	std::vector<std::size_t> freed_modules_;
 	std::vector<std::unique_ptr<config_drawable>> configs_;
 
 public:
@@ -50,7 +51,9 @@ public:
 	void destroy();
 
 public:
-	void add_module(std::unique_ptr<config_module>&& module);
+	inline static constexpr std::size_t kInvalidModuleId = static_cast<std::size_t>(-1);
+	std::size_t add_module(std::unique_ptr<config_module>&& module);
+	void remove_module(std::size_t module);
 
 	[[nodiscard]] const auto& get_main_path() {
 		return main_path_; 

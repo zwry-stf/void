@@ -5,9 +5,14 @@
 
 void_begin_
 
-void config::add_module(std::unique_ptr<config_module>&& module)
+std::size_t config::add_module(std::unique_ptr<config_module>&& module)
 {
-    instance()->config_->add_module(std::move(module));
+    return instance()->config_->add_module(std::move(module));
+}
+
+void config::remove_module(std::size_t module)
+{
+    instance()->config_->remove_module(module);
 }
 
 std::string config::get_main_path() const

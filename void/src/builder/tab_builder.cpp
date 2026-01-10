@@ -40,6 +40,8 @@ child_tab_normal_builder& child_tab_normal_builder::disable_scroll()
 
 group_builder child_tab_normal_builder::left_group(const xstr& name)
 {
+    set_last_group_name(name);
+
     auto* group = get_child_tab<child_tab_normal>()->add_group(
         std::make_unique<::vo::group>(
             instance(),
@@ -53,6 +55,8 @@ group_builder child_tab_normal_builder::left_group(const xstr& name)
 
 group_builder child_tab_normal_builder::right_group(const xstr& name)
 {
+    set_last_group_name(name);
+
     auto* group = get_child_tab<child_tab_normal>()->add_group(
         std::make_unique<::vo::group>(
             instance(),
@@ -75,6 +79,8 @@ tab_builder::tab_builder(void_* instance, menu_builder* builder, tab_normal* tab
 
 child_tab_normal_builder tab_builder::child(const xstr& name)
 {
+    set_last_child_name(name);
+
     auto* child_tab = tab_instance_->add_child_tab(
         std::make_unique<::vo::child_tab_normal>(
             instance(), instance(), instance(),

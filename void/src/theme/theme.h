@@ -28,6 +28,8 @@ public:
     float overlay_blur_radius;
     float overlay_noise;
     float blend_amount;
+    float overlay_size;
+    float notification_time;
 
 public:
     void load(void_* instance);

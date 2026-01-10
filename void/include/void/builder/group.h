@@ -31,16 +31,18 @@ class childwindow_access;
 class group_base_options : public base_builder_object {
 protected:
     widget* const widget_instance_;
+    std::size_t config_id_;
 
 public:
     group_base_options(void_* instance, menu_builder* builder,
-                       widget* widget_instance);
+                       widget* widget_instance, std::size_t config_id);
 
 protected:
     void disabled(bool& state);
     void disabled_inverted(bool& state);
     void disabled(std::function<bool()>&& callback);
     void condition(std::function<bool()>&& callback);
+    void no_config();
     
 protected:
     template <typename T = widget>
@@ -58,7 +60,8 @@ protected:
 
 public:
     group_item_options(void_* instance, menu_builder* builder, 
-                       owner_type* group_instance, widget* widget_instance);
+                       owner_type* group_instance, widget* widget_instance,
+                       std::size_t config_id);
 
 public:
     /// Disable widget when state becomes true.
@@ -72,12 +75,22 @@ public:
 
     /// Hide widget when callback returns false.
     owner_type& condition(std::function<bool()>&& callback);
+
+    /// remove widget from config
+    owner_type& no_config();
 };
 
 class group_with_child_base_options : public group_base_options {
+protected:
+    const xstr config_path_;
+
+protected:
+    xstr build_child_config_path(const xstr& type);
+
 public:
     group_with_child_base_options(void_* instance, menu_builder* builder,
-                                  widget* widget_instance);
+                                  widget* widget_instance, const xstr& config_path, 
+                                  std::size_t config_id);
 
 protected:
     void colorpicker(r2::color& value, bool has_alpha = true);
@@ -95,7 +108,8 @@ protected:
 
 public:
     group_with_child_options(void_* instance, menu_builder* builder,
-                             owner_type* group_instance, widget* widget_instance);
+                             owner_type* group_instance, widget* widget_instance,
+                             const xstr& config_path, std::size_t config_id);
 
 public:
     /// Disable widget when state becomes true.
@@ -109,6 +123,9 @@ public:
 
     /// Hide widget when callback returns false.
     owner_type& condition(std::function<bool()>&& callback);
+
+    /// remove widget from config
+    owner_type& no_config();
 
 public:
     owner_type& colorpicker(r2::color& value, bool has_alpha = true);
@@ -134,7 +151,8 @@ private:
 
 public:
     group_textfield_options(void_* instance, menu_builder* builder,
-                            owner_type* group_instance, widget* widget_instance);
+                            owner_type* group_instance, widget* widget_instance,
+                            const xstr& config_path, std::size_t config_id);
     virtual ~group_textfield_options();
 
 public:
@@ -185,7 +203,8 @@ protected:
 
 public:
     group_slider_options(void_* instance, menu_builder* builder,
-                         owner_type* group_instance, widget* widget_instance);
+                         owner_type* group_instance, widget* widget_instance,
+                         std::size_t config_id);
     
 public:
     /// Disable widget when state becomes true.
@@ -199,6 +218,9 @@ public:
 
     /// Hide widget when callback returns false.
     owner_type& condition(std::function<bool()>&& callback);
+
+    /// remove widget from config
+    owner_type& no_config();
 
 public:
     /// Sets how many decimals the slider should round to.
@@ -231,7 +253,8 @@ protected:
     
 public:
     overlay_item_options(void_* instance, menu_builder* builder,
-                         owner_type* group_instance, widget* widget_instance);
+                         owner_type* group_instance, widget* widget_instance,
+                         std::size_t config_id);
 
 public:
     /// Disable widget when state becomes true.
@@ -245,15 +268,23 @@ public:
 
     /// Hide widget when callback returns false.
     owner_type& condition(std::function<bool()>&& callback);
+
+    /// remove widget from config
+    owner_type& no_config();
 };
 
 class overlay_with_child_base_options : public group_base_options {
 protected:
     childwindow* const childwindow_instance_;
+    const xstr config_path_;
+
+protected:
+    xstr build_overlay_child_config_path(const xstr& type);
     
 public:
     overlay_with_child_base_options(void_* instance, menu_builder* builder,
-                                    widget* widget_instance, childwindow* childwindow_instance);
+                                    widget* widget_instance, childwindow* childwindow_instance, 
+                                    const xstr& config_path, std::size_t config_id);
 public:
     void colorpicker(r2::color& value, bool has_alpha = true);
     void dropdown(list_options* options, std::size_t& selected);
@@ -270,7 +301,8 @@ protected:
 public:
     overlay_with_child_options(void_* instance, menu_builder* builder,
                                owner_type* group_instance, widget* widget_instance,
-                               childwindow* childwindow_instance);
+                               childwindow* childwindow_instance, const xstr& config_path,
+                               std::size_t config_id);
 
 public:
     /// Disable widget when state becomes true.
@@ -284,6 +316,9 @@ public:
 
     /// Hide widget when callback returns false.
     owner_type& condition(std::function<bool()>&& callback);
+
+    /// remove widget from config
+    owner_type& no_config();
 
 public:
     owner_type& colorpicker(r2::color& value, bool has_alpha = true);
@@ -308,7 +343,8 @@ private:
 public:
     overlay_textfield_options(void_* instance, menu_builder* builder,
                               owner_type* group_instance, widget* widget_instance,
-                              childwindow* childwindow_instance);
+                              childwindow* childwindow_instance, const xstr& config_path,
+                              std::size_t config_id);
     virtual ~overlay_textfield_options() override;
 
 public:
@@ -357,7 +393,8 @@ protected:
     
 public:
     overlay_slider_options(void_* instance, menu_builder* builder,
-                           owner_type* group_instance, widget* widget_instance);
+                           owner_type* group_instance, widget* widget_instance,
+                           std::size_t config_id);
 
 public:
     /// Disable widget when state becomes true.
@@ -371,6 +408,9 @@ public:
 
     /// Hide widget when callback returns false.
     owner_type& condition(std::function<bool()>&& callback);
+
+    /// remove widget from config
+    owner_type& no_config();
 
 public:
     /// Sets how many decimals the slider should round to.
@@ -398,8 +438,12 @@ public:
 private:
     owner_type* const group_instance_;
     childwindow* const childwindow_instance_;
+    xstr last_overlay_widget_name_{};
 
     friend class overlay_with_child_options;
+
+protected:
+    xstr build_overlay_config_path(const xstr& type);
 
 public:
     childwindow_options(void_* instance, menu_builder* builder,
@@ -415,6 +459,7 @@ public:
     overlay_slider_options::owner_type slider(const xstr& name, float& value, float min = 0.f, float max = 1.f,
                                               const std::format_string<float>& format = "{:.2f}");
     overlay_spacing_options::owner_type spacing();
+    overlay_textfield_options::owner_type textfield(const xstr& name, std::function<void(const std::u32string& s)>&& callback);
     overlay_with_child_options::owner_type toggle(const xstr& name, bool& value);
 
     overlay_item_options::owner_type custom_widget(std::unique_ptr<widget>&& widget);
@@ -430,6 +475,10 @@ protected:
     friend class group_access;
     friend class group_with_child_options;
     friend class group_textfield_options;
+    friend class childwindow_options;
+
+protected:
+    xstr build_config_path(const xstr& type);
 
 protected:
     group_builder(const group_builder&) = default;
@@ -465,6 +514,13 @@ private:
 
 public:
     template <class... Types>
+        requires std::constructible_from<
+            T,
+                decltype(std::declval<group_builder&>().instance()),
+                decltype(std::declval<group_builder&>().builder()),
+                group_access*,
+                Types...
+        >
     group_access(const group_builder& v, Types&&... args)
         : group_builder(v.instance(), v.builder(), v.group_instance_),
           options_(v.instance(), v.builder(), this, std::forward<Types>(args)...) { 
@@ -491,6 +547,13 @@ private:
 
 public:
     template <class... Types>
+        requires std::constructible_from<
+            T,
+                decltype(std::declval<childwindow_access&>().instance()),
+                decltype(std::declval<childwindow_access&>().builder()),
+                childwindow_access*,
+                Types...
+        >
     childwindow_access(const group_access<Group>& v, Types&&... args)
         : group_access<Group>(v),
           cw_options_(this->instance(), this->builder(), this, std::forward<Types>(args)...) {

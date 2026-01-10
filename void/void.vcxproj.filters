@@ -364,6 +364,7 @@
       <Filter>src\util</Filter>
     </ClInclude>
     <ClInclude Include="include\void\accessors\callbacks.h" />
+    <ClInclude Include="src\contents\overlays\multiselect\config_module.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\accessors\account.cpp">

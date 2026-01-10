@@ -448,52 +448,75 @@ void add_widgets()
 
         child.left_group("Background")
             .colorpicker("Background", style.background())
+                ->no_config()
             .colorpicker("Overlay Background", style.overlay_background())
-            .colorpicker("Group Background", style.group_background());
+                ->no_config()
+            .colorpicker("Group Background", style.group_background())
+                ->no_config();
 
         child.left_group("Colors")
             .colorpicker("Accent", style.accent())
+                ->no_config()
             .colorpicker("Accent 2", style.accent2())
+                ->no_config()
             .colorpicker("Highlight", style.highlight())
+                ->no_config()
             .colorpicker("Border", style.border())
+                ->no_config()
             .colorpicker("Text", style.text())
+                ->no_config()
             .colorpicker("Text Accent", style.text_accent())
+                ->no_config()
             .colorpicker("Icon", style.icon())
-            .colorpicker("Grey", style.grey());
+                ->no_config()
+            .colorpicker("Grey", style.grey())
+                ->no_config();
     
         child.right_group("Background")
             .childwindow("Blur (Background)")
                 ->slider("Radius", background.blur_radius->raw(), 8.f, 
                     50.f / g_void->options().get<vo::options::option_DownsampleValue>(), "{:.0f} px")
                     .l()->decimal_count(0)
+                    .l()->no_config()
                 ->slider("Noise", background.noise_scale())
+                    .l()->no_config()
         
             .toggle("Background Blur", background.blur_enabled())
                 ->last_childwindow()
                 ->disabled(g_void->options().get<vo::options::option_NoBlur>())
+                ->no_config()
 
             .childwindow("Blur (Overlay)")
                 ->slider("Radius", background.overlay_blur_radius->raw(), 8.f, 
                     50.f / g_void->options().get<vo::options::option_DownsampleValue>(), "{:.0f} px")
                     .l()->decimal_count(0)
+                    .l()->no_config()
                 ->slider("Noise", background.overlay_noise_scale())
+                    .l()->no_config()
 
             .toggle("Overlay Blur", background.overlay_blur_enabled())
                 ->last_childwindow()
                 ->disabled(g_void->options().get<vo::options::option_NoBlur>())
+                ->no_config()
 
-            .slider("Blend Amount", background.blend_amount());
+            .slider("Blend Amount", background.blend_amount())
+                ->no_config();
 
         child.right_group("Values")
             .slider("Animation Speed", style.animation_speed(), 5.f, 18.f, "{:.1f}")
+                ->no_config()
             .slider("Rounding", style.rounding->raw(), 5.f, 14.f, "{:.0f} px")
                 ->decimal_count(0)
+                ->no_config()
             .slider("Spacing", style.spacing->raw(), 5.f, 10.f, "{:.0f} px")
                 ->decimal_count(0)
+                ->no_config()
             .slider("Overlay Size", style.overlay_width->raw(), 160.f, 300.f, "{:.0f} px")
                 ->decimal_count(0)
+                ->no_config()
             .slider("Notification Time", style.notification_time(), 0.5f, 10.f, "{:.1f} s")
-                ->disabled_inverted(g_void->options().get<vo::options::option_Notifications>());
+                ->disabled_inverted(g_void->options().get<vo::options::option_Notifications>())
+                ->no_config();
     }
 }
 
