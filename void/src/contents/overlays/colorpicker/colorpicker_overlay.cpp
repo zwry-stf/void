@@ -50,7 +50,7 @@ void colorpicker_overlay::update(const overlay_render_input& input)
     const auto display_size = renderer.get_render_size();
 
     // Animation
-    if (last_color_ != *color_) {
+    if ((r2::color_u32)last_color_ != *color_) {
         load_hsv();
         load_hue();
 

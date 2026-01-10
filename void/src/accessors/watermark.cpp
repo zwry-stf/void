@@ -303,8 +303,8 @@ void watermark::add_border(float& x, float y, float h, float spacing)
 
     const float border_size = style.border_size.get(instance()->scale());
 
-    const std::uint32_t col = style.text_accent().alpha(animation_ * 0.7f);
-    const std::uint32_t transparent = style.text_accent().transparent();
+    const r2::color_u32 col = style.text_accent().alpha(animation_ * 0.7f);
+    const r2::color_u32 transparent = style.text_accent().transparent();
 
     renderer.add_rect_filled_multicolor(
         r2::vec2(x + spacing, y),

@@ -394,6 +394,7 @@ void add_widgets()
                 ->slider("Slider 1", float_value, 0.f, 50.f)
                     .l()->decimal_count(0)
                 ->button("Button 1", "Click", [](){})
+                ->colorpicker("Color picker", color_value)
             .colorpicker("Colorpicker 1", color_value)
                 ->last_childwindow()
                 ->colorpicker(color_value)
@@ -695,6 +696,31 @@ void render_frame()
             r2::color::blue().interp(r2::color::white(), 0.4f).interp(r2::color::green(), 0.3f),
             std::u8string_view(u8"Ä*+**''Ä")
         );
+
+        renderer.path_add_point(r2::vec2(500.f, 200.f));
+        renderer.path_add_point(r2::vec2(400.f, 600.f));
+        renderer.path_add_point(r2::vec2(500.f, 560.f));
+
+        const auto& path = renderer.path();
+        renderer.add_shadow_convex(
+            path.data(),
+            static_cast<std::uint32_t>(path.size()),
+            r2::color::white().alpha(0.5f),
+            40.f
+        );
+        renderer.path_clear();
+
+        renderer.path_add_point(r2::vec2(500.f, 200.f));
+        renderer.path_add_point(r2::vec2(500.f, 560.f));
+        renderer.path_add_point(r2::vec2(600.f, 600.f));
+
+        renderer.add_shadow_convex(
+            path.data(),
+            static_cast<std::uint32_t>(path.size()),
+            r2::color::white().alpha(0.5f),
+            40.f
+        );
+        renderer.path_clear();
     }
 
     // fps 
