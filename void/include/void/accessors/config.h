@@ -10,7 +10,7 @@ void_begin_
 
 class config_module {
 protected:
-	const xstr name_;
+	xstr name_;
 	const std::uint32_t size_;
 
 public:
@@ -27,6 +27,9 @@ public:
 	}
 	[[nodiscard]] auto get_size() const noexcept {
 		return size_;
+	}
+	void set_name(const xstr& name) noexcept {
+		name_ = name;
 	}
 };
 

@@ -109,10 +109,29 @@ void _config::destroy()
 
 std::size_t _config::add_module(std::unique_ptr<config_module>&& module)
 {
-#ifdef _DEBUG
-    for (auto& m : modules_)
-        assert(!m || m->get_name() != module->get_name());
-#endif
+    // make sure not to add the same name twice
+    const xstr& name = module->get_name();
+    const xstr original_name = name;
+    int num = 0;
+    for (;;) {
+        bool found = false;
+        for (auto& m : modules_) {
+            if (m) {
+                if (m->get_name() == name) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (!found)
+            break;
+
+        xstr new_name;
+        new_name.append(std::to_string(num).c_str());
+        module->set_name(new_name + original_name);
+        num++;
+    }
 
     if (!freed_modules_.empty()) {
         const std::size_t id = freed_modules_.back();
@@ -288,7 +307,7 @@ bool _config::save(const std::wstring& name, config_drawable* drawable)
     std::vector<std::uint8_t> data;
     data.reserve(modules_.size() * 10); // default estimated size
 
-    for (auto& mod : modules_) {
+    for (const auto& mod : modules_) {
         if (!mod)
             continue;
 

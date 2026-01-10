@@ -156,6 +156,9 @@ public:
         [[nodiscard]] Char operator*() const noexcept {
             return ref_->chars_[pos_] ^ ref_->key_;
         }
+        [[nodiscard]] explicit operator Char() const noexcept {
+            return ref_->chars_[pos_] ^ ref_->key_;
+        }
         iterator& operator++() noexcept {
             assert((pos_ < basic_xstr<Char, Count>::kMaxSize));
             pos_++;
