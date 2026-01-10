@@ -97,6 +97,10 @@ void textfield_widget::update(float x, float y, float w, const render_input& inp
 
 void textfield_widget::render(float alpha)
 {
+    if (was_occluded_) {
+        return;
+    }
+
     auto& util = instance()->util();
     auto& style = instance()->style();
     auto& renderer = instance()->renderer();
@@ -170,6 +174,8 @@ void textfield_widget::render(float alpha)
         border_size,
         rounding * 0.5f
     );
+
+    render_child_widgets(alpha);
 }
 
 input_response textfield_widget::input(const input_base& input)

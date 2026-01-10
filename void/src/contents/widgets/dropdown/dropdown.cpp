@@ -100,6 +100,8 @@ void dropdown::render(float alpha)
         owned_overlay.options()->element_safe(*owned_overlay.selected()),
         false /* is multiselect */
     );
+
+    render_child_widgets(alpha);
 }
 
 void dropdown::render_dropdown(void_* instance, const r2::rectf& pos, float animation_hovered, float animation_selected,

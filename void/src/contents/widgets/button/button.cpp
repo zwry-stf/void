@@ -142,6 +142,8 @@ void button::render(float alpha)
     );
 
     renderer.pop_clip_rect();
+
+    render_child_widgets(alpha);
 }
 
 input_response button::input(const input_base& input)
