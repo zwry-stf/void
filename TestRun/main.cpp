@@ -60,7 +60,7 @@ struct GlobalData {
 };
 
 inline static GlobalData g_data;
-
+inline static vo::keybind g_test_keybind{};
 inline static vo::void_* g_void{};
 
 
@@ -395,10 +395,14 @@ void add_widgets()
                     .l()->decimal_count(0)
                 ->button("Button 1", "Click", [](){})
                 ->colorpicker("Color picker", color_value)
+            .keybind(g_test_keybind)
+                ->key(vo::key::f7)
+                ->disabled(bool_value)
             .colorpicker("Colorpicker 1", color_value)
                 ->last_childwindow()
                 ->colorpicker(color_value)
-                ->optional_colorpicker(color_value, bool_value);
+                ->optional_colorpicker(color_value, bool_value)
+                ->last_keybind();
 
         child.right_group("Group right")
             .button("Button", "Add Option",
@@ -750,7 +754,7 @@ void render_frame()
         );
     }
 
-    if (GetAsyncKeyState(VK_F7) & 0x8000) {
+    if (g_test_keybind) {
         g_void->renderer().add_text(
             r2::vec2(750.f, 200.f),
             r2::color::yellow(),

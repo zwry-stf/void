@@ -65,10 +65,9 @@ void dropdown::render(float alpha)
     const float cliprect_left = static_cast<float>(
         renderer.cmd_header().clip_rect.left
     );
-    renderer.push_clip_rect(
-        r2::vec2(cliprect_left, last_pos_.y),
-        r2::vec2(child_widget_left_pos_ - border_size, last_pos_.y + last_pos_.h),
-        true
+    renderer.modify_clip_rect_x(
+        cliprect_left,
+        child_widget_left_pos_ - border_size
     );
 
     renderer.add_text_faded(
@@ -143,16 +142,22 @@ void dropdown::render_dropdown(void_* instance, const r2::rectf& pos, float anim
         rounding * 0.5f
     );
 
-    const float icon_spacing = std::round(pos.h * 0.15f);
+    const float icon_spacing = is_multiselect ? 
+        std::round(pos.h * 0.15f) : std::round(pos.h * 0.25f);
     const float icon_size = pos.h - icon_spacing * 2.f;
 
-    const r2::vec2 icon_min = r2::vec2(pos.x + pos.w - icon_spacing - icon_size,
-        pos.y + icon_spacing);
-    const r2::vec2 icon_max = icon_min + r2::vec2(icon_size, icon_size);
+    const r2::vec2 icon_min = r2::vec2(
+        pos.x + pos.w - icon_spacing - icon_size,
+        pos.y + icon_spacing
+    );
+    const r2::vec2 icon_max = icon_min + r2::vec2(icon_size);
 
-    const auto icon_color = util.disable_color(style.accent().interp(
-        style.text_accent(), 0.5f + animation_hovered * 0.5f),
-        animation_disabled).alpha(alpha);
+    const auto icon_color = util.disable_color(
+        style.accent().interp(
+            style.text_accent(), 0.5f + animation_hovered * 0.5f
+        ),
+        animation_disabled
+    ).alpha(alpha);
 
     // dropdown icon
     if (is_multiselect) {
@@ -187,16 +192,16 @@ void dropdown::render_dropdown(void_* instance, const r2::rectf& pos, float anim
         const float icon_offset = std::round(icon_size * 0.25f);
 
         const r2::vec2 left = r2::vec2{
-                icon_min.x,
-                icon_min.y + icon_size * 0.5f - icon_offset
+            icon_min.x,
+            icon_min.y + icon_size * 0.5f - icon_offset
         };
         const r2::vec2 mid = r2::vec2{
-                icon_min.x + icon_size * 0.5f,
-                icon_min.y + icon_size * 0.5f + icon_offset
+            icon_min.x + icon_size * 0.5f,
+            icon_min.y + icon_size * 0.5f + icon_offset - border_size
         };
         const r2::vec2 right = r2::vec2{
-                icon_max.x,
-                icon_min.y + icon_size * 0.5f - icon_offset
+            icon_max.x,
+            icon_min.y + icon_size * 0.5f - icon_offset
         };
         const float line_width = std::round(border_size * 1.45f);
 
@@ -205,8 +210,8 @@ void dropdown::render_dropdown(void_* instance, const r2::rectf& pos, float anim
         const r2::vec2 bottom_right = right + right_offset;
         const r2::vec2 bottom_left = left + left_offset;
 
-        const r2::vec2 d1 = (left - mid);
-        const r2::vec2 d2 = (right - mid);
+        const r2::vec2 d1 = left - mid;
+        const r2::vec2 d2 = right - mid;
 
         const float denom = d1.cross(d2);
 

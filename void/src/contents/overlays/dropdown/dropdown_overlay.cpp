@@ -80,7 +80,6 @@ void dropdown_overlay::render()
     auto& renderer = instance()->renderer();
 
     const float spacing = style.spacing->get(instance()->scale());
-    const float border_size = style.border_size.get(instance()->scale());
 
     instance()->background().add_immediate_overlay(
         last_pos_, alpha_
@@ -99,6 +98,8 @@ void dropdown_overlay::render()
 
     const std::size_t options_size = options_->size();
 
+    const float fade_width = spacing;
+
     float pos_y = last_pos_.y + spacing_;
     for (std::size_t i = 0u; i < options_size; i++) {
         const xstr& element = options_->element(i);
@@ -110,18 +111,24 @@ void dropdown_overlay::render()
             style.text_accent().alpha(
                 animation * member_animations_[i].selected * 0.5f),
             style.text_accent().transparent(),
-            clip_rect_rightx - border_size, clip_rect_rightx,
+            clip_rect_rightx - fade_width, clip_rect_rightx,
             element, 
             true /* blurred */
         );
 
-        renderer.add_text(
+        const auto text_color = style.text().interp(
+            style.text_accent(), member_animations_[i].selected).alpha(
+            animation * (0.7f + member_animations_[i].hovered * 0.3f) *
+            (0.6f + member_animations_[i].selected * 0.4f)
+        );
+
+        renderer.add_text_faded(
             r2::vec2(last_pos_.x + left_offset +
                 member_animations_[i].hovered * hovered_offset,
                 pos_y),
-            style.text().interp(style.text_accent(), member_animations_[i].selected).alpha(
-                animation * (0.7f + member_animations_[i].hovered * 0.3f) * 
-                (0.6f + member_animations_[i].selected * 0.4f)),
+            text_color,
+            text_color.transparent(),
+            clip_rect_rightx - fade_width, clip_rect_rightx,
             element
         );
 

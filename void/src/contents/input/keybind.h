@@ -11,43 +11,48 @@ struct keybind_key {
         key key;
         mouse_button mouse_button;
     } storage;
-    bool has_key;
+    bool has_key{};
 };
 
 class keybind_owner {
 private:
     keybind* const key_bind_;
     keybind_key key_;
-    keybind_mode mode_;
+    std::size_t mode_;
     bool last_key_down_;
     
     std::function<bool()> disabled_callback_;
 
 public:
-    keybind_owner(keybind* key_bind, key key = key::none, keybind_mode default_mode = keybind_mode::hold)
+    keybind_owner(keybind* key_bind, key key = key::none,
+                  keybind_mode default_mode = keybind_mode::hold) noexcept
         : key_bind_(key_bind),
-          mode_(default_mode),
+          mode_(static_cast<std::size_t>(default_mode)),
           last_key_down_(false), 
           disabled_callback_() {
         set_key(key);
     }
     
-    keybind_owner(keybind* key_bind, mouse_button key, keybind_mode default_mode = keybind_mode::hold)
+    keybind_owner(keybind* key_bind, mouse_button key, 
+                  keybind_mode default_mode = keybind_mode::hold) noexcept
         : key_bind_(key_bind),
-          mode_(default_mode), 
+          mode_(static_cast<std::size_t>(default_mode)), 
           last_key_down_(false), 
           disabled_callback_() {
         set_key(key);
     }
 
 public:
-    void set_key(key key) {
+    void set_key(key key) noexcept {
         key_.has_key = true;
         key_.storage.key = key;
     }
-    void set_key(mouse_button key) {
+    void set_key(mouse_button key) noexcept {
         key_.has_key = false;
         key_.storage.mouse_button = key;
+    }
+    void set_mode(keybind_mode mode) noexcept {
+        mode_ = static_cast<std::size_t>(mode);
     }
     [[nodiscard]] bool has_key() const noexcept {
         return key_.has_key;
@@ -61,20 +66,21 @@ public:
         return key_.storage.mouse_button; 
     }
 
-    [[nodiscard]] auto& mod_ref() noexcept { return mode_; }
-    [[nodiscard]] auto& key_ref() noexcept { return key_; }
+    [[nodiscard]] auto& mode_ref() noexcept { 
+        return mode_;
+    }
+    [[nodiscard]] auto& key_ref() noexcept {
+        return key_;
+    }
 
-    [[nodiscard]] bool value() const { return key_bind_; }
+    [[nodiscard]] bool value() const noexcept {
+        return key_bind_;
+    }
 
     void update(void_* instance);
     
-    template <typename T>
-    void set_disabled_callback(bool(*callback)(T*), T* data) {
-        disabled_callback_ = std::function<bool()>(
-            [data, callback]() {
-                return callback(data);
-            }
-        );
+    void set_disabled_callback(std::function<bool()>&& callback) {
+        disabled_callback_ = std::move(callback);
     }
 
 private:

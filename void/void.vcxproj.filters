@@ -366,6 +366,8 @@
     <ClInclude Include="include\void\accessors\callbacks.h" />
     <ClInclude Include="src\contents\overlays\multiselect\config_module.h" />
     <ClInclude Include="src\contents\widgets\colorpicker\optional_colorpicker_child.h" />
+    <ClInclude Include="src\contents\widgets\keybind\keybind_child.h" />
+    <ClInclude Include="src\contents\widgets\keybind\keybind_widget.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\accessors\account.cpp">
@@ -558,5 +560,7 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\contents\widgets\colorpicker\optional_colorpicker_child.cpp" />
+    <ClCompile Include="src\contents\widgets\keybind\keybind_child.cpp" />
+    <ClCompile Include="src\contents\widgets\keybind\keybind_widget.cpp" />
   </ItemGroup>
 </Project>

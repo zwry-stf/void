@@ -27,10 +27,9 @@ void multiselect::render(float alpha)
     const float cliprect_left = static_cast<float>(
         renderer.cmd_header().clip_rect.left
     );
-    renderer.push_clip_rect(
-        r2::vec2(cliprect_left, last_pos_.y),
-        r2::vec2(child_widget_left_pos_ - border_size, last_pos_.y + last_pos_.h),
-        true
+    renderer.modify_clip_rect_x(
+        cliprect_left,
+        child_widget_left_pos_ - border_size
     );
 
     renderer.add_text_faded(

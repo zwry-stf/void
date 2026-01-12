@@ -119,6 +119,8 @@ void input::input_on_frame()
             }
         }
     }
+
+    keybind_manager_->update();
 }
 
 keybind_owner* input::add_keybind(keybind* bind, key default_key, keybind_mode mode)
@@ -443,19 +445,21 @@ int input::get_virtual_key_win32(mouse_button key)
 #if defined(VOID_HAS_GLFW)
 
 inline static key convert_key_glfw(int key) {
-    if (key >= GLFW_KEY_A && key <= GLFW_KEY_Z) {
+    if (key >= GLFW_KEY_A &&
+        key <= GLFW_KEY_Z) {
         int offset = key - GLFW_KEY_A;
         return static_cast<vo::key>(static_cast<int>(key::a) + offset);
     }
 
-    if (key >= GLFW_KEY_0 && key <= GLFW_KEY_9) {
+    if (key >= GLFW_KEY_0 && 
+        key <= GLFW_KEY_9) {
         int offset = key - GLFW_KEY_0;
         return static_cast<vo::key>(static_cast<int>(key::n0) + offset);
     }
 
     if (key >= GLFW_KEY_F1 &&
         key <= GLFW_KEY_F12) {
-        int offset = key - GLFW_KEY_0;
+        int offset = key - GLFW_KEY_F1;
         return static_cast<vo::key>(static_cast<int>(key::f1) + offset);
     }
 

@@ -14,14 +14,18 @@ enum class keybind_mode : std::uint8_t {
 
 class keybind {
 private:
-    std::atomic<std::uint8_t> pressed_;
+    std::atomic<std::uint8_t> pressed_{ 0u };
 
 public:
-    constexpr keybind() = default;
+    constexpr keybind() noexcept = default;
 
 public:
-    [[nodiscard]] bool get() const { return (bool)pressed_.load(); }
-    [[nodiscard]] operator bool() const { return get(); }
+    [[nodiscard]] bool get() const noexcept { 
+        return pressed_.load(std::memory_order_acquire) != 0u;
+    }
+    [[nodiscard]] explicit operator bool() const {
+        return get();
+    }
 
     friend class keybind_owner;
 };

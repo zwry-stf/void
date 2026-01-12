@@ -4,6 +4,7 @@
 #include <contents/container/group.h>
 #include <config/config.h>
 #include <contents/overlays/multiselect/config_module.h>
+#include <contents/input/keybind.h>
 
 // widgets
 #include <contents/widgets/toggle/toggle.h>
@@ -22,6 +23,7 @@
 #include <contents/widgets/dropdown/dropdown_child.h>
 #include <contents/widgets/multiselect/multiselect_child.h>
 #include <contents/widgets/childwindow/childwindow_child.h>
+#include <contents/widgets/keybind/keybind_child.h>
 
 // overlays
 #include <contents/overlays/colorpicker/colorpicker.h>
@@ -243,13 +245,22 @@ void group_with_child_base_options::multiselect(list_options* options, std::vect
 
 void group_with_child_base_options::last_childwindow(std::int32_t overlay_id)
 {
-
     assert(instance()->get_overlay(overlay_id)->is_childwindow());
 
     get_widget()->add_child(
         std::make_unique<childwindow_child>(
             instance(), instance(), instance(),
             overlay_id
+        )
+    );
+}
+
+void group_with_child_base_options::last_keybind(keybind_owner* bind)
+{
+    get_widget()->add_child(
+        keybind_child::create_keybind(
+            instance(), instance(), instance(),
+            bind
         )
     );
 }
@@ -339,6 +350,15 @@ group_with_child_options::owner_type& group_with_child_options::last_childwindow
     assert(overlay_id != -1);
 
     group_with_child_base_options::last_childwindow(overlay_id);
+    return *group_instance_;
+}
+
+group_with_child_options::owner_type& group_with_child_options::last_keybind()
+{
+    auto* const keybind = group_instance_->last_keybind_;
+    assert(keybind != nullptr);
+
+    group_with_child_base_options::last_keybind(keybind);
     return *group_instance_;
 }
 
@@ -433,6 +453,15 @@ group_textfield_options::owner_type& group_textfield_options::last_childwindow()
     assert(overlay_id != -1);
 
     group_with_child_base_options::last_childwindow(overlay_id);
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::last_keybind()
+{
+    auto* const keybind = group_instance_->last_keybind_;
+    assert(keybind != nullptr);
+
+    group_with_child_base_options::last_keybind(keybind);
     return *group_instance_;
 }
 
@@ -1247,6 +1276,101 @@ overlay_textfield_options::owner_type childwindow_options::textfield(const xstr&
     );
 }
 
+
+/// keybind_options_base
+
+keybind_options_base::keybind_options_base(void_* instance, menu_builder* builder,
+                                           keybind_owner* keybind_instance)
+    : base_builder_object(instance, builder),
+      keybind_instance_(keybind_instance)
+{
+}
+
+void keybind_options_base::disabled(bool& state)
+{
+    keybind_instance_->set_disabled_callback(
+        [&state]() -> bool {
+            return state;
+        }
+    );
+}
+
+void keybind_options_base::disabled_inverted(bool& state)
+{
+    keybind_instance_->set_disabled_callback(
+        [&state]() -> bool {
+            return !state;
+        }
+    );
+}
+
+void keybind_options_base::disabled(std::function<bool()>&& callback)
+{
+    keybind_instance_->set_disabled_callback(std::move(callback));
+}
+
+void keybind_options_base::mode(keybind_mode mode)
+{
+    keybind_instance_->set_mode(mode);
+}
+
+void keybind_options_base::key(::vo::key k)
+{
+    keybind_instance_->set_key(k);
+}
+
+void keybind_options_base::key(mouse_button k)
+{
+    keybind_instance_->set_key(k);
+}
+
+
+/// group_keybind_options
+
+group_keybind_options::group_keybind_options(void_* instance, menu_builder* builder, 
+                                             owner_type* group_instance, keybind_owner* keybind_instance)
+    : keybind_options_base(instance, builder, keybind_instance),
+      group_instance_(group_instance)
+{
+}
+
+group_keybind_options::owner_type& group_keybind_options::disabled(bool& state)
+{
+    keybind_options_base::disabled(state);
+    return *group_instance_;
+}
+
+group_keybind_options::owner_type& group_keybind_options::disabled_inverted(bool& state)
+{
+    keybind_options_base::disabled_inverted(state);
+    return *group_instance_;
+}
+
+group_keybind_options::owner_type& group_keybind_options::disabled(std::function<bool()>&& callback)
+{
+    keybind_options_base::disabled(std::move(callback));
+    return *group_instance_;
+}
+
+group_keybind_options::owner_type& group_keybind_options::mode(keybind_mode mode)
+{
+    keybind_options_base::mode(mode);
+    return *group_instance_;
+}
+
+group_keybind_options::owner_type& group_keybind_options::key(::vo::key k)
+{
+    keybind_options_base::key(k);
+    return *group_instance_;
+}
+
+group_keybind_options::owner_type& group_keybind_options::key(mouse_button k)
+{
+    keybind_options_base::key(k);
+    return *group_instance_;
+}
+
+
 /// group_builder
 
 xstr group_builder::build_config_path(const xstr& type)
@@ -1540,6 +1664,16 @@ group_access<childwindow_options> group_builder::childwindow(const xstr& name)
     return group_access<childwindow_options>(
         *this,
         instance()->get_overlay<::vo::childwindow>(overlay_id)
+    );
+}
+
+group_keybind_options::owner_type group_builder::keybind(::vo::keybind& bind)
+{
+    last_keybind_ = instance()->input().add_keybind(&bind);
+
+    return group_keybind_options::owner_type(
+        *this,
+        last_keybind_
     );
 }
 

@@ -119,7 +119,7 @@ void textfield_widget::render(float alpha)
     const float cliprect_left = static_cast<float>(renderer.cmd_header().clip_rect.left);
     renderer.modify_clip_rect_x(
         cliprect_left, 
-        min.x - border_size
+        child_widget_left_pos_ - border_size
     );
 
     renderer.add_text_faded(

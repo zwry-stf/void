@@ -65,8 +65,10 @@ void childwindow_child::render(const r2::rectf& full_pos, float alpha, float ani
         icon->tex,
         r2::vec2(last_pos_.x - offset, last_pos_.y - offset),
         r2::vec2(last_pos_.x + last_pos_.w + offset, last_pos_.y + last_pos_.h + offset),
-        util.disable_color(style.icon().interp(style.accent(), animation_hovered_ * 0.6f).alpha(
-            alpha * (0.7f + selected_animation * 0.3f)), animation_disabled),
+        util.disable_color(style.icon().interp(
+            style.accent(), animation_hovered_ * 0.6f).alpha(
+                alpha * (0.7f + selected_animation * 0.3f)
+            ), animation_disabled),
         icon->uv_min, icon->uv_max
     );
 

@@ -10,6 +10,7 @@
 #include <void/contents/widgets/list_options.h>
 #include <void/util/xstr.h>
 #include <void/contents/widgets/textfield.h>
+#include <void/contents/input/keybind.h>
 
 
 void_begin_
@@ -20,6 +21,7 @@ class widget;
 class widget_child;
 class group;
 class childwindow;
+class keybind_owner;
 class menu_builder;
 
 template <class T>
@@ -98,6 +100,7 @@ protected:
     void dropdown(list_options* options, std::size_t& selected);
     void multiselect(list_options* options, std::vector<bool>& selected);
     void last_childwindow(std::int32_t);
+    void last_keybind(keybind_owner* bind);
     void custom_child(std::unique_ptr<widget_child>&& child);
 };
 
@@ -135,6 +138,8 @@ public:
     owner_type& multiselect(list_options* options, std::vector<bool>& selected);
     /// Adds the last created child window as child widget.
     owner_type& last_childwindow();
+    /// Adds the last created keybind as child widget.
+    owner_type& last_keybind();
     /// Add a custom child widget to the last created widget.
     owner_type& custom_child(std::unique_ptr<widget_child>&& child);
 };
@@ -177,6 +182,8 @@ public:
     owner_type& multiselect(list_options* options, std::vector<bool>& selected);
     /// Adds the last created child window as child widget.
     owner_type& last_childwindow();
+    /// Adds the last created keybind as child widget.
+    owner_type& last_keybind();
     /// Add a custom child widget to the last created widget.
     owner_type& custom_child(std::unique_ptr<widget_child>&& child);
 
@@ -471,11 +478,54 @@ public:
     overlay_item_options::owner_type custom_widget(std::unique_ptr<widget>&& widget);
 };
 
+class keybind_options_base : public base_builder_object {
+protected:
+    keybind_owner* const keybind_instance_;
+
+public:
+    keybind_options_base(void_* instance, menu_builder* builder,
+                         keybind_owner* keybind_instance);
+
+public:
+    void disabled(bool& state);
+    void disabled_inverted(bool& state);
+    void disabled(std::function<bool()>&& callback);
+    void mode(keybind_mode mode);
+    void key(::vo::key k);
+    void key(mouse_button k);
+};
+
+class group_keybind_options : public keybind_options_base {
+public:
+    using owner_type = group_access<group_keybind_options>;
+private:
+    owner_type* const group_instance_;
+    
+public:
+    group_keybind_options(void_* instance, menu_builder* builder,
+                          owner_type* group_instance, keybind_owner* keybind_instance);
+
+public:
+    /// Disable keybind when state becomes true.
+    owner_type& disabled(bool& state);
+
+    /// Disable keybind when state becomes false.
+    owner_type& disabled_inverted(bool& state);
+
+    /// Disable keybind when callback returns true.
+    owner_type& disabled(std::function<bool()>&& callback);
+
+    owner_type& mode(keybind_mode mode);
+    owner_type& key(::vo::key k);
+    owner_type& key(mouse_button k);
+};
+
 class group_builder : public base_builder_object {
 protected:
     class group* const group_instance_;
     xstr last_widget_name_{};
     std::int32_t last_childwindow_{ -1 };
+    keybind_owner* last_keybind_{ nullptr };
 
     template <class T>
     friend class group_access;
@@ -494,6 +544,7 @@ public:
 
 public:
     childwindow_options::owner_type childwindow(const xstr& name);
+    group_keybind_options::owner_type keybind(::vo::keybind& bind);
     group_with_child_options::owner_type button(const xstr& name, const xstr& button_text, std::function<void()>&& callback);
     group_with_child_options::owner_type colorpicker(const xstr& name, r2::color& value, bool has_alpha = true);
     group_with_child_options::owner_type dropdown(const xstr& name, list_options* options, std::size_t& selected);
@@ -532,6 +583,7 @@ public:
           options_(v.instance(), v.builder(), this, std::forward<Types>(args)...) { 
         last_widget_name_ = v.last_widget_name_;
         last_childwindow_ = v.last_childwindow_;
+        last_keybind_ = v.last_keybind_;
     }
 
     group_access(const group_access<T>& v) = default;
