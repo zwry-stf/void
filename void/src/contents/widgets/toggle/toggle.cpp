@@ -66,7 +66,7 @@ void toggle::render(float alpha)
 
     renderer.add_shadow_rect_filled(
         toggle_min, toggle_max,
-        util.disable_color(style.accent().alpha(animation_selected_ * 0.5f), animation_disabled_),
+        util.disable_color(style.accent().alpha(alpha * animation_selected_ * 0.5f), animation_disabled_),
         rounding, 
         (toggle_max.y - toggle_min.y) * 0.7f
     );

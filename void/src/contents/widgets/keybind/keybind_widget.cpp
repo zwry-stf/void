@@ -154,7 +154,7 @@ void keybind_widget::render(float alpha)
 
     renderer.add_shadow_rect_filled(
         keybind_min, keybind_max,
-        util.disable_color(style.accent().alpha(animation_selected_ * 0.5f), animation_disabled_),
+        util.disable_color(style.accent().alpha(alpha * animation_selected_ * 0.5f), animation_disabled_),
         rounding * 0.5f,
         (keybind_max.y - keybind_min.y) * 0.7f
     );
@@ -234,6 +234,7 @@ input_response keybind_widget::input(const input_base& input)
     else if (input.event().is_message(message_type::mouse_button_down) &&
              input.event().get_mouse_button() == mouse_button::left) {
         if (input.is_selected(this)) {
+            keybind_owner_->set_key(input.event().get_mouse_button());
             input.clear_selected();
         }
         else if (util::is_in_rect(mouse_x, mouse_y, keybind_pos_)) {

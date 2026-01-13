@@ -122,7 +122,7 @@ void dropdown::render_dropdown(void_* instance, const r2::rectf& pos, float anim
 
     renderer.add_shadow_rect_filled(
         dropdown_min, dropdown_max,
-        util.disable_color(style.accent().alpha(animation_selected * 0.5f), animation_disabled),
+        util.disable_color(style.accent().alpha(alpha * animation_selected * 0.5f), animation_disabled),
         rounding,
         pos.h * 0.7f /* shadow size */
     );

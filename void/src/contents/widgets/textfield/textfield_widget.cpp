@@ -145,7 +145,7 @@ void textfield_widget::render(float alpha)
     renderer.add_shadow_rect_filled(
         min, max,
         util.disable_color(style.accent().alpha(
-            animation_selected_ * 0.5f), animation_disabled_
+            alpha * animation_selected_ * 0.5f), animation_disabled_
         ),
         rounding, 
         (max.y - min.y) * 0.7f

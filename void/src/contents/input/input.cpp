@@ -245,7 +245,7 @@ message_event input::convert_message_win32(std::uint32_t msg, uint64_t wparam, i
     case WM_XBUTTONDOWN:
     case WM_XBUTTONUP:
     {
-        mouse_button btn = (HIWORD(wparam) == XBUTTON1) ? mouse_button::xbutton1 : mouse_button::xbutton2;
+        const mouse_button btn = (HIWORD(wparam) == XBUTTON1) ? mouse_button::xbutton1 : mouse_button::xbutton2;
         return message_event::from_mouse_button(
             msg == WM_XBUTTONDOWN,
             static_cast<float>(mouse_x), 

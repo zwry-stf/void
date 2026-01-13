@@ -108,7 +108,7 @@ void button::render(float alpha)
 
     renderer.add_shadow_rect_filled(
         button_min, button_max,
-        util.disable_color(style.accent().alpha(animation_selected_ * 0.5f), animation_disabled_),
+        util.disable_color(style.accent().alpha(alpha * animation_selected_ * 0.5f), animation_disabled_),
         rounding * 0.5f,
         (button_max.y - button_min.y) * 0.7f
     );

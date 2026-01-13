@@ -110,7 +110,7 @@ void colorpicker::render(float alpha)
 
     renderer.add_shadow_rect_filled(
         color_min, color_max,
-        util.disable_color(style.accent().alpha(animation_selected_ * 0.5f), animation_disabled_),
+        util.disable_color(style.accent().alpha(alpha * animation_selected_ * 0.5f), animation_disabled_),
         rounding * 0.5f,
         (color_max.y - color_min.y) * 0.7f
     );
