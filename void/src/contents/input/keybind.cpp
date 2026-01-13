@@ -9,6 +9,11 @@ void keybind_owner::update(void_* instance)
     if (disabled())
         return;
 
+    if (static_cast<keybind_mode>(mode_) == keybind_mode::always) {
+        key_bind_->pressed_.store(true, std::memory_order_release);
+        return;
+    }
+
     if (key_.has_key &&
         key_.storage.key == key::none)
         return;
@@ -29,9 +34,6 @@ void keybind_owner::update(void_* instance)
                 key_bind_->pressed_.fetch_xor(1u, std::memory_order_release);
             }
         }
-    break;
-    case keybind_mode::always:
-        key_bind_->pressed_.store(true, std::memory_order_release);
         break;
     }
 }
