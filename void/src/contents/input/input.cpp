@@ -55,7 +55,17 @@ input_response input::process_event(const message_event& event)
         return input_response::empty();
     }
 
-    return instance()->on_input(event);
+    if (instance()->is_open()) {
+        return instance()->on_input(event);
+    }
+    else {
+        if (event.is_message(message_type::key_down) &&
+            event.get_key() == instance()->options().get<options::option_MenuKey>()) {
+            instance()->toggle_menu(!instance()->is_open());
+        }
+    }
+
+    return input_response::empty();
 }
 
 input_response input::push_event(const message_event& event)
@@ -103,22 +113,7 @@ void input::input_on_frame()
 #endif
     }
 
-    if (instance()->is_open()) {
-        process_pending_events();
-    }
-    else {
-        std::vector<message_event> local_events;
-        {
-            std::lock_guard<std::mutex> lock(messages_mutex_);
-            pending_messages_.swap(local_events);
-        }
-        for (auto& e : local_events) {
-            if (e.is_message(message_type::key_down) &&
-                e.get_key() == instance()->options().get<options::option_MenuKey>()) {
-                instance()->toggle_menu(!instance()->is_open());
-            }
-        }
-    }
+    process_pending_events();
 
     keybind_manager_->update();
 }
