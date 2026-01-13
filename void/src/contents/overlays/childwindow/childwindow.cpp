@@ -181,6 +181,17 @@ input_response childwindow::input(const overlay_input& input)
             return res;
     }
 
+    // widgets
+    input_base _input = input_owner_->input_get_input(input.event());
+
+    for (auto& widget : widgets_) {
+        if (widget->is_visible()) {
+            auto res = widget->input(_input);
+            if (res.is_handled())
+                return res;
+        }
+    }
+
     // clicked outside of overlay rect
     float mouse_x, mouse_y;
     input.event().get_cursor_pos(mouse_x, mouse_y);
@@ -192,17 +203,6 @@ input_response childwindow::input(const overlay_input& input)
             input.clear_opened();
 
             return input_response::handled();
-        }
-    }
-
-    // widgets
-    input_base _input = input_owner_->input_get_input(input.event());
-
-    for (auto& widget : widgets_) {
-        if (widget->is_visible()) {
-            auto res = widget->input(_input);
-            if (res.is_handled())
-                return res;
         }
     }
 

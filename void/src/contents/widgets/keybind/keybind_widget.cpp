@@ -63,6 +63,7 @@ void keybind_widget::update(float x, float y, float w, const render_input& input
 
     if (recalculate_text) {
         text_width_calculated_ = false;
+        last_text_.clear();
         if (!keybind_owner_->has_key()) {
             switch (keybind_owner_->mouse_button()) {
             case mouse_button::left:     last_text_ = "LButton"; break;
@@ -88,6 +89,8 @@ void keybind_widget::update(float x, float y, float w, const render_input& input
 
         if (last_text_.empty())
             last_text_ = "None";
+
+        last_key_ = keybind_owner_->key_ref();
     }
 
     if (!text_width_calculated_) {
@@ -236,6 +239,8 @@ input_response keybind_widget::input(const input_base& input)
         if (input.is_selected(this)) {
             keybind_owner_->set_key(input.event().get_mouse_button());
             input.clear_selected();
+
+            return input_response::handled();
         }
         else if (util::is_in_rect(mouse_x, mouse_y, keybind_pos_)) {
             input.set_selected(this);
