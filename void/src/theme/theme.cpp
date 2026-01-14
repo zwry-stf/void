@@ -24,7 +24,7 @@ void _theme::init()
 
 	const std::wstring* v;
 	if (load_last_file(v))
-		load(*v);
+		load(*v, true);
 }
 
 void _theme::destroy()
