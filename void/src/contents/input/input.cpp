@@ -178,6 +178,7 @@ inline static key convert_key_win32(std::int32_t vk) {
     case VK_CONTROL: [[fallthrough]];
     case VK_LCONTROL: return key::lctrl;
     case VK_RCONTROL: return key::rctrl;
+    case VK_MENU: [[fallthrough]]
     case VK_LMENU:    return key::lalt;
     case VK_RMENU:    return key::ralt;
 
