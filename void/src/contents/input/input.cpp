@@ -106,9 +106,12 @@ void input::input_on_frame()
     instance()->reset_hovered_state();
     instance()->cursors().set_cursor(cursor::arrow);
 
+#if defined(R2_PLATFORM_WINDOWS)
+    update_key_flags_win32();
+#endif
+
     if (instance()->is_open()) {
 #if defined(R2_PLATFORM_WINDOWS)
-        update_key_flags_win32();
         input_on_frame_win32();
 #endif
     }
@@ -340,7 +343,7 @@ void input::input_on_frame_win32()
 void input::update_key_flags_win32()
 {
     for (std::size_t i = 0u; i < key_states_.count(); i++) {
-        if (!key_states_[i])
+        if (!key_states_[i]) [[likely]]
             continue;
 
         int vk = get_virtual_key_win32(static_cast<key>(i));
@@ -350,7 +353,7 @@ void input::update_key_flags_win32()
     }
 
     for (std::size_t i = 0u; i < mouse_states_.count(); i++) {
-        if (!mouse_states_[i])
+        if (!mouse_states_[i]) [[likely]]
             continue;
 
         int vk = get_virtual_key_win32(static_cast<mouse_button>(i));
