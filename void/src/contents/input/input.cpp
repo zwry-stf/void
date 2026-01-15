@@ -343,7 +343,7 @@ void input::input_on_frame_win32()
 
 void input::update_key_flags_win32()
 {
-    for (std::size_t i = 0u; i < key_states_.count(); i++) {
+    for (std::size_t i = 0u; i < key_states_.size(); i++) {
         if (!key_states_[i]) [[likely]]
             continue;
 
@@ -353,7 +353,7 @@ void input::update_key_flags_win32()
         key_states_[i] = GetAsyncKeyState(vk) & 0x8000;
     }
 
-    for (std::size_t i = 0u; i < mouse_states_.count(); i++) {
+    for (std::size_t i = 0u; i < mouse_states_.size(); i++) {
         if (!mouse_states_[i]) [[likely]]
             continue;
 
