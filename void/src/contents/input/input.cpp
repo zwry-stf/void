@@ -190,6 +190,7 @@ inline static key convert_key_win32(std::int32_t vk) {
     case VK_ESCAPE:  return key::escape;
     case VK_TAB:     return key::tab;
     case VK_SPACE:   return key::space;
+    case VK_CAPITAL: return key::capslock;
 
     case VK_INSERT:  return key::insert;
     case VK_DELETE:  return key::del;
@@ -413,6 +414,7 @@ int input::get_virtual_key_win32(key key)
     case key::escape:    return VK_ESCAPE;
     case key::tab:       return VK_TAB;
     case key::space:     return VK_SPACE;
+    case key::capslock:  return VK_CAPITAL;
 
         // System/navigation
     case key::insert: return VK_INSERT;
@@ -480,6 +482,7 @@ inline static key convert_key_glfw(int key) {
     case GLFW_KEY_ESCAPE:    return key::escape;
     case GLFW_KEY_TAB:       return key::tab;
     case GLFW_KEY_SPACE:     return key::space;
+    case GLFW_KEY_CAPS_LOCK: return key::capslock;
 
     case GLFW_KEY_INSERT:  return key::insert;
     case GLFW_KEY_DELETE:  return key::del;
