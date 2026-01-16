@@ -77,6 +77,7 @@ void group_base_options::no_config()
     if (config_id_ == _config::kInvalidModuleId)
         return;
     instance()->config().remove_module(config_id_);
+    config_id_ = _config::kInvalidModuleId;
 }
 
 /// group_item_options
@@ -1328,9 +1329,12 @@ void keybind_options_base::key(mouse_button k)
 /// group_keybind_options
 
 group_keybind_options::group_keybind_options(void_* instance, menu_builder* builder, 
-                                             owner_type* group_instance, keybind_owner* keybind_instance)
+                                             owner_type* group_instance, keybind_owner* keybind_instance,
+                                             std::size_t config_id1, std::size_t config_id2)
     : keybind_options_base(instance, builder, keybind_instance),
-      group_instance_(group_instance)
+      group_instance_(group_instance),
+      config_id1_(config_id1),
+      config_id2_(config_id2)
 {
 }
 
@@ -1367,6 +1371,20 @@ group_keybind_options::owner_type& group_keybind_options::key(::vo::key k)
 group_keybind_options::owner_type& group_keybind_options::key(mouse_button k)
 {
     keybind_options_base::key(k);
+    return *group_instance_;
+}
+
+group_keybind_options::owner_type& group_keybind_options::no_config()
+{
+    if (config_id1_ != _config::kInvalidModuleId) {
+        instance()->config().remove_module(config_id1_);
+        config_id1_ = _config::kInvalidModuleId;
+    }
+
+    if (config_id2_ != _config::kInvalidModuleId) {
+        instance()->config().remove_module(config_id2_);
+        config_id2_ = _config::kInvalidModuleId;
+    }
     return *group_instance_;
 }
 
@@ -1671,9 +1689,25 @@ group_keybind_options::owner_type group_builder::keybind(::vo::keybind& bind)
 {
     last_keybind_ = instance()->input().add_keybind(&bind);
 
+    const auto config_id1 = instance()->config().add_module(
+        std::make_unique<default_config_module<keybind_key>>(
+            build_config_path("keybind_key"),
+            &last_keybind_->key_ref()
+        )
+    );
+
+    const auto config_id2 = instance()->config().add_module(
+        std::make_unique<default_config_module<std::size_t>>(
+            build_config_path("keybind_mode"),
+            &last_keybind_->mode_ref()
+        )
+    );
+
     return group_keybind_options::owner_type(
         *this,
-        last_keybind_
+        last_keybind_,
+        config_id1,
+        config_id2
     );
 }
 

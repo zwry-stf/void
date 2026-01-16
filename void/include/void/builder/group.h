@@ -500,10 +500,13 @@ public:
     using owner_type = group_access<group_keybind_options>;
 private:
     owner_type* const group_instance_;
+    std::size_t config_id1_;
+    std::size_t config_id2_;
     
 public:
     group_keybind_options(void_* instance, menu_builder* builder,
-                          owner_type* group_instance, keybind_owner* keybind_instance);
+                          owner_type* group_instance, keybind_owner* keybind_instance,
+                          std::size_t config_id1, std::size_t config_id2);
 
 public:
     /// Disable keybind when state becomes true.
@@ -518,6 +521,7 @@ public:
     owner_type& mode(keybind_mode mode);
     owner_type& key(::vo::key k);
     owner_type& key(mouse_button k);
+    owner_type& no_config();
 };
 
 class group_builder : public base_builder_object {
