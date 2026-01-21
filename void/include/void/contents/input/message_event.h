@@ -56,6 +56,7 @@ enum class key : std::uint8_t {
     escape,
     tab,
     space,
+    capslock,
     // system keys
     insert,
     del,

@@ -326,8 +326,8 @@ public:
         return npos;
     }
 
-    [[nodiscard]] inline constexpr std::size_t find(const Char c) const {
-        for (std::size_t i = 0u; i < length(); ++i) {
+    [[nodiscard]] inline constexpr std::size_t find(const Char c, std::size_t off = 0u) const {
+        for (std::size_t i = off; i < length(); ++i) {
             const Char _c = chars_[i] ^ key_;
             if (_c == c)
                 return i;

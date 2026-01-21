@@ -27,13 +27,18 @@ std::unique_ptr<keybind_child> keybind_child::create_keybind(void_* instance, in
     );
     auto& overlay = *overlay_owner->get_overlay<childwindow>(overlay_id);
 
-    overlay.add_widget(
+    auto* widget = overlay.add_widget(
         std::make_unique<keybind_widget>(
             instance,
             input_owner,
             xstr("Key"),
             bind
         )
+    );
+    widget->set_disabled_callback(
+        [bind]() -> bool {
+            return bind->mode_ref() == static_cast<std::size_t>(keybind_mode::always);
+        }
     );
 
     const auto dropdown_overlay_id = overlay.create_overlay(
