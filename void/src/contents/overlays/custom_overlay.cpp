@@ -28,17 +28,21 @@ void custom_overlay::update()
 
     const auto display_size = instance()->renderer().get_render_size();
 
-    assert(cfg_.min_width.raw() <= cfg_.max_width.raw() && 
-           cfg_.min_height.raw() <= cfg_.max_height.raw());
+    if (cfg_.resizable) {
+        assert(cfg_.min_width.raw() <= cfg_.max_width.raw() &&
+            cfg_.min_height.raw() <= cfg_.max_height.raw());
 
-    // clamp size
-    const float min_width = cfg_.min_width.get(instance()->scale());
-    const float max_width = cfg_.max_width.get(instance()->scale());
-    const float min_height = cfg_.min_height.get(instance()->scale());
-    const float max_height = cfg_.max_height.get(instance()->scale());
+        // clamp size
+        const float min_width = cfg_.min_width.get(instance()->scale());
+        const float max_width = cfg_.max_width.get(instance()->scale());
+        const float min_height = cfg_.min_height.get(instance()->scale());
+        const float max_height = cfg_.max_height.get(instance()->scale());
 
-    size.x = std::clamp(size.x, min_width, max_width);
-    size.y = std::clamp(size.y, min_height, max_height);
+        size.x = std::clamp(size.x, min_width, max_width);
+        size.y = std::clamp(size.y, min_height, max_height);
+
+        set_size_scaled(size);
+    }
 
     // clamp overlay to screen
     pos.x = std::clamp(pos.x, 0.f, display_size.x - size.x);
@@ -50,7 +54,6 @@ void custom_overlay::update()
     last_pos_.h = size.y;
 
     set_pos_scaled(pos);
-    set_size_scaled(size);
 
     if (update_callback_ != nullptr)
         update_callback_(instance(), *this);
