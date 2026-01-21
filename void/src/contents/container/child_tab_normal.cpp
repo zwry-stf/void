@@ -181,10 +181,6 @@ input_response child_tab_normal::input(const input_base& input, std::int32_t& se
     if (selected_tab != tab_id)
         return input_response::empty();
 
-    res = input_scrollbar(input);
-    if (res.is_handled())
-        return res;
-
     // groups input
     float mouse_x, mouse_y;
     input.event().get_cursor_pos(mouse_x, mouse_y);
@@ -207,6 +203,11 @@ input_response child_tab_normal::input(const input_base& input, std::int32_t& se
                 return res;
         }
     }
+
+    // scrollbar
+    res = input_scrollbar(input);
+    if (res.is_handled())
+        return res;
 
     return input_response::empty();
 }
