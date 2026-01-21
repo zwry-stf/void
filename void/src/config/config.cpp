@@ -94,9 +94,9 @@ void _config::init()
 
     do_init(main_path_ / "cfg");
 
-    const std::wstring* v;
-    if (load_last_file(v))
-        load(*v, true);
+    if (instance()->options().get<options::option_LoadLastConfig>()) {
+        load_last_config();
+    }
 }
 
 void _config::destroy()
@@ -370,6 +370,13 @@ bool _config::remove(const std::wstring& name, config_drawable* drawable)
 bool _config::rename(const std::wstring& name, const std::wstring& new_name)
 {
     return do_rename(name, new_name);
+}
+
+void _config::load_last_config()
+{
+    const std::wstring* v;
+    if (load_last_file(v))
+        load(*v, true);
 }
 
 bool _config::refresh_configs(std::int32_t& selected_config)

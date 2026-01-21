@@ -69,6 +69,7 @@ public:
     bool save(const std::wstring& name, config_drawable* drawable);
     bool remove(const std::wstring& name, config_drawable* drawable);
     bool rename(const std::wstring& name, const std::wstring& new_name);
+    void load_last_config();
 
     bool refresh_configs(std::int32_t& selected_config);
 

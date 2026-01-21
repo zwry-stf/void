@@ -65,6 +65,12 @@ private:
     // Mutable after init: no
     _new_void_option(StartMinimized,  bool,         false,                 false);
     
+    // Load the last config on init, you can call config::load_last_config() to manually load.
+    // Type: bool
+    // Default: true
+    // Mutable after init: no
+    _new_void_option(LoadLastConfig,  bool,         true,                 false);
+    
     // Disable all blur effects (improves performance).
     // Type: bool
     // Default: false

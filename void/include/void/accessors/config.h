@@ -42,6 +42,7 @@ public:
     void remove_module(std::size_t module);
     [[nodiscard]] std::string get_main_path() const;
     [[nodiscard]] class _config* get_config_instance() const;
+    void load_last_config();
 };
 
 void_end_

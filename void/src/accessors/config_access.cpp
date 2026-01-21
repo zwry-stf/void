@@ -25,6 +25,11 @@ _config* config::get_config_instance() const
     return instance()->config_.get();
 }
 
+void config::load_last_config()
+{
+    get_config_instance()->load_last_config();
+}
+
 config_module::config_module(const xstr& name, std::uint32_t size)
     : name_(name),
       size_(size)
