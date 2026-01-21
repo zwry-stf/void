@@ -139,6 +139,7 @@ std::size_t _config::add_module(std::unique_ptr<config_module>&& module)
         assert(!modules_[id]);
         modules_[id] = std::move(module);
 
+        freed_modules_.pop_back();
         return id;
     }
     else {

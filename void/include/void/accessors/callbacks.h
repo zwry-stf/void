@@ -48,6 +48,8 @@ private:
     _new_void_callback(OnSaveConfig,        ());
     // Save Callback after loading a theme
     _new_void_callback(OnSaveTheme,         ());
+    // Callback after menu scale has changed
+    _new_void_callback(OnScaleChange,       (float));
 
 public:
     template <typename T>

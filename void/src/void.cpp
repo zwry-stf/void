@@ -786,6 +786,8 @@ void void_::update_scale(float scale)
     // rebuild fonts
     fonts().create();
     fonts().build();
+
+    callbacks().invoke<callbacks::callback_OnScaleChange>(scale_);
 }
 
 void_end_
