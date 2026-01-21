@@ -4,6 +4,7 @@
 #include <contents/container/group.h>
 #include <config/config.h>
 #include <contents/overlays/multiselect/config_module.h>
+#include <contents/widgets/list/config_module.h>
 #include <contents/input/keybind.h>
 
 // widgets
@@ -211,9 +212,10 @@ void group_with_child_base_options::dropdown(list_options* options, std::size_t&
     );
 
     instance()->config().add_module(
-        std::make_unique<default_config_module<std::size_t>>(
+        std::make_unique<list_name_config_module>(
             build_child_config_path("dropdown"),
-            &selected
+            &selected,
+            options
         )
     );
 }
@@ -699,9 +701,10 @@ void overlay_with_child_base_options::dropdown(list_options* options, std::size_
     );
 
     instance()->config().add_module(
-        std::make_unique<default_config_module<std::size_t>>(
+        std::make_unique<list_name_config_module>(
             build_overlay_child_config_path("dropdown"),
-            &selected
+            &selected,
+            options
         )
     );
 }
@@ -1129,9 +1132,10 @@ overlay_with_child_options::owner_type childwindow_options::dropdown(const xstr&
 
     const auto config_path = build_overlay_config_path("dropdown");
     const auto config_id = instance()->config().add_module(
-        std::make_unique<default_config_module<std::size_t>>(
+        std::make_unique<list_name_config_module>(
             config_path,
-            &selected
+            &selected,
+            options
         )
     );
 
@@ -1160,9 +1164,10 @@ overlay_item_options::owner_type childwindow_options::list(const xstr& name, lis
     );
 
     const auto config_id = instance()->config().add_module(
-        std::make_unique<default_config_module<std::size_t>>(
+        std::make_unique<list_name_config_module>(
             build_overlay_config_path("list"),
-            &selected
+            &selected,
+            options
         )
     );
 
@@ -1484,9 +1489,10 @@ group_with_child_options::owner_type group_builder::dropdown(const xstr& name, l
 
     const auto config_path = build_config_path("dropdown");
     const auto config_id = instance()->config().add_module(
-        std::make_unique<default_config_module<std::size_t>>(
+        std::make_unique<list_name_config_module>(
             config_path,
-            &selected
+            &selected,
+            options
         )
     );
 
@@ -1515,9 +1521,10 @@ group_item_options::owner_type group_builder::list(const xstr& name, list_option
     );
 
     const auto config_id = instance()->config().add_module(
-        std::make_unique<default_config_module<std::size_t>>(
+        std::make_unique<list_name_config_module>(
             build_config_path("list"),
-            &selected
+            &selected,
+            options
         )
     );
 

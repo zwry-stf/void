@@ -14,7 +14,7 @@ enum class drawable_selected_ids : std::int32_t {
 };
 
 theme_drawable::theme_drawable(void_* instance, input_owner* input_owner, _theme* theme_instance, 
-	                           const std::wstring& name)
+                               const std::wstring& name)
     : vobj(instance),
       input_receiver(input_owner,
           std::to_underlying(drawable_selected_ids::selected_max)),

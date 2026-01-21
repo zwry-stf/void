@@ -51,11 +51,11 @@ public:
 
 class notification_buider : protected vobj {
 private:
-	r2::color current_color_;
-	std::vector<std::unique_ptr<notification_data>> data_;
+    r2::color current_color_;
+    std::vector<std::unique_ptr<notification_data>> data_;
 
 public:
-	notification_buider(void_* instance);
+    notification_buider(void_* instance);
     ~notification_buider();
 
     notification_buider(const notification_buider&) = delete;

@@ -5,8 +5,8 @@
 void_begin_
 
 notification_buider::notification_buider(void_* instance)
-	: vobj(instance),
-	  current_color_(instance->style().text())
+    : vobj(instance),
+      current_color_(instance->style().text())
 {
 }
 

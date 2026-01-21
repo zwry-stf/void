@@ -39,11 +39,11 @@ inline static std::string get_write_time(const std::filesystem::path& p) {
 }
 
 _config::_config(void_* instance)
-	: config_manager(instance, 
+    : config_manager(instance, 
         std::wstring(kConfigExtension.begin(), kConfigExtension.end()), 
         "config"
       ),
-	  main_path_()
+      main_path_()
 {
 }
 

@@ -6,16 +6,16 @@ void_begin_
 
 dropdown_overlay::dropdown_overlay(void_* instance, input_owner* input_owner,
                                    input_owner_overlay* overlay_owner, std::unique_ptr<list_options>&& options, std::size_t* value)
-	: overlay(instance, overlay_owner, false, false),
-	  input_receiver(input_owner, static_cast<std::int32_t>(options->size())),
-	  options_(std::move(options)),
-	  value_(value)
+    : overlay(instance, overlay_owner, false, false),
+      input_receiver(input_owner, static_cast<std::int32_t>(options->size())),
+      options_(std::move(options)),
+      value_(value)
 {
 }
 
 void dropdown_overlay::update(const overlay_render_input& input)
 {
-	overlay::update(input);
+    overlay::update(input);
 
     const auto& menu_pos = instance()->pos();
     auto& util = instance()->util();

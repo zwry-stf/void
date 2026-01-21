@@ -6,41 +6,41 @@
 void_begin_
 
 dropdown::dropdown(void_* instance, input_owner* input_owner, 
-	               input_owner_overlay* overlay_owner, std::int32_t overlay_id, const xstr& name)
-	: widget(instance, input_owner, 1),
-	  parent_overlay_owner_(overlay_owner),
-	  overlay_id_(overlay_id),
-	  name_(name)
+                   input_owner_overlay* overlay_owner, std::int32_t overlay_id, const xstr& name)
+    : widget(instance, input_owner, 1),
+      parent_overlay_owner_(overlay_owner),
+      overlay_id_(overlay_id),
+      name_(name)
 {
-	assert(name.find('\n') == xstr::npos);
+    assert(name.find('\n') == xstr::npos);
 }
 
 void dropdown::update(float x, float y, float w, const render_input& input, bool occluded)
 {
-	widget::update(x, y, w, input, occluded);
+    widget::update(x, y, w, input, occluded);
 
-	constexpr sfloat kDropdownHeight = sfloat(26.f, true);
-	last_pos_.h = kDropdownHeight.get(instance()->scale());
+    constexpr sfloat kDropdownHeight = sfloat(26.f, true);
+    last_pos_.h = kDropdownHeight.get(instance()->scale());
 
-	auto& style = instance()->style();
+    auto& style = instance()->style();
 
-	const float spacing = style.spacing->get(instance()->scale());
+    const float spacing = style.spacing->get(instance()->scale());
 
-	if (occluded)
-		return;
+    if (occluded)
+        return;
 
     const float dropdown_width = std::round(
         std::min(std::max(w * 0.45f, last_pos_.h * 3.5f),
             last_pos_.w - spacing)
     );
-	const float spacing_y = std::round(spacing * 0.25f);
+    const float spacing_y = std::round(spacing * 0.25f);
 
-	dropdown_pos_.x = x + w - dropdown_width;
-	dropdown_pos_.y = y + spacing_y;
-	dropdown_pos_.w = dropdown_width;
-	dropdown_pos_.h = last_pos_.h - spacing_y * 2.f;
+    dropdown_pos_.x = x + w - dropdown_width;
+    dropdown_pos_.y = y + spacing_y;
+    dropdown_pos_.w = dropdown_width;
+    dropdown_pos_.h = last_pos_.h - spacing_y * 2.f;
 
-	update_child_widgets(dropdown_pos_.x, input);
+    update_child_widgets(dropdown_pos_.x, input);
 }
 
 void dropdown::render(float alpha)
@@ -331,7 +331,7 @@ input_response dropdown::input(const input_base& input)
 
 bool dropdown::matches_search(const xstr& search) noexcept
 {
-	return name_.find_ignore_case_f(search) != xstr::npos;
+    return name_.find_ignore_case_f(search) != xstr::npos;
 }
 
 void_end_

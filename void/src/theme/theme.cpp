@@ -7,10 +7,10 @@
 void_begin_
 
 _theme::_theme(void_* instance)
-	: config_manager(instance,
-		std::wstring(kThemeExtension.begin(), kThemeExtension.end()),
-		"theme"
-	  )
+    : config_manager(instance,
+        std::wstring(kThemeExtension.begin(), kThemeExtension.end()),
+        "theme"
+      )
 {
 }
 
@@ -18,18 +18,18 @@ _theme::~_theme() = default;
 
 void _theme::init()
 {
-	const std::filesystem::path main_path = instance()->config().get_main_path();
+    const std::filesystem::path main_path = instance()->config().get_main_path();
 
-	do_init(main_path / "themes");
+    do_init(main_path / "themes");
 
-	const std::wstring* v;
-	if (load_last_file(v))
-		load(*v, true);
+    const std::wstring* v;
+    if (load_last_file(v))
+        load(*v, true);
 }
 
 void _theme::destroy()
 {
-	themes_.clear();
+    themes_.clear();
 }
 
 bool _theme::create_new()
