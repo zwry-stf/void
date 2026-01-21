@@ -407,7 +407,11 @@ void add_widgets()
         child.right_group("Group right")
             .button("Button", "Add Option",
                 []() -> void {
-                    options_dynamic.push_back(xstr("Option"));
+                    const auto num = std::to_string(options_dynamic.size());
+                    xstr text = "Option ";
+                    for (const auto c : num)
+                        text += c;
+                    options_dynamic.push_back(text);
                 })
             .spacing()
             ->condition([]()->bool { return options_dynamic.empty(); })

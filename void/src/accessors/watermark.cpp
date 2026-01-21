@@ -8,7 +8,7 @@ void_begin_
 
 void watermark_component::on_scale_change()
 {
-	width_cached_ = false;
+    width_cached_ = false;
 }
 
 class avarage_watermark_component : public watermark_component {

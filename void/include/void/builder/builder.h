@@ -10,19 +10,19 @@ void_begin_
 
 class menu_builder : protected vobj {
 private:
-	xstr last_child_{};
-	xstr last_group_{};
+    xstr last_child_{};
+    xstr last_group_{};
 
-	friend class base_builder_object;
-
-public:
-	using vobj::vobj;
+    friend class base_builder_object;
 
 public:
-	void label(const xstr& name);
-	tab_builder tab(const xstr& name);
+    using vobj::vobj;
 
-	overlay_builder overlay();
+public:
+    void label(const xstr& name);
+    tab_builder tab(const xstr& name);
+
+    overlay_builder overlay();
 };
 
 void_end_

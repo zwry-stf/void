@@ -6,10 +6,10 @@ void_begin_
 
 multiselect_overlay::multiselect_overlay(void_* instance, input_owner* input_owner, input_owner_overlay* overlay_owner,
                                          std::unique_ptr<list_options>&& options, std::vector<bool>* value)
-	: overlay(instance, overlay_owner, false, false),
-	  input_receiver(input_owner, static_cast<std::int32_t>(options->size())),
-	  options_(std::move(options)),
-	  value_(value)
+    : overlay(instance, overlay_owner, false, false),
+      input_receiver(input_owner, static_cast<std::int32_t>(options->size())),
+      options_(std::move(options)),
+      value_(value)
 {
     assert(value != nullptr);
 
@@ -20,7 +20,7 @@ multiselect_overlay::multiselect_overlay(void_* instance, input_owner* input_own
 
 void multiselect_overlay::update(const overlay_render_input& input)
 {
-	overlay::update(input);
+    overlay::update(input);
 
     const auto& menu_pos = instance()->pos();
     auto& util = instance()->util();

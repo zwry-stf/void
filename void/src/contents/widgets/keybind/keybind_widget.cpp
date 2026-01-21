@@ -9,41 +9,41 @@
 void_begin_
 
 keybind_widget::keybind_widget(void_* instance, input_owner* input_owner, 
-						       const xstr& name, keybind_owner* bind)
-	: widget(instance, input_owner, 1),
-	  name_(name),
-	  keybind_owner_(bind)
+                               const xstr& name, keybind_owner* bind)
+    : widget(instance, input_owner, 1),
+      name_(name),
+      keybind_owner_(bind)
 {
     assert(name.find('\n') == xstr::npos);
 }
 
 void keybind_widget::update(float x, float y, float w, const render_input& input, bool occluded)
 {
-	widget::update(x, y, w, input, occluded);
+    widget::update(x, y, w, input, occluded);
 
-	constexpr sfloat kButtonHeight = sfloat(26.f, true);
-	last_pos_.h = kButtonHeight.get(instance()->scale());
+    constexpr sfloat kButtonHeight = sfloat(26.f, true);
+    last_pos_.h = kButtonHeight.get(instance()->scale());
 
-	auto& style = instance()->style();
+    auto& style = instance()->style();
     auto& renderer = instance()->renderer();
 
-	const float spacing = style.spacing->get(instance()->scale());
+    const float spacing = style.spacing->get(instance()->scale());
 
-	if (occluded)
-		return;
+    if (occluded)
+        return;
 
-	const float keybind_width = std::round(
-		(std::min)((std::max)(w * 0.45f, last_pos_.h * 3.5f),
-			last_pos_.w - spacing)
-	);
-	const float spacing_y = std::round(spacing * 0.25f);
+    const float keybind_width = std::round(
+        (std::min)((std::max)(w * 0.45f, last_pos_.h * 3.5f),
+            last_pos_.w - spacing)
+    );
+    const float spacing_y = std::round(spacing * 0.25f);
 
-	keybind_pos_.x = x + w - keybind_width;
-	keybind_pos_.y = y + spacing_y;
-	keybind_pos_.w = keybind_width;
-	keybind_pos_.h = last_pos_.h - spacing_y * 2.f;
+    keybind_pos_.x = x + w - keybind_width;
+    keybind_pos_.y = y + spacing_y;
+    keybind_pos_.w = keybind_width;
+    keybind_pos_.h = last_pos_.h - spacing_y * 2.f;
 
-	update_child_widgets(keybind_pos_.x, input);
+    update_child_widgets(keybind_pos_.x, input);
 
     bool recalculate_text = false;
     if (last_text_.empty() ||
@@ -276,14 +276,14 @@ input_response keybind_widget::input(const input_base& input)
 
 void keybind_widget::on_scale_change()
 {
-	widget::on_scale_change();
+    widget::on_scale_change();
 
-	text_width_calculated_ = false;
+    text_width_calculated_ = false;
 }
 
 bool keybind_widget::matches_search(const xstr& search) noexcept
 {
-	return name_.find_ignore_case_f(search) != xstr::npos;
+    return name_.find_ignore_case_f(search) != xstr::npos;
 }
 
 

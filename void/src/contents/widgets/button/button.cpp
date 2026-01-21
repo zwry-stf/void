@@ -5,44 +5,44 @@
 void_begin_
 
 button::button(void_* instance, input_owner* input_owner,
-	           const xstr& name, const xstr& button_text, std::function<void()>&& callback)
-	: widget(instance, input_owner, 1),
-	  name_(name),
-	  button_text_(button_text),
-	  callback_(std::move(callback))
+               const xstr& name, const xstr& button_text, std::function<void()>&& callback)
+    : widget(instance, input_owner, 1),
+      name_(name),
+      button_text_(button_text),
+      callback_(std::move(callback))
 {
-	assert(name.find('\n') == xstr::npos);
-	assert(button_text.find('\n') == xstr::npos);
-	assert((bool)callback_);
+    assert(name.find('\n') == xstr::npos);
+    assert(button_text.find('\n') == xstr::npos);
+    assert((bool)callback_);
 }
 
 void button::update(float x, float y, float w, const render_input& input, bool occluded)
 {
-	widget::update(x, y, w, input, occluded);
+    widget::update(x, y, w, input, occluded);
 
-	constexpr sfloat kButtonHeight = sfloat(26.f, true);
-	last_pos_.h = kButtonHeight.get(instance()->scale());
+    constexpr sfloat kButtonHeight = sfloat(26.f, true);
+    last_pos_.h = kButtonHeight.get(instance()->scale());
 
-	auto& style = instance()->style();
+    auto& style = instance()->style();
     auto& renderer = instance()->renderer();
 
-	const float spacing = style.spacing->get(instance()->scale());
+    const float spacing = style.spacing->get(instance()->scale());
 
-	if (occluded)
-		return;
+    if (occluded)
+        return;
 
-	const float button_width = std::round(
-		std::min(std::max(w * 0.45f, last_pos_.h * 3.5f),
-			last_pos_.w - spacing)
-	);
-	const float spacing_y = std::round(spacing * 0.25f);
+    const float button_width = std::round(
+        std::min(std::max(w * 0.45f, last_pos_.h * 3.5f),
+            last_pos_.w - spacing)
+    );
+    const float spacing_y = std::round(spacing * 0.25f);
 
-	button_pos_.x = x + w - button_width;
-	button_pos_.y = y + spacing_y;
-	button_pos_.w = button_width;
-	button_pos_.h = last_pos_.h - spacing_y * 2.f;
+    button_pos_.x = x + w - button_width;
+    button_pos_.y = y + spacing_y;
+    button_pos_.w = button_width;
+    button_pos_.h = last_pos_.h - spacing_y * 2.f;
 
-	update_child_widgets(button_pos_.x, input);
+    update_child_widgets(button_pos_.x, input);
 
     if (!text_width_calculated_) {
         instance()->fonts().bind_font_small();
@@ -197,14 +197,14 @@ input_response button::input(const input_base& input)
 
 void button::on_scale_change()
 {
-	widget::on_scale_change();
+    widget::on_scale_change();
 
-	text_width_calculated_ = false;
+    text_width_calculated_ = false;
 }
 
 bool button::matches_search(const xstr& search) noexcept
 {
-	return name_.find_ignore_case_f(search) != xstr::npos;
+    return name_.find_ignore_case_f(search) != xstr::npos;
 }
 
 void_end_

@@ -9,17 +9,17 @@ void_begin_
 
 class config_manager : protected vobj {
 protected:
-	const std::wstring extension_;
-	std::string type_name_lower_;  // e.g. config
-	std::string type_name_pascal_; // e.g. Config
-	std::filesystem::path path_;
-	std::filesystem::path last_file_path_;
-	std::wstring last_file_;
+    const std::wstring extension_;
+    std::string type_name_lower_;  // e.g. config
+    std::string type_name_pascal_; // e.g. Config
+    std::filesystem::path path_;
+    std::filesystem::path last_file_path_;
+    std::wstring last_file_;
 
-	inline static std::wstring_view kLastFileName = L"__last__";
+    inline static std::wstring_view kLastFileName = L"__last__";
 
 public:
-	config_manager(void_* instance, std::wstring&& extension, const std::string& type_name);
+    config_manager(void_* instance, std::wstring&& extension, const std::string& type_name);
 
 public:
     void do_init(const std::filesystem::path& path);

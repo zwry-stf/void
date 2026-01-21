@@ -6,7 +6,7 @@ void_begin_
 
 class spacing : public widget {
 public:
-	spacing(void_* instance, input_owner* input_owner);
+    spacing(void_* instance, input_owner* input_owner);
 
 public:
     virtual void update(float x, float y, float w, const render_input& input, bool occluded) override;

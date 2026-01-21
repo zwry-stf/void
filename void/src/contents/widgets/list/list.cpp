@@ -5,13 +5,13 @@
 void_begin_
 
 list::list(void_* instance, input_owner* input_owner, std::unique_ptr<list_options>&& options, 
-	       const xstr& name, std::size_t* selected, int num_rows, bool has_search)
-	: widget(instance, input_owner, static_cast<std::int32_t>(num_rows)),
-	  name_(name),
-	  value_(selected),
-	  num_rows_(num_rows),
-	  has_search_(has_search),
-	  options_(std::move(options))
+           const xstr& name, std::size_t* selected, int num_rows, bool has_search)
+    : widget(instance, input_owner, static_cast<std::int32_t>(num_rows)),
+      name_(name),
+      value_(selected),
+      num_rows_(num_rows),
+      has_search_(has_search),
+      options_(std::move(options))
 {
     if (has_search) {
         text_field_ = std::make_unique<textfield>(
@@ -31,7 +31,7 @@ list::list(void_* instance, input_owner* input_owner, std::unique_ptr<list_optio
 
 void list::update(float x, float y, float w, const render_input& input, bool occluded)
 {
-	widget::update(x, y, w, input, occluded);
+    widget::update(x, y, w, input, occluded);
 
     auto& util = instance()->util();
     auto& style = instance()->style();
@@ -56,19 +56,19 @@ void list::update(float x, float y, float w, const render_input& input, bool occ
 
     last_pos_.h = search_offset_ + full_height;
 
-	animation_hovered_search_ = util.lerp(
-		animation_hovered_search_,
-		input.is_hovered(text_field_.get())
-	);
+    animation_hovered_search_ = util.lerp(
+        animation_hovered_search_,
+        input.is_hovered(text_field_.get())
+    );
 
     render_no_results_ = false;
 
-	const auto options_size = options_->size();
+    const auto options_size = options_->size();
 
-	if (options_size > member_states_.size()) {
+    if (options_size > member_states_.size()) {
         options_updated_ = true;
-		member_states_.resize(options_size, list_member());
-	}
+        member_states_.resize(options_size, list_member());
+    }
 
     if (options_size > static_cast<std::size_t>(input_count())) {
         resize_input(static_cast<std::int32_t>(options_size));
@@ -80,7 +80,7 @@ void list::update(float x, float y, float w, const render_input& input, bool occ
         std::min(std::max(w * 0.45f, kDropdownHeight.get(instance()->scale()) * 3.5f),
             last_pos_.w - spacing)
     );
-	const float spacing_y = std::round(spacing * 0.25f);
+    const float spacing_y = std::round(spacing * 0.25f);
 
     list_pos_.x = x + w - list_width;
     list_pos_.y = y + spacing_y + search_offset_;
@@ -446,31 +446,31 @@ input_response list::input(const input_base& input)
 
 void list::on_activate()
 {
-	widget::on_activate();
+    widget::on_activate();
 
-	member_states_.clear();
+    member_states_.clear();
 
-	scrollbar_->set_scroll(0.f);
-	scrollbar_->set_des_scroll(0.f);
+    scrollbar_->set_scroll(0.f);
+    scrollbar_->set_des_scroll(0.f);
     scrollbar_->set_scroll_speed(0.f);
 
-	if (has_search_) {
-		last_search_.clear();
-		text_field_->set_string(std::u32string());
-	}
+    if (has_search_) {
+        last_search_.clear();
+        text_field_->set_string(std::u32string());
+    }
     text_field_->on_activate();
 }
 
 void list::on_scale_change()
 {
-	widget::on_scale_change();
-	no_results_width_calculated_ = false;
+    widget::on_scale_change();
+    no_results_width_calculated_ = false;
     text_field_->on_scale_changed();
 }
 
 bool list::matches_search(const xstr& search) noexcept
 {
-	return name_.find_ignore_case_f(search) != xstr::npos;
+    return name_.find_ignore_case_f(search) != xstr::npos;
 }
 
 void_end_

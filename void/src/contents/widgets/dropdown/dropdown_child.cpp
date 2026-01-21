@@ -7,10 +7,10 @@
 void_begin_
 
 dropdown_child::dropdown_child(void_* instance, input_owner* input_owner, 
-	                           input_owner_overlay* overlay_owner, std::int32_t overlay_id)
-	: widget_child(instance,
-		input_owner, 1,
-		overlay_owner, overlay_id)
+                               input_owner_overlay* overlay_owner, std::int32_t overlay_id)
+    : widget_child(instance,
+        input_owner, 1,
+        overlay_owner, overlay_id)
 {
 }
 
