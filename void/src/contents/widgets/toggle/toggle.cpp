@@ -38,11 +38,11 @@ void toggle::update(float x, float y, float w, const render_input& input, bool o
     const float toggle_spacing_y = std::round(scaled_height * 0.42f);
     const float toggle_spacing_x = std::round(spacing * 0.4f);
 
-    toggle_pos_ = r2::vec4(
+    toggle_pos_ = r2::rectf(
         x + w - toggle_spacing_x - toggle_width,
         y + toggle_spacing_y,
-        x + w - toggle_spacing_x,
-        y + last_pos_.h - toggle_spacing_y
+        toggle_width,
+        last_pos_.h - toggle_spacing_y * 2.f
     );
 
     // child widgets
@@ -60,7 +60,7 @@ void toggle::render(float alpha)
 
     // toggle
     const r2::vec2 toggle_min = r2::vec2(toggle_pos_.x, toggle_pos_.y);
-    const r2::vec2 toggle_max = r2::vec2(toggle_pos_.z, toggle_pos_.w);
+    const r2::vec2 toggle_max = r2::vec2(toggle_pos_.x + toggle_pos_.w, toggle_pos_.y + toggle_pos_.h);
     const float rounding = style.rounding->get(instance()->scale());
     const float border_size = style.border_size.get(instance()->scale());
 
@@ -149,7 +149,7 @@ input_response toggle::input(const input_base& input)
     // toggle
     if (input.event().is_message(message_type::mouse_button_down) &&
         input.event().get_mouse_button() == mouse_button::left) {
-        if (util::is_in_quad(mouse_x, mouse_y, toggle_pos_)) {
+        if (util::is_in_rect(mouse_x, mouse_y, toggle_pos_)) {
             input.set_selected(this);
             return input_response::handled();
         }
@@ -160,7 +160,7 @@ input_response toggle::input(const input_base& input)
              input.event().get_mouse_button() == mouse_button::left) {
         input.clear_selected();
 
-        if (util::is_in_quad(mouse_x, mouse_y, toggle_pos_)) {
+        if (util::is_in_rect(mouse_x, mouse_y, toggle_pos_)) {
             toggle_value();
         }
 
@@ -174,7 +174,7 @@ input_response toggle::input(const input_base& input)
             return input_response::handled();
         }
 
-        if (util::is_in_quad(mouse_x, mouse_y, toggle_pos_)) {
+        if (util::is_in_rect(mouse_x, mouse_y, toggle_pos_)) {
             input.set_hovered(this);
             instance()->cursors().set_cursor(cursor::hand);
             return input_response::handled();
@@ -182,6 +182,19 @@ input_response toggle::input(const input_base& input)
     }
 
     return input_response::empty();
+}
+
+void toggle::set_pos(const r2::vec2& pos)
+{
+    const float delta_x = pos.x - last_pos_.x;
+    const float delta_y = pos.y - last_pos_.y;
+
+    widget::set_pos(pos);
+
+    toggle_pos_.x += delta_x;
+    toggle_pos_.y += delta_y;
+
+    set_child_widget_pos(delta_x, delta_y);
 }
 
 void toggle::on_activate()

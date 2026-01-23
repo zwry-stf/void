@@ -117,7 +117,7 @@ child_tab_base_builder tab_builder::theme_tab(const xstr& name)
     return child_tab_base_builder(instance(), builder(), child_tab);
 }
 
-child_tab_base_builder tab_builder::custom_tab(std::unique_ptr<child_tab>&& tab)
+child_tab_base_builder tab_builder::custom_tab_impl(std::unique_ptr<child_tab>&& tab)
 {
     auto* child_tab = tab_instance_->add_child_tab(std::move(tab));
     

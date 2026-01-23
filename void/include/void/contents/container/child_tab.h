@@ -35,8 +35,9 @@ protected:
     std::unique_ptr<scrollbar> scrollbar_;
 
 public:
-    child_tab(void_* instance, input_owner* input_owner, std::int32_t num_input, std::int32_t input_id,
-              input_owner_overlay* overlay_owner, const xstr& name);
+    child_tab(void_* instance, input_owner* input_owner,
+              input_owner_overlay* overlay_owner, const xstr& name,
+              std::int32_t num_input = 1, std::int32_t input_id = 0);
     ~child_tab();
 
     child_tab(const child_tab&) = delete;

@@ -46,7 +46,7 @@ public:
                     const std::wstring& name);
 
 public:
-    void update(float x, float y, float w, const render_input& input, bool selected, bool occluded);
+    void update(float x, float y, const render_input& input, bool selected, bool occluded);
     void render(float alpha);
     input_response input(const input_base& input, std::int32_t& selected_theme, std::int32_t theme_id);
 

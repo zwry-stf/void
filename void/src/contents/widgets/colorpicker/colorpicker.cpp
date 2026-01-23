@@ -230,6 +230,19 @@ input_response colorpicker::input(const input_base& input)
     return input_response::empty();
 }
 
+void colorpicker::set_pos(const r2::vec2& pos)
+{
+    const float delta_x = pos.x - last_pos_.x;
+    const float delta_y = pos.y - last_pos_.y;
+
+    widget::set_pos(pos);
+
+    color_pos_.x += delta_x;
+    color_pos_.y += delta_y;
+
+    set_child_widget_pos(delta_x, delta_y);
+}
+
 void colorpicker::on_activate()
 {
     widget::on_activate();

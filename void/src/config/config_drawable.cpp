@@ -367,10 +367,7 @@ void config_drawable::on_activate()
 
 void config_drawable::search(const std::wstring& text)
 {
-    if (name_lowercase_.find(text) != std::wstring::npos)
-        skipped_ = false;
-    else
-        skipped_ = true;
+    skipped_ = name_lowercase_.find(text) == std::wstring::npos;
 }
 
 void config_drawable::on_stop_typing(const std::u32string& text)

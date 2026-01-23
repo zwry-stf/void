@@ -5,8 +5,9 @@
 
 void_begin_
 
-child_tab::child_tab(void_* instance, input_owner* input_owner, std::int32_t num_input, std::int32_t input_id,
-                     input_owner_overlay* overlay_owner, const xstr& name)
+child_tab::child_tab(void_* instance, input_owner* input_owner,
+                     input_owner_overlay* overlay_owner, const xstr& name,
+                     std::int32_t num_input, std::int32_t input_id)
     : vobj(instance),
       input_receiver(input_owner, num_input),
       parent_overlay_owner_(overlay_owner),

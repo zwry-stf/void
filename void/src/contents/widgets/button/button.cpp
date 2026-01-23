@@ -195,6 +195,19 @@ input_response button::input(const input_base& input)
     return input_response::empty();
 }
 
+void button::set_pos(const r2::vec2& pos)
+{
+    const float delta_x = pos.x - last_pos_.x;
+    const float delta_y = pos.y - last_pos_.y;
+
+    widget::set_pos(pos);
+
+    button_pos_.x += delta_x;
+    button_pos_.y += delta_y;
+
+    set_child_widget_pos(delta_x, delta_y);
+}
+
 void button::on_scale_change()
 {
     widget::on_scale_change();

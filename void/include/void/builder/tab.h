@@ -48,7 +48,20 @@ public:
     child_tab_base_builder config_tab(const xstr& name);
     child_tab_base_builder theme_tab(const xstr& name);
 
-    child_tab_base_builder custom_tab(std::unique_ptr<child_tab>&& tab);
+    template <class T, class... Args>
+        requires(requires(void_* instance, const xstr& name, Args&&... args) {
+        new T(instance, instance, instance, name, std::forward<Args>(args)...);
+    })
+    child_tab_base_builder custom_tab(const xstr& name, Args&&... args) {
+        auto tab = std::make_unique<T>(
+            instance(), instance(), instance(),
+            name,
+            std::forward<Args>(args)...
+        );
+
+        return custom_tab_impl(std::move(tab));
+    }
+    child_tab_base_builder custom_tab_impl(std::unique_ptr<child_tab>&& tab);
 
     tab_builder& icon(int resource_id);
 };

@@ -585,6 +585,12 @@ input_response textfield::input(const input_base& input)
     return input_response::empty();
 }
 
+void textfield::set_pos(float delta_x, float delta_y)
+{
+    last_pos_.x += delta_x;
+    last_pos_.y += delta_y;
+}
+
 void textfield::on_activate()
 {
     animation_blinking_ = 0.f;

@@ -34,6 +34,11 @@ public:
 
     virtual void on_activate();
 
+    void set_pos(float delta_x, float delta_y) {
+        last_pos_.x += delta_x;
+        last_pos_.y += delta_y;
+    }
+
 public:
     [[nodiscard]] auto overlay_id() const noexcept {
         return overlay_id_;

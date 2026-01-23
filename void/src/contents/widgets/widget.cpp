@@ -134,5 +134,12 @@ input_response widget::input_child_widgets(const input_base& input)
     return input_response::empty();
 }
 
+void widget::set_child_widget_pos(float delta_x, float delta_y)
+{
+    for (auto& c : child_widgets_) {
+        c->set_pos(delta_x, delta_y);
+    }
+}
+
 
 void_end_

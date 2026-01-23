@@ -71,7 +71,8 @@ input_response input::process_event(const message_event& event)
 input_response input::push_event(const message_event& event)
 {
     if (!event.is_message(message_type::ignore) &&
-        !event.is_message(message_type::none)) {
+        !event.is_message(message_type::none) &&
+        !event.is_message(message_type::key_up)) {
         {
             std::lock_guard<std::mutex> lock(messages_mutex_);
             pending_messages_.push_back(event);
@@ -255,7 +256,7 @@ message_event input::convert_message_win32(std::uint32_t msg, uint64_t wparam, i
     }
 
     case WM_MOUSEMOVE:
-        return message_event::ignore();
+        return message_event::block();
 
     case WM_KEYDOWN:
     case WM_SYSKEYDOWN:

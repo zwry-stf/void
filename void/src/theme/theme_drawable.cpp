@@ -42,16 +42,16 @@ theme_drawable::theme_drawable(void_* instance, input_owner* input_owner, _theme
     generate_name_lowercase();
 }
 
-void theme_drawable::update(float x, float y, float w, const render_input& input, bool selected, bool occluded)
+void theme_drawable::update(float x, float y, const render_input& input, bool selected, bool occluded)
 {
     was_occluded_ = occluded;
 
-    auto& style    = instance()->style();
-    auto& util     = instance()->util();
+    auto& style = instance()->style();
+    auto& util = instance()->util();
 
     last_pos_.x = x;
     last_pos_.y = y;
-    last_pos_.w = w;
+    last_pos_.w = style.theme_width.get(instance()->scale());
     last_pos_.h = style.theme_height.get(instance()->scale());
 
     // animations
@@ -85,7 +85,7 @@ void theme_drawable::update(float x, float y, float w, const render_input& input
     update_button(
         void_resources::delete_png,
         r2::vec2{
-            x + w - delete_button_size - border_offset - offset,
+            x + last_pos_.w - delete_button_size - border_offset - offset,
             y + border_offset + offset
         },
         delete_button_size,
@@ -96,7 +96,7 @@ void theme_drawable::update(float x, float y, float w, const render_input& input
     update_button(
         void_resources::save_png,
         r2::vec2{
-            x + w - side_spacing - button_size,
+            x + last_pos_.w - side_spacing - button_size,
             y + last_pos_.h - side_spacing - button_size
         },
         button_size,
@@ -360,10 +360,7 @@ void theme_drawable::on_activate()
 
 void theme_drawable::search(const std::wstring& text)
 {
-    if (name_lowercase_.find(text) != std::wstring::npos)
-        skipped_ = false;
-    else
-        skipped_ = true;
+    skipped_ = name_lowercase_.find(text) == std::wstring::npos;
 }
 
 void theme_drawable::on_stop_typing(const std::u32string& text)
@@ -464,7 +461,7 @@ void theme_drawable::generate_name_lowercase()
         [](wchar_t c) -> wchar_t {
             return static_cast<wchar_t>(
                 std::tolower(static_cast<int>(c))
-                );
+            );
         }
     );
 }

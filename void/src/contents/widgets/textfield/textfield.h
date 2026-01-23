@@ -23,6 +23,7 @@ public:
     virtual void update(float x, float y, float w, const render_input& input, bool occluded) override;
     virtual void render(float alpha) override;
     virtual input_response input(const input_base& input) override;
+    virtual void set_pos(const r2::vec2& pos) override;
 
     virtual void on_activate() override;
     virtual void on_scale_change() override;
@@ -30,6 +31,9 @@ public:
     virtual bool matches_search(const xstr& search) noexcept override;
 
     void change_textfield(std::unique_ptr<textfield>&& textfield);
+    [[nodiscard]] auto get_text_field() const noexcept {
+        return text_field_.get();
+    }
 };
 
 void_end_

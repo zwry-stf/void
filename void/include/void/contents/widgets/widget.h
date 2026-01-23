@@ -81,7 +81,7 @@ public:
     }
 
     // allows you to update the widgets position after update has been called without any affecting any other states
-    void set_pos(const r2::vec2& pos) noexcept {
+    virtual void set_pos(const r2::vec2& pos) {
         last_pos_.x = pos.x;
         last_pos_.y = pos.y;
     }
@@ -112,6 +112,7 @@ protected:
     void update_child_widgets(float right_x, const render_input& input);
     void render_child_widgets(float alpha);
     input_response input_child_widgets(const input_base& input);
+    void set_child_widget_pos(float delta_x, float delta_y);
 };
 
 void_end_

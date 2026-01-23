@@ -186,6 +186,20 @@ input_response textfield_widget::input(const input_base& input)
     return text_field_->input(input);
 }
 
+void textfield_widget::set_pos(const r2::vec2& pos)
+{
+    const float delta_x = pos.x - last_pos_.x;
+    const float delta_y = pos.y - last_pos_.y;
+
+    widget::set_pos(pos);
+
+    text_pos_.x += delta_x;
+    text_pos_.y += delta_y;
+
+    text_field_->set_pos(delta_x, delta_y);
+    set_child_widget_pos(delta_x, delta_y);
+}
+
 void textfield_widget::on_activate()
 {
     widget::on_activate();

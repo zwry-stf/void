@@ -398,7 +398,7 @@ input_response list::input(const input_base& input)
     input.event().get_cursor_pos(mouse_x, mouse_y);
 
     if ((input.event().is_message(message_type::mouse_button_down) &&
-          input.event().get_mouse_button() == mouse_button::left) ||
+        input.event().get_mouse_button() == mouse_button::left) ||
         input.event().is_message(message_type::mouse_move)) {
         auto rect = list_pos_;
         rect.w -= scrollbar_->get_width() +
@@ -442,6 +442,17 @@ input_response list::input(const input_base& input)
     }
 
     return input_response::empty();
+}
+
+void list::set_pos(const r2::vec2& pos)
+{
+    const float delta_x = pos.x - last_pos_.x;
+    const float delta_y = pos.y - last_pos_.y;
+
+    widget::set_pos(pos);
+
+    list_pos_.x += delta_x;
+    list_pos_.y += delta_y;
 }
 
 void list::on_activate()

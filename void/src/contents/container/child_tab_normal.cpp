@@ -7,7 +7,10 @@ void_begin_
 
 child_tab_normal::child_tab_normal(void_* instance, input_owner* input_owner, 
                                    input_owner_overlay* overlay_owner, const xstr& name)
-    : child_tab(instance, input_owner, 1, 0, overlay_owner, name)
+    : child_tab(
+        instance, input_owner,
+        overlay_owner, name
+    )
 {
 }
 
@@ -187,21 +190,14 @@ input_response child_tab_normal::input(const input_base& input, std::int32_t& se
 
     const float top_bar_height = instance()->style().top_bar_height.get(instance()->scale());
 
-    if (!input.event().has_cursor_pos() ||
-        mouse_y >= instance()->pos().y + top_bar_height) {
-        for (auto& group : groups_) {
-            res = group->input(input, false);
-            if (res.is_handled())
-                return res;
-        }
-    }
-    else if (!input.nothing_selected()) {
-        // mouse is outside of input area, only give input to selected widget
-        for (auto& group : groups_) {
-            res = group->input(input, true);
-            if (res.is_handled())
-                return res;
-        }
+    const bool selected_only = input.event().has_cursor_pos() &&
+        (mouse_y < instance()->pos().y + top_bar_height ||
+            mouse_y > instance()->pos().y + instance()->pos().h);
+
+    for (auto& group : groups_) {
+        res = group->input(input, selected_only);
+        if (res.is_handled())
+            return res;
     }
 
     // scrollbar

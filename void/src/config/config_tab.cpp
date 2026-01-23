@@ -15,10 +15,12 @@ enum class tab_selected_ids : std::int32_t {
 
 config_tab::config_tab(void_* instance, input_owner* input_owner,
                        input_owner_overlay* overlay_owner, _config* config_instance, const xstr& name)
-    : child_tab(instance, input_owner,
-                std::to_underlying(tab_selected_ids::selected_max), 
-                std::to_underlying(tab_selected_ids::selected_child_tab),
-                overlay_owner, name),
+    : child_tab(
+        instance, input_owner,
+        overlay_owner, name,
+        std::to_underlying(tab_selected_ids::selected_max),
+        std::to_underlying(tab_selected_ids::selected_child_tab)
+    ),
       config_instance_(config_instance)
 {
 }
@@ -58,8 +60,6 @@ float config_tab::update(float x, float y, bool selected, const render_input& in
             for (const auto c : last_search_) {
                 wchar_t buf[4];
                 const std::uint32_t l = r2::unicode::put_char_to_array<wchar_t>(c, buf);
-                if (l == r2::unicode::codepoint_invalid)
-                    continue;
 
                 for (std::uint32_t i = 0u; i < l; i++) {
                     search_text += static_cast<wchar_t>(
@@ -270,40 +270,24 @@ input_response config_tab::input(const input_base& input, std::int32_t& selected
 
     const float top_bar_height = instance()->style().top_bar_height.get(instance()->scale());
 
-    if (!input.event().has_cursor_pos() ||
-        mouse_y >= instance()->pos().y + top_bar_height) {
-        std::int32_t config_id = 0;
-        for (auto& cfg : config_instance_->configs_) {
-            if (!cfg->is_skipped()) {
-                res = cfg->input(
-                    input, 
-                    selected_config_, 
-                    config_id
-                );
-                if (res.is_handled())
-                    return res;
-            }
+    const bool selected_only = input.event().has_cursor_pos() &&
+        (mouse_y < instance()->pos().y + top_bar_height ||
+            mouse_y > instance()->pos().y + instance()->pos().h);
 
-            config_id++;
+    std::int32_t config_id = 0;
+    for (auto& cfg : config_instance_->configs_) {
+        if (!cfg->is_skipped() &&
+            (!selected_only || input.is_selected(cfg.get()))) {
+            res = cfg->input(
+                input,
+                selected_config_,
+                config_id
+            );
+            if (res.is_handled())
+                return res;
         }
-    }
-    else if (!input.nothing_selected()) {
-        std::int32_t config_id = 0;
-        for (auto& cfg : config_instance_->configs_) {
-            if (!cfg->is_skipped()) {
-                if (input.is_selected(cfg.get())) {
-                    res = cfg->input(
-                        input,
-                        selected_config_,
-                        config_id
-                    );
-                    if (res.is_handled())
-                        return res;
-                }
-            }
 
-            config_id++;
-        }
+        config_id++;
     }
 
     if (!input.nothing_selected() &&

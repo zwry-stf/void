@@ -10,6 +10,7 @@ void_begin_
 enum class message_type : std::uint8_t {
     none = static_cast<std::uint8_t>(-1),
     ignore = 0,
+    block,
     mouse_button_down,
     mouse_button_up,
     mouse_move,
@@ -115,7 +116,7 @@ public:
         ret.msg_ = down ? message_type::key_down : message_type::key_up;
         ret.key_value_ = key;
         if (key == key::none)
-            ret.msg_ = message_type::ignore;
+            ret.msg_ = message_type::block;
         return ret;
     }
 
@@ -123,6 +124,12 @@ public:
         message_event ret;
         ret.msg_ = message_type::char_down;
         ret.char_value_ = c;
+        return ret;
+    }
+
+    static [[nodiscard]] message_event block() noexcept {
+        message_event ret;
+        ret.msg_ = message_type::block;
         return ret;
     }
 

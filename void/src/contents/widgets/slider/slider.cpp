@@ -108,10 +108,12 @@ void slider::render(float alpha)
 
     const float line_height_half = std::round(available_height * 0.18f);
 
-    slider_pos_ = r2::vec4(
-        last_pos_.x, last_pos_.y + text_size_small,
-        last_pos_.x + last_pos_.w, last_pos_.y + last_pos_.h
-    );
+    slider_pos_ = r2::rectf{
+        last_pos_.x,
+        last_pos_.y + text_size_small,
+        last_pos_.w,
+        last_pos_.h - text_size_small
+    };
 
     renderer.add_rect_filled(
         r2::vec2(last_pos_.x + half_slider_height_,
@@ -185,7 +187,7 @@ input_response slider::input(const input_base& input)
 
     if (input.event().is_message(message_type::mouse_button_down) &&
         input.event().get_mouse_button() == mouse_button::left) {
-        if (util::is_in_quad(mouse_x, mouse_y, slider_pos_)) {
+        if (util::is_in_rect(mouse_x, mouse_y, slider_pos_)) {
             input.set_selected(this);
         
             return input_response::handled();
@@ -211,7 +213,7 @@ input_response slider::input(const input_base& input)
             return input_response::handled();
         }
 
-        if (util::is_in_quad(mouse_x, mouse_y, slider_pos_)) {
+        if (util::is_in_rect(mouse_x, mouse_y, slider_pos_)) {
             input.set_hovered(this);
             instance()->cursors().set_cursor(cursor::size_ew);
         
@@ -220,6 +222,17 @@ input_response slider::input(const input_base& input)
     }
 
     return input_response::empty();
+}
+
+void slider::set_pos(const r2::vec2& pos)
+{
+    const float delta_x = pos.x - last_pos_.x;
+    const float delta_y = pos.y - last_pos_.y;
+
+    widget::set_pos(pos);
+
+    slider_pos_.x += delta_x;
+    slider_pos_.y += delta_y;
 }
 
 void slider::on_activate()

@@ -89,6 +89,7 @@ public:
     float update(const r2::rectf& pos, const render_input& input, bool occluded);
     void render(float alpha, const r2::color& text_color);
     input_response input(const input_base& input);
+    void set_pos(float delta_x, float delta_y);
 
     void on_activate();
     void on_scale_changed();

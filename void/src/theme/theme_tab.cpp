@@ -15,10 +15,12 @@ enum class tab_selected_ids : std::int32_t {
 
 theme_tab::theme_tab(void_* instance, input_owner* input_owner, 
                      input_owner_overlay* overlay_owner, _theme* theme_instance, const xstr& name)
-    : child_tab(instance, input_owner,
-                std::to_underlying(tab_selected_ids::selected_max), 
-                std::to_underlying(tab_selected_ids::selected_child_tab),
-                overlay_owner, name),
+    : child_tab(
+        instance, input_owner,
+        overlay_owner, name,
+        std::to_underlying(tab_selected_ids::selected_max),
+        std::to_underlying(tab_selected_ids::selected_child_tab)
+    ),
       theme_instance_(theme_instance)
 {
 }
@@ -58,8 +60,6 @@ float theme_tab::update(float x, float y, bool selected, const render_input& inp
             for (const auto c : last_search_) {
                 wchar_t buf[4];
                 const std::uint32_t l = r2::unicode::put_char_to_array<wchar_t>(c, buf);
-                if (l == r2::unicode::codepoint_invalid)
-                    continue;
 
                 for (std::uint32_t i = 0u; i < l; i++) {
                     search_text += static_cast<wchar_t>(
@@ -119,7 +119,6 @@ float theme_tab::update(float x, float y, bool selected, const render_input& inp
                 pos_x + std::round(
                     static_cast<float>(step) * (item_spacing + theme_width) + item_spacing),
                 ypos,
-                theme_width,
                 input,
                 selected_theme_ == theme_id,
                 occluded
@@ -294,40 +293,24 @@ input_response theme_tab::input(const input_base& input, std::int32_t& selected_
 
     const float top_bar_height = instance()->style().top_bar_height.get(instance()->scale());
 
-    if (!input.event().has_cursor_pos() ||
-        mouse_y >= instance()->pos().y + top_bar_height) {
-        std::int32_t theme_id = 0;
-        for (auto& cfg : theme_instance_->themes_) {
-            if (!cfg->is_skipped()) {
-                res = cfg->input(
-                    input, 
-                    selected_theme_, 
-                    theme_id
-                );
-                if (res.is_handled())
-                    return res;
-            }
+    const bool selected_only = input.event().has_cursor_pos() &&
+        (mouse_y < instance()->pos().y + top_bar_height ||
+            mouse_y > instance()->pos().y + instance()->pos().h);
 
-            theme_id++;
+    std::int32_t theme_id = 0;
+    for (auto& theme : theme_instance_->themes_) {
+        if (!theme->is_skipped() &&
+            (!selected_only || input.is_selected(theme.get()))) {
+            res = theme->input(
+                input,
+                selected_theme_,
+                theme_id
+            );
+            if (res.is_handled())
+                return res;
         }
-    }
-    else if (!input.nothing_selected()) {
-        std::int32_t theme_id = 0;
-        for (auto& cfg : theme_instance_->themes_) {
-            if (!cfg->is_skipped()) {
-                if (input.is_selected(cfg.get())) {
-                    res = cfg->input(
-                        input,
-                        selected_theme_,
-                        theme_id
-                    );
-                    if (res.is_handled())
-                        return res;
-                }
-            }
 
-            theme_id++;
-        }
+        theme_id++;
     }
 
     if (!input.nothing_selected() &&
