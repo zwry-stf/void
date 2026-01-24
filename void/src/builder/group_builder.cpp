@@ -545,6 +545,12 @@ group_slider_options::owner_type& group_slider_options::decimal_count(int count)
     return *group_instance_;
 }
 
+group_slider_options::owner_type& group_slider_options::format_condition(std::function<bool(float, std::string&)>&& condition)
+{
+    get_widget<slider>()->add_format_condition(std::move(condition));
+    return *group_instance_;
+}
+
 
 /// group_spacing_options
 
@@ -970,6 +976,12 @@ overlay_slider_options::owner_type& overlay_slider_options::no_config()
 overlay_slider_options::owner_type& overlay_slider_options::decimal_count(int count)
 {
     get_widget<slider>()->set_decimal_count(count);
+    return *group_instance_;
+}
+
+overlay_slider_options::owner_type& overlay_slider_options::format_condition(std::function<bool(float, std::string&)>&& condition)
+{
+    get_widget<slider>()->add_format_condition(std::move(condition));
     return *group_instance_;
 }
 

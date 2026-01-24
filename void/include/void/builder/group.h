@@ -235,6 +235,9 @@ public:
 public:
     /// Sets how many decimals the slider should round to.
     owner_type& decimal_count(int count);
+
+    /// Adds a custom format applied when condition returns true on value.
+    owner_type& format_condition(std::function<bool(float, std::string&)>&& condition);
 };
 
 class group_spacing_options : public group_base_options {
@@ -428,6 +431,9 @@ public:
 public:
     /// Sets how many decimals the slider should round to.
     owner_type& decimal_count(int count);
+    
+    /// Adds a custom format applied when condition returns true on value.
+    owner_type& format_condition(std::function<bool(float, std::string&)>&& condition);
 };
 
 class overlay_spacing_options : public group_base_options {

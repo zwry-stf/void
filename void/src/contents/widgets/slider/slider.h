@@ -6,6 +6,8 @@
 
 void_begin_
 
+using format_condition = std::function<bool(float, std::string&)>;
+
 class slider : public widget {
 private:
     const xstr name_;
@@ -25,6 +27,8 @@ private:
     bool text_width_calculated_{ false };
     float text_width_;
 
+    std::vector<format_condition> conditions_;
+
 public:
     slider(void_* instance, input_owner* input_owner,
            const xstr& name, float* value, float min, float max, const std::format_string<float>& format);
@@ -41,6 +45,10 @@ public:
 
     void set_decimal_count(int count) noexcept {
         num_decimals_ = count;
+    }
+
+    void add_format_condition(format_condition&& condition) {
+        conditions_.emplace_back(std::move(condition));
     }
 
 private:

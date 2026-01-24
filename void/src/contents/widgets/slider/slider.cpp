@@ -78,8 +78,18 @@ void slider::render(float alpha)
 
     if (formatted_text_.empty() ||
         last_value_ != *value_) {
+        bool formatted = false;
+        for (auto& c : conditions_) {
+            if (c(*value_, formatted_text_)) {
+                formatted = true;
+                break;
+            }
+        }
+        if (!formatted) {
+            formatted_text_ = std::format<float>(format_, (float)*value_);
+        }
+
         last_value_ = *value_;
-        formatted_text_ = std::format<float>(format_, (float)*value_);
     }
 
     renderer.add_text(
