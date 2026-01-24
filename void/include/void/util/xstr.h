@@ -110,6 +110,7 @@ public:
     }
 
     template <std::size_t N>
+        requires (N - 1 <= kMaxSize)
     consteval basic_xstr(const Char(&text)[N]) noexcept
         : basic_xstr() {
         static_assert(N > 0u);
