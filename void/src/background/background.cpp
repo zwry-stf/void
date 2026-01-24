@@ -328,12 +328,14 @@ void _background::do_blur_pass(const r2::vec4& area, r2::framebuffer* out_target
     if (in_texture == nullptr) {
         if (!data_use_backbuffer_) {
             const std::int32_t offset = static_cast<std::int32_t>(std::ceil(rradius));
+            const std::int32_t max_right = static_cast<std::int32_t>(renderer.get_render_size().x);
+            const std::int32_t max_bottom = static_cast<std::int32_t>(renderer.get_render_size().y);
 
             const r2::rect blur_rect = {
-                static_cast<std::int32_t>(std::floor(area.x)) - offset,
-                static_cast<std::int32_t>(std::floor(area.y)) - offset,
-                static_cast<std::int32_t>(std::ceil(area.z)) + offset,
-                static_cast<std::int32_t>(std::ceil(area.w)) + offset
+                (std::max)(static_cast<std::int32_t>(std::floor(area.x)) - offset, 0),
+                (std::max)(static_cast<std::int32_t>(std::floor(area.y)) - offset, 0),
+                (std::min)(static_cast<std::int32_t>(std::ceil(area.z)) + offset, max_right),
+                (std::min)(static_cast<std::int32_t>(std::ceil(area.w)) + offset, max_bottom),
             };
 
             if (needs_resolve_)

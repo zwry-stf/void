@@ -16,10 +16,13 @@ private:
     const T default_value_;
 
 public:
-    default_config_module(const xstr& name, T* value)
+    default_config_module(const xstr& name, T* value, const T& default_value)
         : config_module(name, static_cast<std::uint32_t>(sizeof(T))),
           value_(value), 
-          default_value_(*value) { }
+          default_value_(default_value) { }
+
+    default_config_module(const xstr& name, T* value)
+        : default_config_module(name, value, *value) { }
 
 public:
     virtual void reset() override {
