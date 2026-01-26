@@ -34,6 +34,8 @@ void_::void_()
     theme_ = std::make_unique<_theme>(this);
     keybind_list_ = std::make_unique<keybind_list>(this);
 
+    account().create_overlay();
+
     search_text_field_ = std::make_unique<textfield>(
         this, this,
         textfield_type::text, /* type */

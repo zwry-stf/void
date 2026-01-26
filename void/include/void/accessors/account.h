@@ -38,6 +38,9 @@ public:
     ~account();
 
 public:
+    void create_overlay();
+
+public:
     void set_expiration_time(const time_point& t);
     void set_display_name(const xstr& name);
     void set_pfp(icons::icon_handle icon);

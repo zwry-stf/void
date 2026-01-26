@@ -80,6 +80,11 @@ input_response input::push_event(const message_event& event)
 
         if (instance()->is_open() &&
             instance()->options().get<options::option_BlockInput>()) {
+            if (event.is_message(message_type::key_down) &&
+                instance()->options().get<options::option_AllowKeyInput>()) {
+                return input_response::empty();
+            }
+
             return input_response::handled();
         }
     }

@@ -17,14 +17,18 @@ account::account(void_* instance)
       ),
       display_name_("unknown")
 {
-    menu_options_ = instance->create_overlay(
-        std::make_unique<menu_options>(
-            instance, instance, instance
-        )
-    );
 }
 
 account::~account() = default;
+
+void account::create_overlay()
+{
+    menu_options_ = instance()->create_overlay(
+        std::make_unique<menu_options>(
+            instance(), instance(), instance()
+        )
+    );
+}
 
 void account::set_expiration_time(const time_point& t)
 {

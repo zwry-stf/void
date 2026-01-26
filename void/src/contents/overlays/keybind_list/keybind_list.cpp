@@ -137,7 +137,7 @@ void keybind_list::on_overlay_render(void_* instance, custom_overlay& overlay)
     overlay.set_size_scaled(
         r2::vec2{
             overlay.get_size().x,
-            animation_
+            animation_ + header_height
         }
     );
 
@@ -148,7 +148,7 @@ void keybind_list::on_overlay_render(void_* instance, custom_overlay& overlay)
     overlay.data().border = style.border();
 
     overlay.data().rounding_top = rounding;
-    overlay.data().rounding_bottom = (std::min)(animation_ - header_height, rounding);
+    overlay.data().rounding_bottom = (std::min)(animation_, rounding);
 
     renderer.push_clip_rect(
         pos + r2::vec2(border_size),
