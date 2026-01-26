@@ -2,6 +2,8 @@
 #include <void/void.h>
 #include <contents/overlays/dropdown/dropdown.h>
 #include <contents/widgets/dropdown/dropdown_vertical.h>
+#include <contents/widgets/toggle/toggle.h>
+#include <config/config.h>
 
 
 void_begin_
@@ -38,12 +40,49 @@ menu_options::menu_options(void_* instance, input_owner* input_owner,
         )
     );
 
+    instance->config().add_module(
+        std::make_unique<default_config_module<std::size_t>>(
+            vo::xstr("menu_scale"),
+            &selected_scale_
+        )
+    );
+
     widgets_.emplace_back(
         std::make_unique<dropdown_vertical>(
             instance, input_owner,
             this,
             overlay_id,
             xstr("Scale")
+        )
+    );
+
+    widgets_.emplace_back(
+        std::make_unique<toggle>(
+            instance, input_owner,
+            xstr("Keybind list"),
+            &instance->options().get<options::option_KeybindList>()
+        )
+    );
+
+    instance->config().add_module(
+        std::make_unique<default_config_module<bool>>(
+            vo::xstr("enable_keybind_list"),
+            &instance->options().get<options::option_KeybindList>()
+        )
+    );
+
+    widgets_.emplace_back(
+        std::make_unique<toggle>(
+            instance, input_owner,
+            xstr("Allow movement"),
+            &instance->options().get<options::option_AllowKeyInput>()
+        )
+    );
+
+    instance->config().add_module(
+        std::make_unique<default_config_module<bool>>(
+            vo::xstr("allow_movement"),
+            &instance->options().get<options::option_AllowKeyInput>()
         )
     );
 }

@@ -67,6 +67,12 @@
     <Filter Include="src\contents\overlays\dropdown">
       <UniqueIdentifier>{4A3D82C3-3663-4C2A-1FA9-D1F50B6E71F6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\contents\overlays\keybind_list">
+      <UniqueIdentifier>{DE274C87-CA63-4FF1-3376-67E81FD1F70B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\contents\overlays\menu_options">
+      <UniqueIdentifier>{1D53DB91-098F-DEFB-72A1-F6F25EFC8616}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\contents\overlays\multiselect">
       <UniqueIdentifier>{887FC4E6-F4ED-1966-3DD7-D465A9840F02}</UniqueIdentifier>
     </Filter>
@@ -84,6 +90,9 @@
     </Filter>
     <Filter Include="src\contents\widgets\dropdown">
       <UniqueIdentifier>{8C257C64-F83D-638E-C1EA-F2272DC2F727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\contents\widgets\keybind">
+      <UniqueIdentifier>{45EF0E46-31AA-FEF1-DA61-773CC6FB4882}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\contents\widgets\list">
       <UniqueIdentifier>{FBEA7FD7-67AD-B361-B05D-42EE1C5F8C3F}</UniqueIdentifier>
@@ -115,6 +124,9 @@
       <Filter>include\void\accessors</Filter>
     </ClInclude>
     <ClInclude Include="include\void\accessors\background.h">
+      <Filter>include\void\accessors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\void\accessors\callbacks.h">
       <Filter>include\void\accessors</Filter>
     </ClInclude>
     <ClInclude Include="include\void\accessors\config.h">
@@ -300,6 +312,15 @@
     <ClInclude Include="src\contents\overlays\dropdown\dropdown.h">
       <Filter>src\contents\overlays\dropdown</Filter>
     </ClInclude>
+    <ClInclude Include="src\contents\overlays\keybind_list\keybind_list.h">
+      <Filter>src\contents\overlays\keybind_list</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\overlays\menu_options\menu_options.h">
+      <Filter>src\contents\overlays\menu_options</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\overlays\multiselect\config_module.h">
+      <Filter>src\contents\overlays\multiselect</Filter>
+    </ClInclude>
     <ClInclude Include="src\contents\overlays\multiselect\multiselect.h">
       <Filter>src\contents\overlays\multiselect</Filter>
     </ClInclude>
@@ -318,11 +339,26 @@
     <ClInclude Include="src\contents\widgets\colorpicker\colorpicker_child.h">
       <Filter>src\contents\widgets\colorpicker</Filter>
     </ClInclude>
+    <ClInclude Include="src\contents\widgets\colorpicker\optional_colorpicker_child.h">
+      <Filter>src\contents\widgets\colorpicker</Filter>
+    </ClInclude>
     <ClInclude Include="src\contents\widgets\dropdown\dropdown.h">
       <Filter>src\contents\widgets\dropdown</Filter>
     </ClInclude>
     <ClInclude Include="src\contents\widgets\dropdown\dropdown_child.h">
       <Filter>src\contents\widgets\dropdown</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\widgets\dropdown\dropdown_vertical.h">
+      <Filter>src\contents\widgets\dropdown</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\widgets\keybind\keybind_child.h">
+      <Filter>src\contents\widgets\keybind</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\widgets\keybind\keybind_widget.h">
+      <Filter>src\contents\widgets\keybind</Filter>
+    </ClInclude>
+    <ClInclude Include="src\contents\widgets\list\config_module.h">
+      <Filter>src\contents\widgets\list</Filter>
     </ClInclude>
     <ClInclude Include="src\contents\widgets\list\list.h">
       <Filter>src\contents\widgets\list</Filter>
@@ -363,16 +399,6 @@
     <ClInclude Include="src\util\resizing_type.h">
       <Filter>src\util</Filter>
     </ClInclude>
-    <ClInclude Include="include\void\accessors\callbacks.h" />
-    <ClInclude Include="src\contents\overlays\multiselect\config_module.h" />
-    <ClInclude Include="src\contents\widgets\colorpicker\optional_colorpicker_child.h" />
-    <ClInclude Include="src\contents\widgets\keybind\keybind_child.h" />
-    <ClInclude Include="src\contents\widgets\keybind\keybind_widget.h" />
-    <ClInclude Include="src\contents\overlays\dropdown\config_module.h" />
-    <ClInclude Include="src\contents\widgets\list\config_module.h" />
-    <ClInclude Include="src\contents\overlays\keybind_list\keybind_list.h" />
-    <ClInclude Include="src\contents\overlays\menu_options\menu_options.h" />
-    <ClInclude Include="src\contents\widgets\dropdown\dropdown_vertical.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\accessors\account.cpp">
@@ -489,6 +515,12 @@
     <ClCompile Include="src\contents\overlays\dropdown\dropdown_overlay.cpp">
       <Filter>src\contents\overlays\dropdown</Filter>
     </ClCompile>
+    <ClCompile Include="src\contents\overlays\keybind_list\keybind_list.cpp">
+      <Filter>src\contents\overlays\keybind_list</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\overlays\menu_options\menu_options.cpp">
+      <Filter>src\contents\overlays\menu_options</Filter>
+    </ClCompile>
     <ClCompile Include="src\contents\overlays\multiselect\multiselect_overlay.cpp">
       <Filter>src\contents\overlays\multiselect</Filter>
     </ClCompile>
@@ -510,11 +542,23 @@
     <ClCompile Include="src\contents\widgets\colorpicker\colorpicker_child.cpp">
       <Filter>src\contents\widgets\colorpicker</Filter>
     </ClCompile>
+    <ClCompile Include="src\contents\widgets\colorpicker\optional_colorpicker_child.cpp">
+      <Filter>src\contents\widgets\colorpicker</Filter>
+    </ClCompile>
     <ClCompile Include="src\contents\widgets\dropdown\dropdown.cpp">
       <Filter>src\contents\widgets\dropdown</Filter>
     </ClCompile>
     <ClCompile Include="src\contents\widgets\dropdown\dropdown_child.cpp">
       <Filter>src\contents\widgets\dropdown</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\widgets\dropdown\dropdown_vertical.cpp">
+      <Filter>src\contents\widgets\dropdown</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\widgets\keybind\keybind_child.cpp">
+      <Filter>src\contents\widgets\keybind</Filter>
+    </ClCompile>
+    <ClCompile Include="src\contents\widgets\keybind\keybind_widget.cpp">
+      <Filter>src\contents\widgets\keybind</Filter>
     </ClCompile>
     <ClCompile Include="src\contents\widgets\list\list.cpp">
       <Filter>src\contents\widgets\list</Filter>
@@ -564,11 +608,5 @@
     <ClCompile Include="src\void.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\contents\widgets\colorpicker\optional_colorpicker_child.cpp" />
-    <ClCompile Include="src\contents\widgets\keybind\keybind_child.cpp" />
-    <ClCompile Include="src\contents\widgets\keybind\keybind_widget.cpp" />
-    <ClCompile Include="src\contents\overlays\keybind_list\keybind_list.cpp" />
-    <ClCompile Include="src\contents\overlays\menu_options\menu_options.cpp" />
-    <ClCompile Include="src\contents\widgets\dropdown\dropdown_vertical.cpp" />
   </ItemGroup>
 </Project>

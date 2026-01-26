@@ -135,8 +135,14 @@ private:
     // Block application/game input while the menu is open.
     // Type: bool
     // Default: true
-    // Mutable after init: yes
-    _new_void_option(BlockInput,      bool,         true,                  true);
+    // Mutable after init: no
+    _new_void_option(BlockInput,      bool,         true,                  false);
+    
+    // Allow key input while BlockInput is true.
+    // Type: bool
+    // Default: true
+    // Mutable after init: true
+    _new_void_option(AllowKeyInput,   bool,         false,                 true);
 
     // Invoke the toggle-menu callback during initialization.
     // Type: bool
