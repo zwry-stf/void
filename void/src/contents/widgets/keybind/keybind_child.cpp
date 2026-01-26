@@ -89,7 +89,7 @@ void keybind_child::render(const r2::rectf& full_pos, float alpha, float animati
     const float offset = border_size * selected_animation;
 
     if (icon_ == icons::kInvalidHandle) {
-        icon_ = instance()->icons().get_or_create_handle(void_resources::hotkey_png);
+        icon_ = instance()->icons().get_or_create_handle(void_resources::keybind_png);
     }
     const auto* icon = instance()->icons().get_or_create(icon_, last_pos_.w);
     renderer.add_image(

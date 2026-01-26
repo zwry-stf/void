@@ -764,8 +764,6 @@ void render_frame()
             r2::color::yellow(),
             std::u8string_view(u8"→😭😂🤓😘→")
         );
-
-        g_void->set_scale(2.f);
     }
 
     if (GetAsyncKeyState(VK_F8) & 0x8000) {
@@ -774,8 +772,6 @@ void render_frame()
             r2::color::yellow(),
             std::u8string_view(u8"💔💔🤑🐒")
         );
-
-        g_void->set_scale_auto();
 
         g_void->notifications().create_note() << vo::xstr("Test") << r2::color::red() << vo::xstr("Test Red");
     }

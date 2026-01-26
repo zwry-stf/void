@@ -106,7 +106,7 @@ private:
     // type: int32
     // default: 4
     // Mutable after init: no
-    _new_void_option(MaxIconSizeDiff, std::int32_t, 4,                     false);
+    _new_void_option(MaxIconSizeDiff, std::int32_t, 2,                     false);
     
     // Enable Notifications.
     // Type: bool
@@ -144,11 +144,11 @@ private:
     // Mutable after init: no
     _new_void_option(ToggleCallbackOnInit, bool,    true,                  false);
 
-    // Show the keybind indicator list.
+    // Show the keybind list.
     // Type: bool
     // Default: true
     // Mutable after init: yes
-    _new_void_option(IndicatorList,   bool,         true,                  true);
+    _new_void_option(KeybindList,     bool,         true,                  true);
 
     // Hide "Always On" keybinds in the indicator list.
     // Type: bool

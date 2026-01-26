@@ -370,6 +370,9 @@
     <ClInclude Include="src\contents\widgets\keybind\keybind_widget.h" />
     <ClInclude Include="src\contents\overlays\dropdown\config_module.h" />
     <ClInclude Include="src\contents\widgets\list\config_module.h" />
+    <ClInclude Include="src\contents\overlays\keybind_list\keybind_list.h" />
+    <ClInclude Include="src\contents\overlays\menu_options\menu_options.h" />
+    <ClInclude Include="src\contents\widgets\dropdown\dropdown_vertical.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\accessors\account.cpp">
@@ -564,5 +567,8 @@
     <ClCompile Include="src\contents\widgets\colorpicker\optional_colorpicker_child.cpp" />
     <ClCompile Include="src\contents\widgets\keybind\keybind_child.cpp" />
     <ClCompile Include="src\contents\widgets\keybind\keybind_widget.cpp" />
+    <ClCompile Include="src\contents\overlays\keybind_list\keybind_list.cpp" />
+    <ClCompile Include="src\contents\overlays\menu_options\menu_options.cpp" />
+    <ClCompile Include="src\contents\widgets\dropdown\dropdown_vertical.cpp" />
   </ItemGroup>
 </Project>

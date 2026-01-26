@@ -133,9 +133,10 @@ xstr group_with_child_base_options::build_child_config_path(const xstr& type)
 
 group_with_child_base_options::group_with_child_base_options(void_* instance, menu_builder* builder, 
                                                              widget* widget_instance, const xstr& config_path,
-                                                             std::size_t config_id)
+                                                             const xstr& name, std::size_t config_id)
     : group_base_options(instance, builder, widget_instance, config_id),
-      config_path_(config_path)
+      config_path_(config_path),
+      name_(name)
 {
 }
 
@@ -260,6 +261,9 @@ void group_with_child_base_options::last_childwindow(std::int32_t overlay_id)
 
 void group_with_child_base_options::last_keybind(keybind_owner* bind)
 {
+    if (bind->name().empty())
+        bind->set_name(name_);
+
     get_widget()->add_child(
         keybind_child::create_keybind(
             instance(), instance(), instance(),
@@ -278,8 +282,9 @@ void group_with_child_base_options::custom_child(std::unique_ptr<widget_child>&&
 
 group_with_child_options::group_with_child_options(void_* instance, menu_builder* builder,
                                                    owner_type* group_instance, widget* widget_instance, 
-                                                   const xstr& config_path, std::size_t config_id)
-    : group_with_child_base_options(instance, builder, widget_instance, config_path, config_id),
+                                                   const xstr& config_path, const xstr& name,
+                                                   std::size_t config_id)
+    : group_with_child_base_options(instance, builder, widget_instance, config_path, name, config_id),
       group_instance_(group_instance)
 {
 }
@@ -376,8 +381,9 @@ group_with_child_options::owner_type& group_with_child_options::custom_child(std
 
 group_textfield_options::group_textfield_options(void_* instance, menu_builder* builder, 
                                                  owner_type* group_instance, widget* widget_instance,
-                                                 const xstr& config_path, std::size_t config_id)
-    : group_with_child_base_options(instance, builder, widget_instance, config_path, config_id),
+                                                 const xstr& config_path, const xstr& name,
+                                                 std::size_t config_id)
+    : group_with_child_base_options(instance, builder, widget_instance, config_path, name, config_id),
       group_instance_(group_instance)
 {
 }
@@ -1342,6 +1348,11 @@ void keybind_options_base::key(mouse_button k)
     keybind_instance_->set_key(k);
 }
 
+void keybind_options_base::name(const xstr& name)
+{
+    keybind_instance_->set_name(name);
+}
+
 
 /// group_keybind_options
 
@@ -1405,6 +1416,12 @@ group_keybind_options::owner_type& group_keybind_options::no_config()
     return *group_instance_;
 }
 
+group_keybind_options::owner_type& group_keybind_options::name(const xstr& name)
+{
+    keybind_options_base::name(name);
+    return *group_instance_;
+}
+
 
 /// group_builder
 
@@ -1458,6 +1475,7 @@ group_with_child_options::owner_type group_builder::toggle(const xstr& name, boo
         *this,
         widget,
         config_path,
+        name,
         config_id
     );
 }
@@ -1493,6 +1511,7 @@ group_with_child_options::owner_type group_builder::colorpicker(const xstr& name
         *this,
         widget,
         config_path,
+        name,
         config_id
     );
 }
@@ -1530,6 +1549,7 @@ group_with_child_options::owner_type group_builder::dropdown(const xstr& name, l
         *this, 
         widget,
         config_path,
+        name,
         config_id
     );
 }
@@ -1597,6 +1617,7 @@ group_with_child_options::owner_type group_builder::multiselect(const xstr& name
         *this, 
         widget,
         config_path,
+        name,
         config_id
     );
 }
@@ -1661,6 +1682,7 @@ group_textfield_options::owner_type group_builder::textfield(const xstr& name, s
         *this,
         widget,
         build_config_path("textfield"),
+        name,
         _config::kInvalidModuleId
     );
 }
@@ -1681,6 +1703,7 @@ group_with_child_options::owner_type group_builder::button(const xstr& name, con
         *this,
         widget,
         build_config_path("button"),
+        name,
         _config::kInvalidModuleId
     );
 }

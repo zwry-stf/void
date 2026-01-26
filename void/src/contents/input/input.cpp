@@ -21,7 +21,7 @@ input::input(void_* instance) noexcept
     key_states_.reset();
     mouse_states_.reset();
 
-    keybind_manager_ = std::make_unique<keybind_manager>(instance);
+    keybind_manager_ = std::make_unique<::vo::keybind_manager>(instance);
 }
 
 input::~input() = default;

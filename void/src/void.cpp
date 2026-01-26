@@ -7,6 +7,7 @@
 #include <config/config.h>
 #include <theme/theme.h>
 #include <void/builder/builder.h>
+#include <contents/overlays/keybind_list/keybind_list.h>
 
 
 #if defined(R2_PLATFORM_WINDOWS)
@@ -31,6 +32,7 @@ void_::void_()
     sidebar_ = std::make_unique<sidebar>(this);
     config_ = std::make_unique<_config>(this);
     theme_ = std::make_unique<_theme>(this);
+    keybind_list_ = std::make_unique<keybind_list>(this);
 
     search_text_field_ = std::make_unique<textfield>(
         this, this,
@@ -274,6 +276,11 @@ input_response void_::on_input(const message_event& event)
         if (res.is_handled())
             return res;
 
+        /// account
+        res = account().input(input);
+        if (res.is_handled())
+            return res;
+
         /// move/resize
         res = input_move(input);
         if (res.is_handled())
@@ -372,7 +379,7 @@ void void_::render_menu()
     render_search();
 
     /// account
-    account().render();
+    account().render(input_get_render_input());
 
     /// overlay dim
     float highest_animation_value = 0.f;
@@ -774,9 +781,11 @@ void void_::update_scale(float scale)
     scale_ = scale;
 
     // notify
+    icons().on_scale_changed();
     sidebar_->on_scale_change();
     watermark().on_scale_changed();
     notifications().on_scale_changed();
+    account().on_scale_changed();
 
     for (auto& o : overlays_)
         o->on_scale_changed();

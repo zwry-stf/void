@@ -84,6 +84,7 @@ public:
 
 class group_with_child_base_options : public group_base_options {
 protected:
+    const xstr name_;
     const xstr config_path_;
 
 protected:
@@ -92,7 +93,7 @@ protected:
 public:
     group_with_child_base_options(void_* instance, menu_builder* builder,
                                   widget* widget_instance, const xstr& config_path, 
-                                  std::size_t config_id);
+                                  const xstr& name, std::size_t config_id);
 
 protected:
     void colorpicker(r2::color& value, bool has_alpha = true);
@@ -113,7 +114,8 @@ protected:
 public:
     group_with_child_options(void_* instance, menu_builder* builder,
                              owner_type* group_instance, widget* widget_instance,
-                             const xstr& config_path, std::size_t config_id);
+                             const xstr& config_path, const xstr& name,
+                             std::size_t config_id);
 
 public:
     /// Disable widget when state becomes true.
@@ -159,7 +161,8 @@ private:
 public:
     group_textfield_options(void_* instance, menu_builder* builder,
                             owner_type* group_instance, widget* widget_instance,
-                            const xstr& config_path, std::size_t config_id);
+                            const xstr& config_path, const xstr& name,
+                            std::size_t config_id);
     virtual ~group_textfield_options();
 
 public:
@@ -499,6 +502,7 @@ public:
     void mode(keybind_mode mode);
     void key(::vo::key k);
     void key(mouse_button k);
+    void name(const xstr& name);
 };
 
 class group_keybind_options : public keybind_options_base {
@@ -528,6 +532,7 @@ public:
     owner_type& key(::vo::key k);
     owner_type& key(mouse_button k);
     owner_type& no_config();
+    owner_type& name(const xstr& name);
 };
 
 class group_builder : public base_builder_object {

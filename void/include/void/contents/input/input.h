@@ -64,6 +64,10 @@ public:
     class keybind_owner* add_keybind(keybind* bind, key default_key = key::none,
                                      keybind_mode mode = keybind_mode::hold);
 
+    [[nodiscard]] auto* keybind_manager() const noexcept {
+        return keybind_manager_.get();
+    }
+
     void clear_queue();
 
 private:

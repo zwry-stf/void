@@ -34,6 +34,7 @@ public:
 public:
     void init();
     void destroy();
+    void on_scale_changed();
 
     [[nodiscard]] const scaled_icon* get_or_create(icon_handle handle, std::uint32_t size);
     [[nodiscard]] const scaled_icon* get_or_create(icon_handle handle, float size) {

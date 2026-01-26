@@ -39,6 +39,22 @@ void icons::destroy()
     icons_.clear();
 }
 
+void icons::on_scale_changed()
+{
+    auto& renderer = instance()->renderer();
+    auto* font_atlas = renderer.font_atlas();
+
+    for (auto& i : icons_) {
+        for (auto& s : i.sizes) {
+            if (!s.created)
+                continue;
+
+            font_atlas->remove_rect(s.rect_id);
+        }
+        i.sizes.clear();
+    }
+}
+
 const scaled_icon* icons::get_or_create(icon_handle handle, std::uint32_t size)
 {
 #if defined(_DEBUG)

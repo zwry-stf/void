@@ -27,8 +27,8 @@
         },
         {
             "id": 5,
-            "name": "hotkey_png",
-            "path": "../../res/png/hotkey.png"
+            "name": "keybind_png",
+            "path": "../../res/png/keybind.png"
         },
         {
             "id": 6,
@@ -59,6 +59,26 @@
             "id": 11,
             "name": "color_png",
             "path": "../../res/png/color.png"
+        },
+        {
+            "id": 12,
+            "name": "keybind_hold_png",
+            "path": "../../res/png/keybind_hold.png"
+        },
+        {
+            "id": 13,
+            "name": "keybind_toggle_png",
+            "path": "../../res/png/keybind_toggle.png"
+        },
+        {
+            "id": 14,
+            "name": "keybind_always_on_png",
+            "path": "../../res/png/keybind_always_on.png"
+        },
+        {
+            "id": 15,
+            "name": "sparkles_png",
+            "path": "../../res/png/sparkles.png"
         },
         {
             "id": 100,

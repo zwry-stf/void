@@ -17,6 +17,9 @@ public:
     void update();
 
     [[nodiscard]] keybind_owner* add_keybind(keybind* bind, key default_key, keybind_mode mode);
+    [[nodiscard]] const auto& binds() const noexcept {
+        return binds_;
+    }
 };
 
 void_end_

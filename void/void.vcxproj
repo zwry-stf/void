@@ -250,6 +250,8 @@
     <ClInclude Include="src\contents\overlays\colorpicker\colorpicker.h" />
     <ClInclude Include="src\contents\overlays\dropdown\config_module.h" />
     <ClInclude Include="src\contents\overlays\dropdown\dropdown.h" />
+    <ClInclude Include="src\contents\overlays\keybind_list\keybind_list.h" />
+    <ClInclude Include="src\contents\overlays\menu_options\menu_options.h" />
     <ClInclude Include="src\contents\overlays\multiselect\config_module.h" />
     <ClInclude Include="src\contents\overlays\multiselect\multiselect.h" />
     <ClInclude Include="src\contents\sidebar.h" />
@@ -260,6 +262,7 @@
     <ClInclude Include="src\contents\widgets\colorpicker\optional_colorpicker_child.h" />
     <ClInclude Include="src\contents\widgets\dropdown\dropdown.h" />
     <ClInclude Include="src\contents\widgets\dropdown\dropdown_child.h" />
+    <ClInclude Include="src\contents\widgets\dropdown\dropdown_vertical.h" />
     <ClInclude Include="src\contents\widgets\keybind\keybind_widget.h" />
     <ClInclude Include="src\contents\widgets\keybind\keybind_child.h" />
     <ClInclude Include="src\contents\widgets\list\config_module.h" />
@@ -316,6 +319,8 @@
     <ClCompile Include="src\contents\overlays\colorpicker\colorpicker_overlay.cpp" />
     <ClCompile Include="src\contents\overlays\custom_overlay.cpp" />
     <ClCompile Include="src\contents\overlays\dropdown\dropdown_overlay.cpp" />
+    <ClCompile Include="src\contents\overlays\keybind_list\keybind_list.cpp" />
+    <ClCompile Include="src\contents\overlays\menu_options\menu_options.cpp" />
     <ClCompile Include="src\contents\overlays\multiselect\multiselect_overlay.cpp" />
     <ClCompile Include="src\contents\overlays\overlay.cpp" />
     <ClCompile Include="src\contents\sidebar.cpp" />
@@ -326,6 +331,7 @@
     <ClCompile Include="src\contents\widgets\colorpicker\optional_colorpicker_child.cpp" />
     <ClCompile Include="src\contents\widgets\dropdown\dropdown.cpp" />
     <ClCompile Include="src\contents\widgets\dropdown\dropdown_child.cpp" />
+    <ClCompile Include="src\contents\widgets\dropdown\dropdown_vertical.cpp" />
     <ClCompile Include="src\contents\widgets\keybind\keybind_child.cpp" />
     <ClCompile Include="src\contents\widgets\keybind\keybind_widget.cpp" />
     <ClCompile Include="src\contents\widgets\list\list.cpp" />

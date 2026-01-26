@@ -57,6 +57,7 @@ public:
 
     void set_scale(float scale);
     void set_scale_auto();
+    [[nodiscard]] float calculate_scale() noexcept;
 
 public:
     [[nodiscard]] bool is_initialized() const noexcept {
@@ -128,7 +129,6 @@ public:
     _define_void_accessor(theme, theme);
 
 private:
-    [[nodiscard]] float calculate_scale() noexcept;
     void render_menu();
     void render_overlays();
     void render_search();
@@ -143,6 +143,7 @@ private:
     std::unique_ptr<class sidebar> sidebar_;
     std::unique_ptr<class _config> config_;
     std::unique_ptr<class _theme> theme_;
+    std::unique_ptr<class keybind_list> keybind_list_;
 
     friend class background;
     friend class config;

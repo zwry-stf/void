@@ -1,6 +1,7 @@
 #pragma once
 #include <void/contents/input/keybind.h>
 #include <void/contents/input/input.h>
+#include <void/util/xstr.h>
 #include <functional>
 
 
@@ -20,6 +21,7 @@ private:
     keybind_key key_;
     std::size_t mode_;
     bool last_key_down_;
+    xstr name_{};
     
     std::function<bool()> disabled_callback_;
 
@@ -54,6 +56,9 @@ public:
     void set_mode(keybind_mode mode) noexcept {
         mode_ = static_cast<std::size_t>(mode);
     }
+    void set_name(const xstr& name) noexcept {
+        name_ = name;
+    }
     [[nodiscard]] bool has_key() const noexcept {
         return key_.has_key;
     }
@@ -65,6 +70,9 @@ public:
         assert(!has_key());
         return key_.storage.mouse_button; 
     }
+    [[nodiscard]] const auto& name() const noexcept {
+        return name_;
+    }
 
     [[nodiscard]] auto& mode_ref() noexcept { 
         return mode_;
@@ -74,7 +82,7 @@ public:
     }
 
     [[nodiscard]] bool value() const noexcept {
-        return key_bind_;
+        return (bool)(*key_bind_);
     }
 
     void update(void_* instance);
