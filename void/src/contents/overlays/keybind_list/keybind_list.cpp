@@ -133,7 +133,7 @@ void keybind_list::on_overlay_render(void_* instance, custom_overlay& overlay)
     const float icon_size = row_height - icon_spacing * 2.f;
     const float full_size = static_cast<float>(valid_targets) * (row_height + row_spacing) +
         header_height + (valid_targets == 0u ? 0.f : std::round(spacing * 0.5f));
-    animation_ = util.lerp(animation_, full_size);
+    animation_ = util.lerp(animation_, full_size - header_height);
     overlay.set_size_scaled(
         r2::vec2{
             overlay.get_size().x,
