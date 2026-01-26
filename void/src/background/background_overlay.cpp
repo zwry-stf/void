@@ -135,8 +135,7 @@ void _background_overlay::render_custom_overlays(_background* background)
         r2::textureview* input_tex = nullptr;
         if ((!instance()->options().get<options::option_NoBlur>() &&
             constants.blur_enabled != 0) ||
-            o->cfg_.liquid_glass)
-        {
+            o->cfg_.liquid_glass) {
             background->do_blur_pass(
                 pos,
                 background->data_pass_fbo_.get(),
