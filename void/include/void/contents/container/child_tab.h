@@ -56,6 +56,9 @@ public:
     [[nodiscard]] const auto& last_pos() const noexcept {
         return last_pos_;
     }
+    [[nodiscard]] const auto& name() const noexcept {
+        return name_;
+    }
 
 protected:
     void update_scrollbar();

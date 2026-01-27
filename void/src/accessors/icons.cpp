@@ -39,6 +39,22 @@ void icons::destroy()
     icons_.clear();
 }
 
+void icons::destroy_render()
+{
+    for (auto& i : icons_) {
+        for (auto it = i.sizes.begin(); it != i.sizes.end();) {
+            auto& s = *it;
+            if (!s.created ||
+                s.add_to_atlas) {
+                it++;
+                continue;
+            }
+
+            it = i.sizes.erase(it);
+        }
+    }
+}
+
 void icons::on_scale_changed()
 {
     auto& renderer = instance()->renderer();
@@ -55,7 +71,7 @@ void icons::on_scale_changed()
     }
 }
 
-const scaled_icon* icons::get_or_create(icon_handle handle, std::uint32_t size)
+const scaled_icon* icons::get_or_create(icon_handle handle, std::uint32_t size, bool add_to_atlas, bool ignore_size)
 {
 #if defined(_DEBUG)
     instance()->renderer().assert_render_thread();
@@ -69,6 +85,9 @@ const scaled_icon* icons::get_or_create(icon_handle handle, std::uint32_t size)
         std::int32_t closest = instance()->options().get<options::option_MaxIconSizeDiff>();
         const scaled_icon* scaled = nullptr;
         for (auto& s : created_icon.sizes) {
+            if (ignore_size) {
+                return &s.icon_data;
+            }
             const std::int32_t off = std::abs(
                 static_cast<std::int32_t>(s.icon_data.size) -
                 static_cast<std::int32_t>(size)
@@ -85,11 +104,12 @@ const scaled_icon* icons::get_or_create(icon_handle handle, std::uint32_t size)
 
     internal_scaled_icon icon;
     icon.icon_data.size = size;
+    icon.add_to_atlas = add_to_atlas;
     if (instance()->is_initialized()) {
         create_icon(created_icon.resource_id, icon);
     }
 
-    return &created_icon.sizes.emplace_back(icon).icon_data;
+    return &created_icon.sizes.emplace_back(std::move(icon)).icon_data;
 }
 
 icons::icon_handle icons::get_or_create_handle(int resource_id)
@@ -108,7 +128,7 @@ icons::icon_handle icons::get_or_create_handle(int resource_id)
     return static_cast<icon_handle>(icons_.size() - 1u);
 }
 
-void icons::create_icon(int resource_id, internal_scaled_icon& data)
+void icons::create_icon(int resource_id, internal_scaled_icon& data, bool ignore_size)
 {
     assert(!data.created);
 
@@ -130,40 +150,91 @@ void icons::create_icon(int resource_id, internal_scaled_icon& data)
         throw error(error_code::load_icon);
     }
 
-    float size_ratio = static_cast<float>(width) / static_cast<float>(height);
+    int data_width;
+    int data_height;
+    if (ignore_size) {
+        data_width = width;
+        data_height = height;
+        data.icon_data.size = static_cast<std::uint32_t>(height);
+    }
+    else {
+        const float size_ratio = static_cast<float>(width) / static_cast<float>(height);
+        data_width = static_cast<int>(static_cast<float>(data.icon_data.size) * size_ratio);
+        data_height = static_cast<int>(data.icon_data.size);
+    }
 
-    data.rect_id = font_atlas->register_rect(
-        static_cast<std::uint32_t>(static_cast<float>(data.icon_data.size) * size_ratio),
-        data.icon_data.size
-    );
-    font_atlas->get_rect_uv(
-        data.rect_id,
-        data.icon_data.uv_min,
-        data.icon_data.uv_max
-    );
-    data.icon_data.tex = renderer.font_texture();
-    data.created = true;
+    std::uint32_t* dst_data = nullptr;
+    int data_stride;
+    if (data.add_to_atlas) {
+        data.rect_id = font_atlas->register_rect(
+            static_cast<std::uint32_t>(data_width),
+            static_cast<std::uint32_t>(data_height)
+        );
+        font_atlas->get_rect_uv(
+            data.rect_id,
+            data.icon_data.uv_min,
+            data.icon_data.uv_max
+        );
+        data.icon_data.tex = renderer.font_texture();
+        data.created = true;
 
-    const auto& r = font_atlas->get_rect(data.rect_id);
+        const auto& r = font_atlas->get_rect(data.rect_id);
 
-    auto* dst_pixels = font_atlas->get_data32().data();
-    auto* dst_data = dst_pixels + r.pos_y * font_atlas->get_width() + r.pos_x;
+        auto* dst_pixels = font_atlas->get_data32().data();
+        dst_data = dst_pixels + r.pos_y * font_atlas->get_width() + r.pos_x;
+        data_stride = static_cast<int>(font_atlas->get_width() * sizeof(std::uint32_t));
+    }
+    else {
+        temp_buffer_.clear();
+        temp_buffer_.resize(
+            data_width * data_height * 4, /* channels */
+            0u
+        );
+        data_stride = data_width * 4;
+        dst_data = temp_buffer_.data();
+    }
 
     // resize
     unsigned char* _ret = stbir_resize_uint8_linear(
         pixels, width, height, width * 4,
         reinterpret_cast<std::uint8_t*>(dst_data), 
-            static_cast<int>(r.width), static_cast<int>(r.height), 
-            font_atlas->get_width() * sizeof(std::uint32_t),
+        data_width, data_height, data_stride,
         STBIR_RGBA
     );
     if (_ret == nullptr) {
+        util.free_pixels(pixels);
         throw error(error_code::load_icon);
     }
 
     util.free_pixels(pixels);
 
-    renderer.queue_atlas_update();
+    if (!data.add_to_atlas) {
+        r2::texture_desc tdesc{};
+        tdesc.width = static_cast<std::uint32_t>(data_width);
+        tdesc.height = static_cast<std::uint32_t>(data_height);
+        tdesc.format = r2::texture_format::rgba8_unorm;
+
+        data.texture = renderer.context()->create_texture2d(tdesc, dst_data);
+        if (data.texture->has_error()) {
+            throw error(error_code::load_icon,
+                data.texture->get_error(), data.texture->get_detail());
+        }
+
+        r2::textureview_desc vdesc{};
+        data.texture_view = renderer.context()->create_textureview(data.texture.get(), vdesc);
+        if (data.texture_view->has_error()) {
+            throw error(error_code::load_icon,
+                data.texture_view->get_error(), data.texture_view->get_detail());
+        }
+        
+        data.icon_data.uv_min = r2::vec2(0.f);
+        data.icon_data.uv_max = r2::vec2(1.f);
+        data.icon_data.tex = data.texture_view->native_texture_handle();
+        data.created = true;
+    }
+    else {
+        renderer.queue_atlas_update();
+    }
 }
 
 void_end_

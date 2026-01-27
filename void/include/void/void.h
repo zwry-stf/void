@@ -90,6 +90,7 @@ public:
     [[nodiscard]] auto* get_keybind_list() const noexcept {
         return keybind_list_.get();
     }
+    [[nodiscard]] class tab* get_active_tab() const;
 
     // search
 

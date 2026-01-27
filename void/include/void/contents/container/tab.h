@@ -11,11 +11,13 @@ void_begin_
 class input_owner_overlay;
 
 class tab : protected vobj {
+private:
+    const xstr name_;
     const bool is_container_;
     input_owner_overlay* const parent_overlay_owner_;
 
 public:
-    tab(void_* instance, input_owner_overlay* overlay_owner, bool is_container = false);
+    tab(void_* instance, input_owner_overlay* overlay_owner, const xstr& name, bool is_container = false);
 
     tab(const tab&) = delete;
     tab& operator=(const tab&) = delete;
@@ -31,6 +33,9 @@ public:
 
     [[nodiscard]] bool is_container() const noexcept { 
         return is_container_;
+    }
+    [[nodiscard]] const auto& name() const noexcept {
+        return name_;
     }
 };
 

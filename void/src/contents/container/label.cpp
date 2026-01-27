@@ -7,8 +7,9 @@ void_begin_
 label::label(void_* instance, const xstr& name)
     : tab(instance, 
         nullptr, /* overlay owner */
-        false /* is_container */),
-      name_(name)
+        name,
+        false /* is_container */
+      )
 {
 }
 
@@ -23,10 +24,10 @@ float label::update(float x, float y, float w, const render_input&, bool)
     auto& renderer = instance()->renderer();
 
     if (!text_width_calculated_) {
-        if (renderer.get_text_width_strict(name_, text_width_))
+        if (renderer.get_text_width_strict(name(), text_width_))
             text_width_calculated_ = true;
         else
-            text_width_ = renderer.get_text_width(name_);
+            text_width_ = renderer.get_text_width(name());
     }
 
     return last_pos_.h;
@@ -56,7 +57,7 @@ void label::render(bool)
     renderer.add_text(
         text_pos,
         style.text(),
-        name_
+        name()
     );
 
     renderer.add_rect_filled(

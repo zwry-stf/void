@@ -10,8 +10,6 @@ class input_owner_overlay;
 class tab_normal : public tab,
                    public input_receiver {
 private:
-    const xstr name_;
-
     r2::rectf last_pos_;
 
     float animation_selected_{ 0.f };
@@ -40,6 +38,7 @@ public:
     virtual void on_scale_change() override;
 
     child_tab* add_child_tab(std::unique_ptr<child_tab>&& child_tab);
+    [[nodiscard]] child_tab* get_active_child_tab() const;
 
     void set_icon(int resource_id);
 

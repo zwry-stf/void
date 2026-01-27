@@ -6,9 +6,12 @@
 void_begin_
 
 tab_normal::tab_normal(void_* instance, input_owner* input_owner, const xstr& name, input_owner_overlay* overlay_owner)
-    : tab(instance, overlay_owner, true),
-      input_receiver(input_owner, 1),
-      name_(name)
+    : tab(
+        instance, overlay_owner, 
+        name,
+        true /* is_container */
+      ),
+      input_receiver(input_owner, 1)
 {
 }
 
@@ -119,6 +122,15 @@ child_tab* tab_normal::add_child_tab(std::unique_ptr<child_tab>&& child_tab)
     return child_tabs_.back().get();
 }
 
+child_tab* tab_normal::get_active_child_tab() const
+{
+    if (selected_child_ >= 0 &&
+        selected_child_ < static_cast<std::int32_t>(child_tabs_.size()))
+        return child_tabs_[selected_child_].get();
+
+    return nullptr;
+}
+
 void tab_normal::set_icon(int resource_id)
 {
     icon_ = instance()->icons().get_or_create_handle(resource_id);
@@ -155,10 +167,10 @@ void tab_normal::render_header()
     instance()->fonts().bind_font_small();
 
     if (!text_width_calculated_) {
-        if (renderer.get_text_width_strict(name_, text_width_))
+        if (renderer.get_text_width_strict(name(), text_width_))
             text_width_calculated_ = true;
         else
-            text_width_ = renderer.get_text_width(name_);
+            text_width_ = renderer.get_text_width(name());
         text_width_ = std::ceil(text_width_);
     }
 
@@ -203,7 +215,7 @@ void tab_normal::render_header()
         r2::vec2(last_pos_.x + (has_icon ? last_pos_.h : std::round((last_pos_.w - text_width_) * 0.5f)),
             last_pos_.y + (last_pos_.h - style.text_size_small.get(instance()->scale())) * 0.5f),
         style.text_accent(), 
-        name_
+        name()
     );
 
     renderer.pop_clip_rect();

@@ -6,8 +6,6 @@ void_begin_
 
 class label : public tab {
 private:
-    const xstr name_;
-
     bool text_width_calculated_{ false };
     float text_width_;
     

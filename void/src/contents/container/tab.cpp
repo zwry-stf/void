@@ -3,10 +3,11 @@
 
 void_begin_
 
-tab::tab(void_* instance, input_owner_overlay* overlay_owner, bool is_container)
+tab::tab(void_* instance, input_owner_overlay* overlay_owner, const xstr& name, bool is_container)
     : vobj(instance),
       parent_overlay_owner_(overlay_owner),
-      is_container_(is_container)
+      is_container_(is_container),
+      name_(name)
 {
 }
 

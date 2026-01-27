@@ -152,6 +152,7 @@ void void_::destroy_render()
 
     render_target().destroy();
 
+    icons().destroy_render();
     background_->destroy();
     background_overlay_->destroy();
 
@@ -354,6 +355,10 @@ void void_::set_scale_auto()
 menu_builder void_::get_builder() noexcept
 {
     return menu_builder(this);
+}
+
+class tab* void_::get_active_tab() const {
+    return sidebar_->get_active_tab();
 }
 
 float void_::calculate_scale() noexcept

@@ -80,4 +80,13 @@ void sidebar::on_scale_change()
         t->on_scale_change();
 }
 
+tab* sidebar::get_active_tab() const
+{
+    if (selected_tab_ >= 0 &&
+        selected_tab_ < static_cast<std::int32_t>(tabs_.size()))
+        return tabs_[selected_tab_].get();
+
+    return nullptr;
+}
+
 void_end_

@@ -30,6 +30,7 @@ public:
         tabs_.push_back(std::move(tab));
         return tabs_.back().get();
     }
+    [[nodiscard]] tab* get_active_tab() const;
 };
 
 void_end_
