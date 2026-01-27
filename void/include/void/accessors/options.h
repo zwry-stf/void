@@ -156,12 +156,6 @@ private:
     // Mutable after init: yes
     _new_void_option(KeybindList,     bool,         true,                  true);
 
-    // Hide "Always On" keybinds in the indicator list.
-    // Type: bool
-    // Default: true
-    // Mutable after init: yes
-    _new_void_option(HideAlwaysOn,    bool,         true,                  true);
-
     // Animate the loading of themes (transitions).
     // Type: bool
     // Default: true

@@ -3,7 +3,10 @@
 #include <contents/overlays/dropdown/dropdown.h>
 #include <contents/widgets/dropdown/dropdown_vertical.h>
 #include <contents/widgets/toggle/toggle.h>
+#include <contents/overlays/childwindow/childwindow.h>
 #include <config/config.h>
+#include <contents/overlays/keybind_list/keybind_list.h>
+#include <contents/widgets/childwindow/childwindow_child.h>
 
 
 void_begin_
@@ -23,8 +26,7 @@ menu_options::menu_options(void_* instance, input_owner* input_owner,
     : overlay(instance, overlay_owner, true, true),
       input_receiver(input_owner, 0)
 {
-    // scale dropdown
-
+    /// scale
     static constexpr xstr kDropdownOptions[] = {
         "Auto", "75%", "85%", "100%", "125%", "150%", "200%"
     };
@@ -56,6 +58,45 @@ menu_options::menu_options(void_* instance, input_owner* input_owner,
         )
     );
 
+    /// keybind list
+    auto cw_overlay_id = create_overlay(
+        std::make_unique<childwindow>(
+            instance, instance,
+            this,
+            xstr("Keybind list")
+        )
+    );
+
+    auto* child_window = get_overlay<childwindow>(cw_overlay_id);
+
+    child_window->add_widget(
+        std::make_unique<toggle>(
+            instance, instance,
+            xstr("Hide 'always on'"),
+            &instance->get_keybind_list()->hide_always_on
+        )
+    );
+    instance->config().add_module(
+        std::make_unique<default_config_module<bool>>(
+            vo::xstr("hide_always_on"),
+            &instance->get_keybind_list()->hide_always_on
+        )
+    );
+
+    child_window->add_widget(
+        std::make_unique<toggle>(
+            instance, instance,
+            xstr("Hide 'hold'"),
+            &instance->get_keybind_list()->hide_hold
+        )
+    );
+    instance->config().add_module(
+        std::make_unique<default_config_module<bool>>(
+            vo::xstr("hide_hold"),
+            &instance->get_keybind_list()->hide_hold
+        )
+    );
+
     widgets_.emplace_back(
         std::make_unique<toggle>(
             instance, input_owner,
@@ -63,7 +104,6 @@ menu_options::menu_options(void_* instance, input_owner* input_owner,
             &instance->options().get<options::option_KeybindList>()
         )
     );
-
     instance->config().add_module(
         std::make_unique<default_config_module<bool>>(
             vo::xstr("enable_keybind_list"),
@@ -71,6 +111,15 @@ menu_options::menu_options(void_* instance, input_owner* input_owner,
         )
     );
 
+    widgets_.back()->add_child(
+        std::make_unique<childwindow_child>(
+            instance, instance,
+            this,
+            cw_overlay_id
+        )
+    );
+
+    /// alow movement
     widgets_.emplace_back(
         std::make_unique<toggle>(
             instance, input_owner,
@@ -389,8 +438,6 @@ void menu_options::render_overlays()
     auto render_input = input_get_overlay_render_input();
 
     for (auto& overlay : overlays_) {
-        assert(overlay->has_overlays() == false);
-
         overlay->update(render_input);
         overlay->render();
     }

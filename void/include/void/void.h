@@ -87,6 +87,10 @@ public:
 
     [[nodiscard]] class menu_builder get_builder() noexcept;
 
+    [[nodiscard]] auto* get_keybind_list() const noexcept {
+        return keybind_list_.get();
+    }
+
     // search
 
     [[nodiscard]] const auto& search_pos() const noexcept {

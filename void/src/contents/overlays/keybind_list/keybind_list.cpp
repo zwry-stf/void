@@ -56,14 +56,17 @@ void keybind_list::on_overlay_render(void_* instance, custom_overlay& overlay)
     }
 
     // iterate keybinds
-    const bool skip_always_on = instance->options().get<options::option_HideAlwaysOn>();
     const auto& binds = instance->input().keybind_manager()->binds();
     for (auto& b : binds) {
         if (!b->value())
             continue;
 
-        if (skip_always_on &&
+        if (hide_always_on &&
             b->mode_ref() == static_cast<std::size_t>(keybind_mode::always))
+            continue;
+
+        if (hide_hold &&
+            b->mode_ref() == static_cast<std::size_t>(keybind_mode::hold))
             continue;
 
         // place back/set seen true

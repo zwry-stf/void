@@ -227,6 +227,7 @@
     <ClInclude Include="include\void\def.h" />
     <ClInclude Include="include\void\util\def.h" />
     <ClInclude Include="include\void\util\default_value.h" />
+    <ClInclude Include="include\void\util\dynamic_string.h" />
     <ClInclude Include="include\void\util\error.h" />
     <ClInclude Include="include\void\util\scalable_float.h" />
     <ClInclude Include="include\void\util\time_point.h" />

@@ -6,8 +6,10 @@ void_begin_
 
 void keybind_owner::update(void_* instance)
 {
-    if (disabled())
+    if (disabled()) {
+        key_bind_->pressed_.store(false, std::memory_order_release);
         return;
+    }
 
     if (static_cast<keybind_mode>(mode_) == keybind_mode::always) {
         key_bind_->pressed_.store(true, std::memory_order_release);
@@ -15,8 +17,10 @@ void keybind_owner::update(void_* instance)
     }
 
     if (key_.has_key &&
-        key_.storage.key == key::none)
+        key_.storage.key == key::none) {
+        key_bind_->pressed_.store(false, std::memory_order_release);
         return;
+    }
 
     const bool key_down = key_.has_key ?
         instance->input().is_key_down(key_.storage.key) :

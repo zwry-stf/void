@@ -177,6 +177,10 @@ void _background_overlay::render_custom_overlays(_background* background)
         );
 
         ctx->draw_indexed(6u);
+
+        background->restore_render_states();
+        renderer.render();
+        renderer.reset_render_data();
     }
 }
 
@@ -270,8 +274,9 @@ void _background_overlay::render(_background* background)
 
 input_response _background_overlay::input(const input_base& input)
 {
-    for (auto& o : custom_overlays_) {
-        auto res = o->input(input);
+    // back to front
+    for (std::size_t i = custom_overlays_.size(); i > 0u; i--) {
+        auto res = custom_overlays_[i - 1u]->input(input);
         if (res.is_handled())
             return res;
     }

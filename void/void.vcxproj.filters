@@ -246,6 +246,9 @@
     <ClInclude Include="include\void\util\default_value.h">
       <Filter>include\void\util</Filter>
     </ClInclude>
+    <ClInclude Include="include\void\util\dynamic_string.h">
+      <Filter>include\void\util</Filter>
+    </ClInclude>
     <ClInclude Include="include\void\util\error.h">
       <Filter>include\void\util</Filter>
     </ClInclude>

@@ -26,6 +26,10 @@ private:
     icons::icon_handle always_on_icon_{ icons::kInvalidHandle };
 
 public:
+    bool hide_always_on{ true };
+    bool hide_hold{ false };
+
+public:
     keybind_list(void_* instance);
 
 public:

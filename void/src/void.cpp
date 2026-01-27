@@ -225,7 +225,6 @@ void void_::render()
 
     /// render custom overlays
     background_overlay_->render_custom_overlays(background_.get());
-    background_->restore_render_states();
 
     /// misc rendering
     watermark().render();
