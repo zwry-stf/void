@@ -45,6 +45,10 @@ public:
     void set_display_name(const xstr& name);
     void set_pfp(icons::icon_handle icon);
 
+    [[nodiscard]] const auto& get_display_name() const noexcept {
+        return display_name_;
+    }
+
     void render(const render_input& input);
     input_response input(const input_base& input);
     void on_scale_changed();
