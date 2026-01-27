@@ -101,7 +101,8 @@ void void_::init(const r2::platform_init_data& pinit, const r2::backend_init_dat
 
     open_ = !options().get<options::option_StartMinimized>();
     animation_ = is_open() ? 1.f : 0.f;
-    alpha_ = animation_;
+    alpha_ = animation_ < util::g_min_alpha ? 0.f :
+        (animation_ > 1.f - util::g_min_alpha ? 1.f : animation_);
 
     initialized_.store(true, std::memory_order_release);
 
