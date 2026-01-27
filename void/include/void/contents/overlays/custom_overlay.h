@@ -10,6 +10,8 @@ void_begin_
 
 struct custom_overlay_cfg {
     bool resizable = true;
+    bool movable = true;
+    bool clamp_in_window = true;
     bool liquid_glass = false;
     float liquid_glass_curve = 0.f;
     sfloat liquid_glass_size = sfloat(10.f);
@@ -45,9 +47,11 @@ private:
     r2::rectf move_pos_;
 
     using callback_type = std::function<void(void_*, custom_overlay&)>;
+    using input_callback_type = std::function<class input_response(void_*, custom_overlay&, const class input_base&)>;
 
     callback_type render_callback_;
     callback_type update_callback_;
+    input_callback_type input_callback_;
 
     friend class _background_overlay;
 
@@ -87,6 +91,9 @@ public:
     }
     void set_update_callback(callback_type&& callback) {
         update_callback_ = std::move(callback);
+    }
+    void set_input_callback(input_callback_type&& callback) {
+        input_callback_ = std::move(callback);
     }
 
     // toggle whether the input can receive input

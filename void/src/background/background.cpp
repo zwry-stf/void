@@ -492,7 +492,7 @@ void _background::init_targets()
             tex->GetDesc(&d);
 
             if (d.SampleDesc.Count > 1u ||
-                d.Format != context->get_format_no_srgb(d.Format)) { // format is srgb
+                (false && d.Format != context->get_format_no_srgb(d.Format))) { // format is srgb
                 needs_resolve_ = true;
             }
             else {

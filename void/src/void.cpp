@@ -219,12 +219,24 @@ void void_::render()
         renderer_.set_multisampled(false);
     }
 
+    /// render custom in menu layer
+    if (menu_rendered) {
+        background_overlay_->render_custom_overlays(
+            background_.get(),
+            true /* menu_layer */
+        );
+    }
+
+    /// menu overlays
     if (menu_rendered)
         render_overlays();
     background_overlay_->reset_data();
 
     /// render custom overlays
-    background_overlay_->render_custom_overlays(background_.get());
+    background_overlay_->render_custom_overlays(
+        background_.get(),
+        false /* menu_layer */
+    );
 
     /// misc rendering
     watermark().render();
@@ -247,7 +259,10 @@ input_response void_::on_input(const message_event& event)
 
     if (open_) {
         /// custom overlay input
-        auto res = background_overlay_->input(input);
+        auto res = background_overlay_->input(
+            input,
+            false /* menu_layer */
+        );
         if (res.is_handled())
             return res;
 
@@ -266,6 +281,14 @@ input_response void_::on_input(const message_event& event)
                 }
             }
         }
+
+        /// custom overlays menu layer
+        res = background_overlay_->input(
+            input,
+            true /* menu_layer */
+        );
+        if (res.is_handled())
+            return res;
 
         /// sidebar
         res = sidebar_->input(input);

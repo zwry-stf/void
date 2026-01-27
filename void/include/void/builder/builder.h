@@ -22,7 +22,7 @@ public:
     void label(const xstr& name);
     tab_builder tab(const xstr& name);
 
-    overlay_builder overlay();
+    overlay_builder overlay(bool in_menu_layer = false);
 };
 
 void_end_

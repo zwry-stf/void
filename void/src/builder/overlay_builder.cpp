@@ -75,6 +75,20 @@ overlay_builder& overlay_builder::make_resizable(bool value)
     return *this;
 }
 
+overlay_builder& overlay_builder::make_movable(bool value)
+{
+    overlay_instance_->cfg().movable = value;
+
+    return *this;
+}
+
+overlay_builder& overlay_builder::clamp_in_window(bool value)
+{
+    overlay_instance_->cfg().clamp_in_window = value;
+
+    return *this;
+}
+
 overlay_builder& overlay_builder::liquid_glass(bool value)
 {
     overlay_instance_->cfg().liquid_glass = value;
@@ -82,16 +96,23 @@ overlay_builder& overlay_builder::liquid_glass(bool value)
     return *this;
 }
 
-overlay_builder& overlay_builder::on_render(std::function<void(void_* instance, custom_overlay&)>&& callback)
+overlay_builder& overlay_builder::on_render(std::function<void(void_*, custom_overlay&)>&& callback)
 {
     overlay_instance_->set_render_callback(std::move(callback));
 
     return *this;
 }
 
-overlay_builder& overlay_builder::on_update(std::function<void(void_* instance, custom_overlay&)>&& callback)
+overlay_builder& overlay_builder::on_update(std::function<void(void_*, custom_overlay&)>&& callback)
 {
     overlay_instance_->set_update_callback(std::move(callback));
+
+    return *this;
+}
+
+overlay_builder& overlay_builder::on_input(std::function<input_response(void_*, class custom_overlay&, const input_base&)>&& callback)
+{
+    overlay_instance_->set_input_callback(std::move(callback));
 
     return *this;
 }

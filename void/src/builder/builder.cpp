@@ -36,7 +36,7 @@ tab_builder menu_builder::tab(const xstr& name)
     );
 }
 
-overlay_builder menu_builder::overlay()
+overlay_builder menu_builder::overlay(bool in_menu_layer)
 {
     auto* background_overlay = instance()->background().get_background_overlay_instance();
 
@@ -46,7 +46,8 @@ overlay_builder menu_builder::overlay()
             instance(),
             custom_overlay_cfg(),
             custom_overlay_data()
-        )
+        ),
+        in_menu_layer
     );
 
     return overlay_builder(instance(), overlay);

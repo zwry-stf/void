@@ -238,10 +238,14 @@ input_response child_tab::input_scrollbar(const input_base& input)
         auto& style = instance()->style();
 
         r2::rectf rect = instance()->pos();
-        rect.x += style.sidebar_width.get(instance()->scale());
-        rect.y += style.top_bar_height.get(instance()->scale());
+        r2::vec4 quad = {
+            rect.x + style.sidebar_width.get(instance()->scale()),
+            rect.y + style.top_bar_height.get(instance()->scale()),
+            rect.x + rect.w,
+            rect.y + rect.h
+        };
 
-        if (util::is_in_rect(mouse_x, mouse_y, rect)) {
+        if (util::is_in_quad(mouse_x, mouse_y, quad)) {
             scrollbar_->on_scroll(input.event().get_scroll());
             return input_response::handled();
         }

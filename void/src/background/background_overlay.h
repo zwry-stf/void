@@ -35,6 +35,7 @@ private:
 
     std::vector<immediate_overlay> immediate_overlays_;
     std::vector<std::unique_ptr<custom_overlay>> custom_overlays_;
+    std::vector<std::unique_ptr<custom_overlay>> custom_overlays_menu_;
 
     struct _shader_constants {
         r2::vec2 resolution;
@@ -60,15 +61,16 @@ public:
     void destroy();
     void reset_data();
     void render(_background* background);
-    void render_custom_overlays(_background* background);
+    void render_custom_overlays(_background* background, bool menu_layer);
 
-    input_response input(const input_base& input);
+    input_response input(const input_base& input, bool menu_layer);
 
     void add_immediate_overlay(const immediate_overlay& overlay);
 
-    custom_overlay* add_overlay(std::unique_ptr<custom_overlay>&& overlay) {
-        custom_overlays_.push_back(std::move(overlay));
-        return custom_overlays_.back().get();
+    custom_overlay* add_overlay(std::unique_ptr<custom_overlay>&& overlay, bool menu_layer) {
+        auto& overlays = menu_layer ? custom_overlays_menu_ : custom_overlays_;
+        overlays.push_back(std::move(overlay));
+        return overlays.back().get();
     }
 };
 

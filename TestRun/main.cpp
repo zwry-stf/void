@@ -239,7 +239,7 @@ bool initialize_backend()
     sd.BufferDesc.RefreshRate.Numerator   = 60;
     sd.BufferDesc.RefreshRate.Denominator = 1;
     sd.Flags                              = DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING;
-    sd.BufferUsage                        = DXGI_USAGE_RENDER_TARGET_OUTPUT | DXGI_USAGE_SHADER_INPUT;
+    sd.BufferUsage                        = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     sd.OutputWindow                       = glfwGetWin32Window(g_data.window_data.window);
     sd.SampleDesc.Count                   = 1;
     sd.SampleDesc.Quality                 = 0;
@@ -323,8 +323,7 @@ void add_widgets()
         .min(100.f, 50.f)
         .max(400.f, 300.f)
         .on_render(
-            [](vo::void_* instance, vo::custom_overlay& overlay) -> void
-            {
+            [](vo::void_* instance, vo::custom_overlay& overlay) -> void {
                 auto& style = instance->style();
 
                 overlay.data().rounding_bottom =
@@ -345,10 +344,45 @@ void add_widgets()
             }
         )
         .on_update(
-            [](vo::void_* instance, vo::custom_overlay& overlay) -> void
-            {
+            [](vo::void_* instance, vo::custom_overlay& overlay) -> void {
                 (void)instance;
                 overlay.toggle_input(overlay_enabled);
+            }
+        );
+    
+    mb.overlay(true)
+        .liquid_glass(false)
+        .make_resizable(false)
+        .make_movable(false)
+        .clamp_in_window(false)
+        .on_render(
+            [](vo::void_* instance, vo::custom_overlay& overlay) -> void {
+                auto& style = instance->style();
+                const auto& menu_pos = instance->pos();
+                const float offset = style.spacing->get(instance->scale()) * 2.f;
+
+                overlay.set_pos_scaled(r2::vec2(menu_pos.x + menu_pos.w + offset, menu_pos.y));
+                overlay.set_size(r2::vec2(150.f, menu_pos.h));
+                overlay.set_animation(instance->alpha());
+                overlay.data().rounding_bottom =
+                    overlay.data().rounding_top =
+                    instance->style().rounding->get(instance->scale());
+                overlay.data().border = instance->style().border();
+                overlay.data().background = instance->style().background();
+            }
+        )
+        .on_update(
+            [](vo::void_* instance, vo::custom_overlay& overlay) -> void {
+                (void)instance;
+                overlay.toggle_input(true);
+            }
+        )
+        .on_input(
+            [](vo::void_* instance, vo::custom_overlay& overlay, const vo::input_base& input) -> vo::input_response {
+                (void)instance;
+                (void)overlay;
+                (void)input;
+                return vo::input_response::empty();
             }
         );
 

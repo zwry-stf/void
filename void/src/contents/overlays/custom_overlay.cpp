@@ -45,15 +45,17 @@ void custom_overlay::update()
     }
 
     // clamp overlay to screen
-    pos.x = std::clamp(pos.x, 0.f, display_size.x - size.x);
-    pos.y = std::clamp(pos.y, 0.f, display_size.y - size.y);
+    if (cfg_.clamp_in_window) {
+        pos.x = std::clamp(pos.x, 0.f, display_size.x - size.x);
+        pos.y = std::clamp(pos.y, 0.f, display_size.y - size.y);
+
+        set_pos_scaled(pos);
+    }
 
     last_pos_.x = pos.x;
     last_pos_.y = pos.y;
     last_pos_.w = size.x;
     last_pos_.h = size.y;
-
-    set_pos_scaled(pos);
 
     if (update_callback_ != nullptr)
         update_callback_(instance(), *this);
@@ -81,9 +83,17 @@ input_response custom_overlay::input(const input_base& input)
             return res;
     }
 
-    auto res = move_window(input);
-    if (res.is_handled())
-        return res;
+    if (cfg_.movable) {
+        auto res = move_window(input);
+        if (res.is_handled())
+            return res;
+    }
+
+    if (input_callback_ != nullptr) {
+        auto res = input_callback_(instance(), *this, input);
+        if (res.is_handled())
+            return res;
+    }
 
     float mouse_x, mouse_y;
     input.event().get_cursor_pos(mouse_x, mouse_y);

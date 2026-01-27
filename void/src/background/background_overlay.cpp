@@ -81,11 +81,15 @@ void _background_overlay::reset_data()
     immediate_overlays_.clear();
 }
 
-void _background_overlay::render_custom_overlays(_background* background)
+void _background_overlay::render_custom_overlays(_background* background, bool menu_layer)
 {
 #if defined(_DEBUG)
     instance()->renderer().assert_render_thread();
 #endif
+
+    auto& overlays = menu_layer ? custom_overlays_menu_ : custom_overlays_;
+    if (overlays.empty())
+        return;
 
     auto& renderer = instance()->renderer();
     auto& style = instance()->style();
@@ -101,7 +105,7 @@ void _background_overlay::render_custom_overlays(_background* background)
     constants.resolution = renderer.get_render_size();
 
     bool first_overlay = true;
-    for (auto& o : custom_overlays_) {
+    for (auto& o : overlays) {
         o->update();
         o->render();
 
@@ -141,7 +145,7 @@ void _background_overlay::render_custom_overlays(_background* background)
                 background->data_pass_fbo_.get(),
                 bg.overlay_blur_radius->get(instance()->scale()),
                 &blur_shader_constants_,
-                first_overlay ? nullptr : background->data_offscreen_view_.get() // only resolve backbuffer on first overlay to save a little performance
+                nullptr
             );
 
             first_overlay = false;
@@ -271,12 +275,15 @@ void _background_overlay::render(_background* background)
         ctx->draw_indexed(6u);
     }
 }
-
-input_response _background_overlay::input(const input_base& input)
+input_response _background_overlay::input(const input_base& input, bool menu_layer)
 {
+    auto& overlays = menu_layer ? custom_overlays_menu_ : custom_overlays_;
+    if (overlays.empty())
+        return input_response::empty();
+
     // back to front
-    for (std::size_t i = custom_overlays_.size(); i > 0u; i--) {
-        auto res = custom_overlays_[i - 1u]->input(input);
+    for (std::size_t i = overlays.size(); i > 0u; i--) {
+        auto res = overlays[i - 1u]->input(input);
         if (res.is_handled())
             return res;
     }
