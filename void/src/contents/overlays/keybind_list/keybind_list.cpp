@@ -26,7 +26,7 @@ keybind_list::keybind_list(void_* instance)
             }
         )
         .size(130.f, 28.f)
-        .pos(0.05f, 0.2f);
+        .pos(0.01f, 0.2f);
 }
 
 void keybind_list::on_overlay_update(void_* instance, custom_overlay& overlay)
