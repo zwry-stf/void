@@ -27,6 +27,8 @@ void overlay::update(const overlay_render_input& input)
     );
 
     alpha_ = animation_ * animation_;
+    alpha_ = alpha_ < util::g_min_alpha ? 0.f :
+        (alpha_ > 1.f - util::g_min_alpha ? 1.f : alpha_);
 }
 
 void overlay::set_pos(const r2::vec2& pos, const r2::vec2& parent_size)
