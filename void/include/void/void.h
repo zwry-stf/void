@@ -12,12 +12,12 @@ private:
     r2::renderer2d renderer_;
 
     std::atomic<bool> initialized_{ false };
-    std::atomic<bool> open_;
+    std::atomic<bool> open_{ false };
     r2::rectf pos_;
-    float animation_;
-    float alpha_;
-    time_point frame_start_;
-    float delta_time_;
+    float animation_{ 0.f };
+    float alpha_{ 0.f };
+    time_point frame_start_{};
+    float delta_time_{ 0.f };
     float scale_;
 
     // search

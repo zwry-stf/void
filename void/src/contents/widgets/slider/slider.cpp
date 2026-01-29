@@ -1,6 +1,5 @@
 #include "slider.h"
 #include <void/void.h>
-#include <format>
 
 
 void_begin_
