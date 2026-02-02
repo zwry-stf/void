@@ -27,7 +27,7 @@ bool textfield::is_valid_char(char32_t u) const noexcept
     bool is_utf = c < 0x80;
     switch (type_) {
     case textfield_type::text:
-        return u >= 0x20u;
+        return u >= 0x20u && u != 0x7F;
     case textfield_type::color:
         if (is_utf && 
             (c >= '0' && c <= '9') ||
