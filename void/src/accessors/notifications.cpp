@@ -89,10 +89,10 @@ void notifications::render()
     for (auto it = notifications_.begin(); it != notifications_.end();) {
         auto& notification = *it;
 
-        auto remaining_time = std::chrono::duration<float>(time_now - notification.creation_time).count();
+        const float remaining_time = std::chrono::duration<float>(time_now - notification.creation_time).count();
 
-        float progress_in = std::clamp(remaining_time / animation_time_in, 0.f, 1.f);
-        float progress_out = std::clamp(
+        const float progress_in = std::clamp(remaining_time / animation_time_in, 0.f, 1.f);
+        const float progress_out = std::clamp(
             std::max(remaining_time - visible_time - animation_time_in, 0.f) / animation_time_out,
             0.f, 1.f
         );

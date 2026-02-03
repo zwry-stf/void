@@ -406,6 +406,8 @@ void theme_data::interp(void_* instance, const theme_data& a, const theme_data& 
     this->rounding = util.lerp_ex(a.rounding, b.rounding, t);
     this->spacing = util.lerp_ex(a.spacing, b.spacing, t);
     this->animation_speed = util.lerp_ex(a.animation_speed, b.animation_speed, t);
+    this->overlay_size = util.lerp_ex(a.overlay_size, b.overlay_size, t);
+    this->notification_time = util.lerp_ex(a.notification_time, b.notification_time, t);
 
     this->overlay_blur = util.lerp_ex(a.overlay_blur, b.overlay_blur, t);
     this->overlay_blur_radius = util.lerp_ex(a.overlay_blur_radius, b.overlay_blur_radius, t);
