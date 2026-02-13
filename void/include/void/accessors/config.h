@@ -12,13 +12,16 @@ class config_module {
 protected:
     xstr name_;
     const std::uint32_t size_;
+    const bool is_dynamic_;
 
 public:
-    config_module(const xstr& name, std::uint32_t size);
+    config_module(const xstr& name, std::uint32_t size); // non dynamic
+    config_module(const xstr& name); // dynamic
 
 public:
     virtual void reset() = 0;
-    virtual void load(const std::uint8_t* buffer) = 0;
+    virtual void load(const std::uint8_t* buffer) {};
+    virtual bool load_dynamic(const std::uint8_t* buffer, std::uint32_t size) {};
     virtual void save(std::vector<std::uint8_t>& out_buffer) = 0;
 
 public:
@@ -27,6 +30,9 @@ public:
     }
     [[nodiscard]] auto get_size() const noexcept {
         return size_;
+    }
+    [[nodiscard]] auto is_dynamic() const noexcept {
+        return is_dynamic_;
     }
     void set_name(const xstr& name) noexcept {
         name_ = name;

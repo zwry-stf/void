@@ -29,7 +29,9 @@ public:
     virtual void reset() {
         *value_ = default_value_;
     }
-    virtual void load(const std::uint8_t* buffer) {
+    virtual void load(const std::uint8_t* buffer, std::uint32_t size) {
+        assert(size == size_);
+        (void)size;
         xstr res;
         std::memcpy(
             &res,

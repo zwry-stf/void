@@ -21,7 +21,9 @@ public:
     virtual void reset() override {
         *value_ = default_value_;
     }
-    virtual void load(const std::uint8_t* buffer) override {
+    virtual void load(const std::uint8_t* buffer, std::uint32_t size) override {
+        assert(size == size_);
+        (void)size;
         assert(value_->size() == size_ / sizeof(bool));
 
         for (std::size_t i = 0; i < size_; i++) {

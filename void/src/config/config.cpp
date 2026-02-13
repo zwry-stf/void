@@ -215,6 +215,7 @@ bool _config::load(const std::wstring& name, bool first)
 
         auto data_backup = data;
         bool found = false;
+        bool parse_failed = false;
         for (auto& mod : modules_) {
             if (!mod)
                 continue;
@@ -240,7 +241,8 @@ bool _config::load(const std::wstring& name, bool first)
 
             std::memcpy(&data_length, &(*data), sizeof(data_length));
 
-            if (data_length != mod->get_size()) {
+            if (!mod->is_dynamic() &&
+                data_length != mod->get_size()) {
                 break;
             }
 
@@ -250,11 +252,19 @@ bool _config::load(const std::wstring& name, bool first)
                 break;
             }
 
-            mod->load(&(*data));
+            found = true;
+            if (mod->is_dynamic()) {
+                if (!mod->load_dynamic(&(*data), data_length)) {
+                    parse_failed = true;
+                    break;
+                }
+            }
+            else {
+                mod->load(&(*data));
+            }
 
             data += data_length;
 
-            found = true;
             break;
         }
 
@@ -282,6 +292,10 @@ bool _config::load(const std::wstring& name, bool first)
             data += sizeof(std::uint32_t);
 
             data += data_length;
+        }
+        else if (parse_failed) {
+            show_error(xstr("Failed to parse config"), &name);
+            return false;
         }
     }
 
