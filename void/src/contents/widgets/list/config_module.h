@@ -26,12 +26,10 @@ public:
           default_value_(*value) { }
 
 public:
-    virtual void reset() {
+    virtual void reset() override {
         *value_ = default_value_;
     }
-    virtual void load(const std::uint8_t* buffer, std::uint32_t size) {
-        assert(size == size_);
-        (void)size;
+    virtual void load(const std::uint8_t* buffer) override {
         xstr res;
         std::memcpy(
             &res,
@@ -52,7 +50,7 @@ public:
             }
         }
     }
-    virtual void save(std::vector<std::uint8_t>& out_buffer) {
+    virtual void save(std::vector<std::uint8_t>& out_buffer) override {
         const auto& res = list_options_->element_safe(*value_);
 
         const auto old_size = out_buffer.size();
