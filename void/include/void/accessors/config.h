@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <assert.h>
 
 
 void_begin_
@@ -20,8 +21,15 @@ public:
 
 public:
     virtual void reset() = 0;
-    virtual void load(const std::uint8_t* buffer) {};
-    virtual bool load_dynamic(const std::uint8_t* buffer, std::uint32_t size) {};
+    virtual void load(const std::uint8_t* buffer) { 
+        (void)buffer;
+        assert(false);
+    };
+    virtual bool load_dynamic(const std::uint8_t* buffer, std::uint32_t size) {
+        (void)buffer; (void)size;
+        assert(false);
+        return false;
+    };
     virtual void save(std::vector<std::uint8_t>& out_buffer) = 0;
 
 public:

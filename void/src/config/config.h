@@ -28,9 +28,7 @@ public:
     virtual void reset() override {
         *value_ = default_value_;
     }
-    virtual void load(const std::uint8_t* data, std::uint32_t size) override {
-        assert(size == size_);
-        (void)size;
+    virtual void load(const std::uint8_t* data) override {
         std::memcpy(value_, data, sizeof(T));
     }
     virtual void save(std::vector<std::uint8_t>& out_buffer) override {
