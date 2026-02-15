@@ -43,8 +43,7 @@ struct GlobalRenderData {
 #endif
 };
 
-struct WindowData
-{
+struct WindowData {
     int fb_width{};
     int fb_height{};
     GLFWwindow* window{};
@@ -81,8 +80,7 @@ void destroy_window();
 int __stdcall WinMain(HINSTANCE /* instance */,
             HINSTANCE /* prev instance */,
             LPSTR /* cmd line */,
-            int /* show/hide */)
-{
+            int /* show/hide */) {
 #endif
 
     std::unique_ptr<vo::void_> instance =
@@ -169,8 +167,7 @@ int __stdcall WinMain(HINSTANCE /* instance */,
 }
 
 // implementations
-bool create_window(const std::string& title)
-{
+bool create_window(const std::string& title) {
     int res = glfwInit();
     if (res != GLFW_TRUE)
         return false;
@@ -228,8 +225,7 @@ bool create_window(const std::string& title)
     return true;
 }
 
-bool initialize_backend()
-{
+bool initialize_backend() {
 #if defined(R2_BACKEND_D3D11)
     DXGI_SWAP_CHAIN_DESC sd{};
     sd.BufferCount                        = 2;
@@ -296,8 +292,7 @@ bool initialize_backend()
     return true;
 }
 
-void add_widgets()
-{
+void add_widgets() {
     using vo::xstr;
 
     g_void->watermark().add_avarage_component(
@@ -565,8 +560,7 @@ void add_widgets()
 }
 
 template<typename ...Args>
-void show_error_and_exit(std::format_string<Args...> f, Args && ...args)
-{
+void show_error_and_exit(std::format_string<Args...> f, Args && ...args) {
     std::string msg = std::format(f, std::forward<Args>(args)...);
 
 #if defined(R2_PLATFORM_WINDOWS)
@@ -576,8 +570,7 @@ void show_error_and_exit(std::format_string<Args...> f, Args && ...args)
     std::abort();
 }
 
-void on_resize(GLFWwindow* window, int width, int height)
-{
+void on_resize(GLFWwindow* window, int width, int height) {
     if (window != g_data.window_data.window)
         return;
 
@@ -595,8 +588,7 @@ void on_resize(GLFWwindow* window, int width, int height)
     g_data.window_data.needs_resize.store(true, std::memory_order_release);
 }
 
-bool resize(int width, int height)
-{
+bool resize(int width, int height) {
 #if defined(R2_BACKEND_D3D11)
     g_data.render_data.context->ClearState();
     g_data.render_data.context->Flush();
@@ -816,8 +808,7 @@ void render_frame()
     g_void->renderer().update_fonts_on_frame();
 }
 
-void render_thread()
-{
+void render_thread() {
 #if defined(R2_BACKEND_OPENGL)
     glfwMakeContextCurrent(g_data.window_data.window);
 #endif 
@@ -870,8 +861,7 @@ void render_thread()
     g_data.running.store(false, std::memory_order_release);
 }
 
-void destroy_backend()
-{
+void destroy_backend() {
 #if defined(R2_BACKEND_D3D11)
     if (g_data.render_data.context) {
         g_data.render_data.context->ClearState();
@@ -884,8 +874,7 @@ void destroy_backend()
 #endif
 }
 
-void destroy_window()
-{
+void destroy_window() {
     if (g_data.window_data.window != nullptr) {
         glfwDestroyWindow(g_data.window_data.window);
 
