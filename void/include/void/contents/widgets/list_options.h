@@ -40,6 +40,9 @@ public:
     static list_options* create_vector_dynamic(
         const std::vector<xstr>* data);
 
+    static list_options* create_vector_constant(
+        const std::vector<xstr>* data);
+
     template <typename T>
     static list_options* create_vector_member_constant(
         const std::vector<T>& data, xstr T::* member);
