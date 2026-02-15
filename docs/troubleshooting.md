@@ -1,7 +1,8 @@
 # Troubleshooting
 
 ## Nothing renders / menu not visible
-- Ensure you call `void_::init(...)` successfully (catch `r2::error` like the sample).
+- Ensure you call `void_::init(...)` successfully (catch `r2::error` and `vo::error` like the sample).
+> see [`void/util/error.h`](../void/include/void/util/error.h) for error messages
 - Confirm your backend init data matches your backend define (D3D11 swapchain for D3D11).
 - Confirm you link both `void` and `resources`.
 
@@ -24,3 +25,4 @@ Check that you didn’t call:
 ## Blur/glass looks wrong or is disabled
 Some builds can disable blur via options (see `option_NoBlur` and downsample-related options).
 The sample also disables MSAA / full-frame update via options for testing.
+Finally make sure you are using the same swapchain as the background scene you want to blur.
