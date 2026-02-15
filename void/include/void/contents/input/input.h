@@ -29,7 +29,7 @@ public:
 
 public:
 #if defined(R2_PLATFORM_WINDOWS)
-    input_response input_win32(std::uint32_t msg, uint64_t wparam, int64_t lparam);
+    input_response input_win32(std::uint32_t msg, std::uint64_t wparam, std::int64_t lparam);
 #endif
 
 #if defined(VOID_HAS_GLFW)
@@ -72,7 +72,7 @@ public:
 
 private:
 #if defined(R2_PLATFORM_WINDOWS)
-    message_event convert_message_win32(std::uint32_t msg, uint64_t wparam, int64_t lparam);
+    message_event convert_message_win32(std::uint32_t msg, std::uint64_t wparam, std::int64_t lparam);
     void input_on_frame_win32();
 
     void update_key_flags_win32();

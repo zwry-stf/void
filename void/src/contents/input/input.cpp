@@ -150,7 +150,7 @@ int input::get_scan_code(key key)
 
 #pragma region(Win32)
 #if defined(R2_PLATFORM_WINDOWS)
-input_response input::input_win32(std::uint32_t msg, uint64_t wparam, int64_t lparam)
+input_response input::input_win32(std::uint32_t msg, std::uint64_t wparam, std::int64_t lparam)
 {
     if (!instance()->is_initialized())
         return input_response::empty();
@@ -207,7 +207,7 @@ inline static key convert_key_win32(std::int32_t vk) {
     return key::none;
 }
 
-message_event input::convert_message_win32(std::uint32_t msg, uint64_t wparam, int64_t lparam)
+message_event input::convert_message_win32(std::uint32_t msg, std::uint64_t wparam, std::int64_t lparam)
 {
     const r2::vec2 render_size = instance()->renderer().get_render_size();
     auto rwindow_size = instance()->util().get_window_size();
