@@ -117,14 +117,6 @@ group.keybind(g_test_keybind)
     ->disabled(bool_value);
 ```
 
-## Child widget access
-
-```cpp
-widet->colorpicker(color_value)
-    .l()->disabled(disabled_state)
-
-```
-
 ## List options
 
 `vo::list_options` is an abstraction over “a list of strings (`vo::xstr`)”. It supports:
