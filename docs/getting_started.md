@@ -83,7 +83,7 @@ project ""
 
 ```
 
-Your executable should link against `void` and `resources` (and whatever `r2` projects you use).
+r2 libraries will be automatically linked against in the void project.
 
 ## Runtime integration checklist
 
@@ -108,7 +108,7 @@ Void has a small input layer. In the sample, GLFW callbacks forward events into 
 - `input_glfw_scroll(xoffset, yoffset)`
 
 It also supports raw Win32 events
-- input_win32(msg, wparam, lparam);
+- `input_win32(msg, wparam, lparam)`
 
 See: [`void/contents/input/input.h`](../void/include/void/contents/input/input.h)
 
