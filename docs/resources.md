@@ -12,3 +12,11 @@ Public headers:
 - [`void/accessors/resources.h`](../void/include/void/accessors/resources.h)
 - [`void/accessors/icons.h`](../void/include/void/accessors/icons.h)
 - [`void/accessors/fonts.h`](../void/include/void/accessors/fonts.h)
+
+**Note**
+Resources get compiled into a binary array.
+You will need to rebuild this array when switching backends or platforms.
+
+Usage (Windows):
+`resources_(x64_or_x86) -compile`
+> inside [`resources/internal/res`](../resources/internal/res/)
