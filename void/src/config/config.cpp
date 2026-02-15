@@ -398,8 +398,12 @@ bool _config::refresh_configs(std::int32_t& selected_config)
 {
     std::wstring cfg_name;
     if (selected_config >= 0 &&
-        selected_config < static_cast<std::int32_t>(configs_.size()))
+        selected_config < static_cast<std::int32_t>(configs_.size())) {
         cfg_name = configs_[selected_config]->get_name();
+    }
+    else {
+        cfg_name = last_file_;
+    }
 
     std::error_code ec;
     auto iterator = std::filesystem::directory_iterator(get_folder_path(), ec);
@@ -424,18 +428,24 @@ bool _config::refresh_configs(std::int32_t& selected_config)
             str.pop_back();
 
         // update selected_index
+        bool name_was_found = false;
         if (!cfg_name.empty() &&
-            cfg_name == str)
-            selected_index = static_cast<std::int32_t>(configs_.size()) - 1;
+            cfg_name == str) {
+            name_was_found = true;
+        }
 
         // check if exists
         bool found = false;
+        std::int32_t cfg_id = 0;
         for (auto& cfg : configs_) {
             if (cfg->get_name() == str) {
                 cfg->seen_in_refresh() = true;
                 found = true;
+                if (name_was_found)
+                    selected_index = cfg_id;
                 break;
             }
+            cfg_id++;
         }
 
         // add
@@ -449,6 +459,8 @@ bool _config::refresh_configs(std::int32_t& selected_config)
                     format_write_time(file.last_write_time())
                 )
             );
+            if (name_was_found)
+                selected_index = static_cast<std::int32_t>(configs_.size()) - 1;
         }
     }
 
@@ -458,6 +470,8 @@ bool _config::refresh_configs(std::int32_t& selected_config)
             cfg->queue_delete();
 
     update(selected_index);
+
+    selected_config = selected_index;
 
     return true;
 }

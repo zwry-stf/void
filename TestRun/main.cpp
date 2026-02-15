@@ -785,6 +785,7 @@ void render_frame()
     }
 
     if (g_test_keybind) {
+        // test emojies
         g_void->renderer().add_text(
             r2::vec2(750.f, 200.f),
             r2::color::yellow(),
@@ -792,14 +793,15 @@ void render_frame()
         );
     }
 
-    if (GetAsyncKeyState(VK_F8) & 0x8000) {
+    if (g_void->input().is_key_down(vo::key::f8)) {
         g_void->renderer().add_text(
             r2::vec2(750.f, 200.f),
             r2::color::yellow(),
             std::u8string_view(u8"💔💔🤑🐒")
         );
 
-        g_void->notifications().create_note() << vo::xstr("Test") << r2::color::red() << vo::xstr("Test Red");
+        g_void->notifications().create_note() << vo::xstr("Test") <<
+            r2::color::red() << vo::xstr("Test Red");
     }
 
     g_void->renderer().render();
@@ -845,7 +847,8 @@ void render_thread() {
         
         // clear
         g_void->renderer().context()->clear_framebuffer(
-            g_void->render_target().main_fbo());
+            g_void->render_target().main_fbo()
+        );
 
         // render
         render_frame();

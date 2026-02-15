@@ -153,10 +153,14 @@ bool _theme::rename(const std::wstring& name, const std::wstring& new_name)
 
 bool _theme::refresh_themes(std::int32_t& selected_theme)
 {
-    std::wstring cfg_name;
+    std::wstring theme_name;
     if (selected_theme >= 0 &&
-        selected_theme < static_cast<std::int32_t>(themes_.size()))
-        cfg_name = themes_[selected_theme]->get_name();
+        selected_theme < static_cast<std::int32_t>(themes_.size())) {
+        theme_name = themes_[selected_theme]->get_name();
+    }
+    else {
+        theme_name = last_file_;
+    }
 
     std::error_code ec;
     auto iterator = std::filesystem::directory_iterator(get_folder_path(), ec);
@@ -165,8 +169,8 @@ bool _theme::refresh_themes(std::int32_t& selected_theme)
         return false;
     }
 
-    for (auto& cfg : themes_)
-        cfg->seen_in_refresh() = false;
+    for (auto& theme : themes_)
+        theme->seen_in_refresh() = false;
 
     std::int32_t selected_index = 0;
     for (auto file : iterator) {
@@ -181,19 +185,25 @@ bool _theme::refresh_themes(std::int32_t& selected_theme)
             str.pop_back();
 
         // update selected_index
-        if (!cfg_name.empty() &&
-            cfg_name == str)
-            selected_index = static_cast<std::int32_t>(themes_.size()) - 1;
+        bool name_was_found = false;
+        if (!theme_name.empty() &&
+            theme_name == str) {
+            name_was_found = true;
+        }
 
         // check if exists
         bool found = false;
-        for (auto& cfg : themes_)
-            if (cfg->get_name() == str)
-            {
-                cfg->seen_in_refresh() = true;
+        std::int32_t theme_id = 0;
+        for (auto& theme : themes_) {
+            if (theme->get_name() == str) {
+                theme->seen_in_refresh() = true;
                 found = true;
+                if (name_was_found)
+                    selected_index = theme_id;
                 break;
             }
+            theme_id++;
+        }
 
         // add
         if (!found) {
@@ -206,6 +216,8 @@ bool _theme::refresh_themes(std::int32_t& selected_theme)
             if (init_drawable(str, drawable.get())) {
                 themes_.push_back(std::move(drawable));
             }
+            if (name_was_found)
+                selected_index = static_cast<std::int32_t>(themes_.size()) - 1;
         }
     }
 
@@ -216,6 +228,8 @@ bool _theme::refresh_themes(std::int32_t& selected_theme)
     }
 
     update(selected_index);
+
+    selected_theme = selected_index;
 
     return true;
 }
