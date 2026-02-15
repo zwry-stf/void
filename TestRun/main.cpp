@@ -311,7 +311,7 @@ void add_widgets() {
     static bool overlay_enabled = true;
     mb.overlay()
         .config("test_overlay")
-        .liquid_glass(true)
+        .liquid_glass(false)
         .make_resizable(true)
         .pos(0.8f, 0.4f)
         .size(200.f, 120.f)
@@ -325,7 +325,7 @@ void add_widgets() {
                     overlay.data().rounding_top =
                     instance->style().rounding->get(instance->scale());
                 overlay.data().border = instance->style().border();
-                overlay.data().background = instance->style().overlay_background().transparent();
+                overlay.data().background = instance->style().overlay_background();
 
                 overlay.cfg().liquid_glass_size.raw() = style.spacing->get(instance->scale()) * 2.f;
                 overlay.data().liquid_glass_color = r2::color::black().alpha(0.1f);
