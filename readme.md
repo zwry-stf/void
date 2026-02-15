@@ -102,4 +102,4 @@ ui.init(pinit, binit);
 
 ## License
 
-See repository root / submodules for license details.
+See [LICENSE](LICENSE) and submodules for license details.
