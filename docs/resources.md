@@ -18,5 +18,5 @@ Resources get compiled into a binary array.
 You will need to rebuild this array when switching backends or platforms.
 
 Usage (Windows):
-`resources_(x64_or_x86) -compile`
+`resources_('x64' or 'x86') -compile`
 > inside [`resources/internal/res`](../resources/internal/res/)
