@@ -21,4 +21,4 @@ At minimum:
 ## Live tweaking
 
 The sample builds an “Advanced” tab that directly edits style values and background settings,
-but marks them `no_config()` so they do not persist unless you explicitly save via theme/config mechanisms.
+but marks them `no_config()` so they do not persist unless you explicitly save via config mechanisms.

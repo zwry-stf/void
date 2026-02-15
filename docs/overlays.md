@@ -33,7 +33,7 @@ b.overlay()
 The sample uses `overlay(true)` to create an overlay that tracks the menu position and animates with menu alpha:
 
 ```cpp
-b.overlay(true)
+b.overlay(true /* menu_layer */)
   .make_movable(false)
   .clamp_in_window(false)
   .on_render([](vo::void_* instance, vo::custom_overlay& overlay) {

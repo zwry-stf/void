@@ -4,7 +4,7 @@ Void has a built-in config system. The general idea:
 
 - Widgets created through the builder can persist values automatically.
 - Widgets can opt out with `->no_config()`.
-- Overlays can have independent config namespaces via `.config("name")`.
+- Overlays can have independent config namespaces via `.config("name")`, saving its position (and potentially size, if `make_resizeable` was set).
 
 ![Config tab](assets/config_tab_menu.png)
 
@@ -21,14 +21,12 @@ tab.config_tab("Config").icon(void_resources::config_png);
 
 ```cpp
 group.colorpicker("Background", style.background())
-    ->no_config();
+    ->no_config(); // removes config module
 ```
-
-This is commonly used for “live tweak” UI that should not serialize into a profile.
 
 ## Overlay configs
 
-Custom overlays can store their position/size and other state under a config key:
+Custom overlays can store their position/size under a config key:
 
 ```cpp
 b.overlay().config("test_overlay");
