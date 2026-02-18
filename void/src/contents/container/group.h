@@ -47,6 +47,9 @@ public:
     [[nodiscard]] auto area() const noexcept {
         return area_;
     }
+    [[nodiscard]] bool is_occluded() const noexcept {
+        return occluded_;
+    }
 
 private:
     void render_outline(float alpha);

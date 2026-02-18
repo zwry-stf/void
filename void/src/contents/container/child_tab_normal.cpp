@@ -88,7 +88,7 @@ float child_tab_normal::update(float x, float y, bool selected, const render_inp
             input, substract
         );
 
-        if (group_height != 0.f) {
+        if (!group->is_occluded()) {
             positions_areas_[(int)area] += group_height;
             no_results_found_ = false;
         }
@@ -98,7 +98,9 @@ float child_tab_normal::update(float x, float y, bool selected, const render_inp
             substract_last = substract;
         }
 
-        positions_areas_[(int)area] += group_spacing;
+        if (!group->is_occluded()) {
+            positions_areas_[(int)area] += group_spacing;
+        }
     }
 
     highest_pos_ = std::max(

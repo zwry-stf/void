@@ -30,7 +30,7 @@ public:
     virtual input_response input(const overlay_input& input) override;
 
 
-    [[nodiscard]] auto* selected() const {
+    [[nodiscard]] auto* selected() const noexcept {
         return value_;
     }
     [[nodiscard]] auto* options() const noexcept {
