@@ -5,7 +5,6 @@ This is a compact map of the public headers you typically include. For details, 
 ## Main entry
 
 - [`void/void.h`](../void/include/void/void.h)
-- [`void/void.inline.inl`](../void/include/void/void.inline.inl)
 
 Primary type:
 - `vo::void_`

@@ -9,9 +9,9 @@ This page documents the widgets visible in the public builder API, and the most 
 Most widgets share these modifiers:
 
 - `disabled(bool on)` / `disabled_inverted(bool condition)`
+- `disabled(std::function<bool()>)`
 - `condition(std::function<bool()>)` — only render/enable under a predicate
 - `no_config()` — opt out of config persistence for that widget
-- `faded(bool)` — render in a subdued state (used e.g. by `textfield` in the sample)
 
 The exact set depends on the widget type; the sample demonstrates which ones are supported.
 
@@ -69,6 +69,7 @@ group.multiselect(options, multiselect_value);
 ```
 
 Where `multiselect_value` is `std::vector<bool>` sized to match the options.
+> The implementation will resize `multiselect_value` in its constructor and in its update function, it can be empty at initialization
 
 ## Textfield
 
@@ -85,10 +86,10 @@ group.textfield("Textfield",
 ## Color picker
 
 ```cpp
-group.colorpicker("Accent", style.accent())->no_config();
+group.colorpicker("Accent", style.accent(), true /* has_alpha (default true) */ )->no_config();
 ```
 
-Optional variant:
+Optional variant (only available as child widget):
 
 ```cpp
 widget->optional_colorpicker(color_value, enabled_bool);
@@ -118,12 +119,18 @@ group.keybind(g_test_keybind)
 
 ## List options
 
-`vo::list_options` is an abstraction over “a list of strings”. It supports:
+`vo::list_options` is an abstraction over “a list of strings (`vo::xstr`)”. It supports:
 
 - constant arrays (`create_constant`)
+- constant arrays with xstr member (`create_member_constant`)
+- dynamic arrays with xstr member (`create_member_dynamic`)
+- constant vectors (`create_vector_constant`)
 - dynamic vectors (`create_vector_dynamic`)
+- constant vectors with xstr member (`create_vector_member_constant`)
+- dynamic vectors with xstr member (`create_vector_member_dynamic`)
 
 Important lifetime rule:
 - the option storage must outlive the widget and any open dropdown/multiselect using it.
+- constant vectors and arrays should not change in size, it is undefined behaviour.
 
 Public header: [`void/contents/widgets/list_options.h`](../void/include/void/contents/widgets/list_options.h)

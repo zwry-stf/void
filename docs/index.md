@@ -3,8 +3,6 @@
 Void is a C++ **menu + overlay framework** built around a fluent *builder API* (tabs → child tabs → groups → widgets).
 It ships with a config system, themes, notifications, keybind handling, watermark components, and a small overlay framework.
 
-> These docs are written against the repository state packaged in this zip (generated 2026-02-15).
-
 ## Contents
 
 - [Getting started](getting_started.md)

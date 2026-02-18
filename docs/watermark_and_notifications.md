@@ -31,3 +31,12 @@ Notifications are exposed via:
 - [`void/accessors/notifications.h`](../void/include/void/accessors/notifications.h)
 
 They support colored segments (useful for highlighting status words).
+
+Example:
+```cpp
+instance->notifications().create_note()
+    << style.text() << xstr("Text");
+    
+instance->notifications().create_error()
+    << style.text() << xstr("Error");
+```

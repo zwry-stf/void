@@ -1,7 +1,7 @@
 # Getting started
 
 This project is designed to be embedded as a static library into your application.
-The reference integration is in [`TestRun/main.cpp`](../TestRun/main.cpp) and is the best “truth source” for wiring.
+The reference integration is in [`TestRun/main.cpp`](../TestRun/main.cpp).
 
 ## Build & link (Premake)
 
@@ -12,32 +12,78 @@ Void ships with a premake module: [`premake/void.lua`](../premake/void.lua). It 
 
 Void also depends on `r2` (renderer abstraction) and one of its backends (`d3d11` or `opengl`).
 
-Minimal premake wiring pattern:
+Example premake wiring pattern:
 
 ```lua
 -- prerequisites:
 --   include("<path-to-r2>/premake/r2.lua")
 --   include("<path-to-void>/premake/void.lua")
 
-group "thirdparty"
-r2.add_projects({
-  base = r2_dir,
-  backend = "d3d11",         -- or "opengl"
-  build_root = build_root,
-  int_root = int_root,
-})
+workspace ""
+    -- your options here...
+
+    local void_dir = -- your path to void 
+    local r2_dir = -- your path to r2
+    local used_backend = "d3d11" -- or "opengl"
+    local build_root = -- your build folder
+    local int_root = -- your intermediate build folder
+
+    local configurations = {
+        debug = "Debug",
+        release = "Release
+    }
+
+include (void_dir .. "/premake/void.lua")
+include (r2_dir .. "/premake/r2.lua")
 
 group "void"
-void.add_projects({
-  base = void_dir,
-  r2_dir = r2_dir,
-  backend = "d3d11",         -- must match r2 backend
-  build_root = build_root,
-  int_root = int_root,
-})
+void.add_projects(
+    {
+        base = void_dir,
+        build_root = build_root,
+        int_root = int_root,
+        r2_dir = r2_dir,
+        backend = used_backend,
+    },
+    configurations
+)
+group "void/deps"
+r2.add_projects(
+    {
+        base = r2_dir,
+        build_root = build_root,
+        int_root = int_root,
+        backend = used_backend,
+    },
+    configurations
+)
+group ""
+
+-- integrate into your project
+project ""
+    -- your options here...
+
+    -- integrate renderer if needed
+    r2.set_common_project_settings(configurations) // define _DEBUG, NDEBUG
+
+    r2.use { base = r2_dir, backend = used_backend, include_impl = true } // add r2 include dirs
+    r2.set_project_backend_defines( used_backend )
+
+    -- add void to your includes and link
+    
+    includedirs {
+        void_dir .. "/void/include",
+        void_dir .. "/void/src",
+        void_dir .. "/resources/include",
+    }
+    
+    dependson { "void" }
+    links     { "void", "resources" }
+
+
 ```
 
-Your executable should link against `void` and `resources` (and whatever `r2` projects you use).
+r2 libraries will be automatically linked against in the void project.
 
 ## Runtime integration checklist
 
@@ -60,6 +106,9 @@ Void has a small input layer. In the sample, GLFW callbacks forward events into 
 - `input_glfw_key(key, scancode, action, mods)`
 - `input_glfw_mouse_button(button, action, mods)`
 - `input_glfw_scroll(xoffset, yoffset)`
+
+It also supports raw Win32 events
+- `input_win32(msg, wparam, lparam)`
 
 See: [`void/contents/input/input.h`](../void/include/void/contents/input/input.h)
 

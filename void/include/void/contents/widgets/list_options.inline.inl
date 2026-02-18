@@ -176,17 +176,19 @@ public:
     }
 };
 
-class list_options_vector_dynamic : public list_options {
+class list_options_vector : public list_options {
 private:
+    const bool is_constant_;
     const std::vector<xstr>* const data_;
 
 public:
-    list_options_vector_dynamic(const std::vector<xstr>* data)
-        : data_(data) { }
+    list_options_vector(const std::vector<xstr>* data, bool constant)
+        : data_(data),
+          is_constant_(constant) { }
 
 public:
     virtual bool is_dynamic() const noexcept {
-        return true;
+        return !is_constant_;
     }
 
     virtual std::size_t size() const noexcept override {
@@ -245,7 +247,12 @@ inline list_options* list_options::create_constant(
 
 inline list_options* list_options::create_vector_dynamic(const std::vector<xstr>* data)
 {
-    return new list_options_vector_dynamic(data);
+    return new list_options_vector(data, false);
+}
+
+inline list_options* list_options::create_vector_constant(const std::vector<xstr>* data)
+{
+    return new list_options_vector(data, true);
 }
 
 template <typename T>

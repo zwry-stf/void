@@ -2,6 +2,30 @@
 
 Void exposes several callback “hooks” through accessors and builder constructs.
 
+## Menu callbacks
+
+There is a general callbacks accessor in:
+- [`void/accessors/callbacks.h`](../void/include/void/accessors/callbacks.h)
+
+Example:
+```cpp
+instance->callbacks().set<vo::callbacks::callback_OnCreateFonts>(
+    []() -> void {
+        //
+    }
+);
+instance->callbacks().set<vo::callbacks::callback_OnPostRender>(
+    [this]() -> void {
+        //
+    }
+);
+instance->callbacks().set<vo::callbacks::callback_OnToggleMenu>(
+    [this](bool /* is_open */) -> void {
+        //
+    }
+);
+```
+
 ## Overlay callbacks
 
 Custom overlays support:
@@ -10,10 +34,3 @@ Custom overlays support:
 - `on_input(void_*, custom_overlay&, const input_base&) -> input_response`
 
 See: [`void/builder/overlay.h`](../void/include/void/builder/overlay.h)
-
-## Render lifecycle callbacks
-
-There is a general callbacks accessor in:
-- [`void/accessors/callbacks.h`](../void/include/void/accessors/callbacks.h)
-
-Use this when you want to attach work to Void’s internal update/render phases rather than using a custom overlay.
