@@ -17,6 +17,7 @@
 #include <contents/widgets/button/button.h>
 #include <contents/widgets/spacing/spacing.h>
 #include <contents/widgets/textfield/textfield.h>
+#include <contents/widgets/keybind/keybind_widget.h>
 
 // child widgets
 #include <contents/widgets/colorpicker/colorpicker_child.h>
@@ -1477,6 +1478,29 @@ group_with_child_options::owner_type group_builder::toggle(const xstr& name, boo
         config_path,
         name,
         config_id
+    );
+}
+
+group_with_child_options::owner_type group_builder::last_keybind(const xstr& name)
+{
+    assert(last_keybind_ != nullptr);
+
+    last_widget_name_ = name;
+
+    auto* widget = group_instance_->add_widget(
+        std::make_unique<::vo::keybind_widget>(
+            instance(), instance(),
+            name, 
+            last_keybind_
+        )
+    );
+
+    return group_with_child_options::owner_type(
+        *this,
+        widget,
+        vo::xstr(),
+        name,
+        _config::kInvalidModuleId
     );
 }
 

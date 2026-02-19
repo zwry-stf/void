@@ -571,6 +571,7 @@ public:
     group_spacing_options::owner_type spacing();
     group_textfield_options::owner_type textfield(const xstr& name, std::function<void(const std::u32string& s)>&& callback);
     group_with_child_options::owner_type toggle(const xstr& name, bool& value);
+    group_with_child_options::owner_type last_keybind(const xstr& name);
 
     group_item_options::owner_type custom_widget(std::unique_ptr<widget>&& widget);
 };
