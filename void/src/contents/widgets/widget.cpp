@@ -59,7 +59,7 @@ bool widget::can_receive_input_simple(const input_base& input) const noexcept
         return false;
 
     if (is_disabled() ||
-        !is_visible()) {
+        was_hidden()) {
         if (input.is_selected(this))
             input.clear_selected();
         return false;

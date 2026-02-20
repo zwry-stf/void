@@ -20,12 +20,18 @@ float group::update(float x, float y, float w, const render_input& input, float&
     is_empty = false;
     occluded_ = false;
     bool dont_render = true;
-    for (auto& widget : widgets_)
-        if (!widget->is_skipped() &&
-            widget->is_visible()) {
+    for (auto& widget : widgets_) {
+        const bool is_visible = widget->is_visible() && !widget->is_skipped();
+        if (is_visible &&
+            widget->was_hidden()) {
+            widget->on_activate();
+        }
+        widget->set_was_hidden(!is_visible);
+        if (is_visible) {
             dont_render = false;
             break;
         }
+    }
     if (dont_render) {
         occluded_ = true;
         is_empty = true;
@@ -48,8 +54,7 @@ float group::update(float x, float y, float w, const render_input& input, float&
     const float top_spacing = kTopSpacing.get(instance()->scale());
     float pos_y = y + top_spacing;
     for (auto& widget : widgets_) {
-        if (!widget->is_skipped() &&
-            widget->is_visible()) {
+        if (!widget->was_hidden()) {
             bool occluded = occluded_ || (pos_y > lowest_pos) ? true : false;
 
             widget->update(
@@ -86,8 +91,7 @@ void group::render(float alpha)
     render_outline(alpha);
 
     for (auto& widget : widgets_) {
-        if (!widget->is_skipped() &&
-            widget->is_visible()) {
+        if (!widget->was_hidden()) {
             widget->render(
                 alpha
             );
@@ -98,8 +102,7 @@ void group::render(float alpha)
 input_response group::input(const input_base& input, bool selected_only)
 {
     for (auto& widget : widgets_) {
-        if (!widget->is_skipped() &&
-            widget->is_visible()) {
+        if (!widget->was_hidden()) {
             if (!selected_only ||
                 widget->is_selected(input)) {
                 auto res = widget->input(input);

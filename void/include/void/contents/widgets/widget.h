@@ -25,6 +25,8 @@ protected:
     std::function<bool()> visible_callback_;
     bool skipped_{ false };
 
+    bool was_hidden_{ false };
+
     std::vector<std::unique_ptr<widget_child>> child_widgets_;
     float child_widget_left_pos_{ 0.f };
 
@@ -67,6 +69,13 @@ public:
     // returns whether the widget is currently skipped in search
     [[nodiscard]] bool is_skipped() const noexcept {
         return skipped_;
+    }
+    // whether the widget was hidden (!is_visible or skipped)
+    [[nodiscard]] bool was_hidden() const noexcept {
+        return was_hidden_;
+    }
+    void set_was_hidden(bool s) noexcept {
+        was_hidden_ = s;
     }
     // returns whether the widget is selected (including child widgets)
     [[nodiscard]] bool is_selected(const input_base& input) const {

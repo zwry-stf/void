@@ -54,7 +54,13 @@ void childwindow::update(const overlay_render_input& input)
     auto render_input = input_owner_->input_get_render_input();
 
     for (auto& widget : widgets_) {
-        if (widget->is_visible()) [[likely]] {
+        const bool is_visible = widget->is_visible();
+        if (is_visible && 
+            widget->was_hidden()) {
+            widget->on_activate();
+        }
+        widget->set_was_hidden(!is_visible);
+        if (is_visible) [[likely]] {
             widget->update(
                 pos_x,
                 pos_y,
@@ -98,7 +104,7 @@ void childwindow::update(const overlay_render_input& input)
             const float pos_x2 = last_pos_.x + side_spacing;
             pos_y = last_pos_.y + top_height + top_spacing;
             for (auto& widget : widgets_) {
-                if (widget->is_visible()) [[likely]] {
+                if (!widget->was_hidden()) [[likely]] {
                     widget->set_pos(
                         r2::vec2{
                             pos_x2,
@@ -156,7 +162,7 @@ void childwindow::render()
 
     // items
     for (auto& widget : widgets_) {
-        if (widget->is_visible()) [[likely]] {
+        if (!widget->was_hidden()) [[likely]] {
             widget->render(
                 animation
             );
@@ -185,7 +191,7 @@ input_response childwindow::input(const overlay_input& input)
     input_base _input = input_owner_->input_get_input(input.event());
 
     for (auto& widget : widgets_) {
-        if (widget->is_visible()) {
+        if (!widget->was_hidden()) {
             auto res = widget->input(_input);
             if (res.is_handled())
                 return res;
