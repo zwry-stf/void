@@ -29,7 +29,6 @@ float group::update(float x, float y, float w, const render_input& input, float&
         widget->set_was_hidden(!is_visible);
         if (is_visible) {
             dont_render = false;
-            break;
         }
     }
     if (dont_render) {
@@ -131,12 +130,14 @@ void group::on_scale_change()
 
 void group::search(const xstr& text)
 {
-    if (text.empty())
+    if (text.empty()) {
         for (auto& widget : widgets_)
             widget->set_skipped(false);
-    else
+    }
+    else {
         for (auto& widget : widgets_)
             widget->set_skipped(!widget->matches_search(text));
+    }
 }
 
 void group::render_outline(float alpha)
