@@ -11,12 +11,13 @@ group::group(void_* instance, const xstr& name, group_area area)
 {
 }
 
-float group::update(float x, float y, float w, const render_input& input, float& substract_last_widget)
+float group::update(float x, float y, float w, const render_input& input, float& substract_last_widget, bool& is_empty)
 {
     last_pos_.x = x;
     last_pos_.y = y;
     last_pos_.w = w;
 
+    is_empty = false;
     occluded_ = false;
     bool dont_render = true;
     for (auto& widget : widgets_)
@@ -27,6 +28,7 @@ float group::update(float x, float y, float w, const render_input& input, float&
         }
     if (dont_render) {
         occluded_ = true;
+        is_empty = true;
     }
 
     instance()->fonts().bind_font_small();

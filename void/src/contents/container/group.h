@@ -30,7 +30,7 @@ public:
 
 public:
     float update(float x, float y, float w,
-                 const render_input& input, float& substract_last_widget);
+                 const render_input& input, float& substract_last_widget, bool& is_empty);
     void render(float alpha);
     input_response input(const input_base& input, bool selected_only = false);
 

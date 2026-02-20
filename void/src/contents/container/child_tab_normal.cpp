@@ -78,22 +78,27 @@ float child_tab_normal::update(float x, float y, bool selected, const render_inp
 
     float substract_last = 0.f;
     no_results_found_ = true;
-    highest_pos_ = 0.f;
     for (auto& group : groups_) {
         auto area = group->area();
 
+        bool is_empty;
         float substract = 0.f;
         const float offset = area == group_area::left ? 0.f : (area_width + middle_spacing);
         const float group_height = group->update(
             pos_x + side_spacing + offset, 
             positions_areas_[(int)area], area_width,
-            input, substract
+            input, 
+            substract,
+            is_empty
         );
 
-        if (!group->is_occluded()) {
+        if (!is_empty) {
             positions_areas_[(int)area] += group_height;
-            no_results_found_ = false;
             highest_areas_[(int)area] += group_height;
+        }
+
+        if (!group->is_occluded()) {
+            no_results_found_ = false;
         }
 
         if (highest_areas_[(int)area] > highest) {
@@ -101,7 +106,7 @@ float child_tab_normal::update(float x, float y, bool selected, const render_inp
             substract_last = substract;
         }
 
-        if (!group->is_occluded()) {
+        if (!is_empty) {
             positions_areas_[(int)area] += group_spacing;
             highest_areas_[(int)area] += group_spacing;
         }
