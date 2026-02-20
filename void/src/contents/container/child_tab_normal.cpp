@@ -95,9 +95,6 @@ float child_tab_normal::update(float x, float y, bool selected, const render_inp
         if (!is_empty) {
             positions_areas_[(int)area] += group_height;
             highest_areas_[(int)area] += group_height;
-        }
-
-        if (!group->is_occluded()) {
             no_results_found_ = false;
         }
 
