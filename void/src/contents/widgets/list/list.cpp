@@ -207,7 +207,7 @@ void list::update(float x, float y, float w, const render_input& input, bool occ
             list_pos_.x + list_pos_.w - scrollbar_width - border_size,
             list_pos_.y + spacing,
             scrollbar_width,
-            list_pos_.h - spacing * 2.f
+            (std::max)(list_pos_.h - spacing * 2.f, 0.f)
         },
         highest_pos
     );

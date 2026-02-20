@@ -95,6 +95,7 @@ void multiselect_overlay::render()
     auto& renderer = instance()->renderer();
 
     const float spacing = style.spacing->get(instance()->scale());
+    const float border_size = style.border_size.get(instance()->scale());
 
     instance()->background().add_immediate_overlay(
         last_pos_, alpha_
@@ -103,8 +104,10 @@ void multiselect_overlay::render()
     // items
     const float clip_rect_rightx = last_pos_.x + last_pos_.w;
     renderer.push_clip_rect(
-        r2::vec2(last_pos_.x, last_pos_.y),
-        r2::vec2(clip_rect_rightx, last_pos_.y + last_pos_.h),
+        r2::vec2(last_pos_.x + border_size,
+            last_pos_.y + border_size),
+        r2::vec2(clip_rect_rightx - border_size,
+            last_pos_.y + last_pos_.h - border_size),
         false
     );
 

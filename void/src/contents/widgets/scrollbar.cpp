@@ -12,7 +12,8 @@ scrollbar::scrollbar(void_* instance, input_owner* input_owner)
 
 void scrollbar::update(const r2::rectf& pos, float highest)
 {
-    assert(pos.w > 0.f && pos.h > 0.f);
+    assert(pos.w > 0.f);
+    assert(pos.h >= 0.f);
 
     highest_pos_ = highest;
 
@@ -35,6 +36,10 @@ void scrollbar::update(const r2::rectf& pos, float highest)
         des_scroll_ = util.lerp(des_scroll_, std::round(des_scroll_));
 
     scroll_ = util.lerp(scroll_, des_scroll_, 1.75f);
+
+    if (pos.h <= 0.f) {
+        return;
+    }
 
     // render
     bar_cache_.width = pos.w - style.border_size.get(instance()->scale());
@@ -80,6 +85,10 @@ void scrollbar::update(const r2::rectf& pos, float highest)
 
 void scrollbar::render(float alpha)
 {
+    if (last_pos_.h <= 0.f) {
+        return;
+    }
+
     auto& renderer = instance()->renderer();
     auto& style    = instance()->style();
 
@@ -97,6 +106,10 @@ input_response scrollbar::input(const input_base& input)
     if (!input.nothing_selected() &&
         !input.is_selected(this))
         return input_response::empty();
+
+    if (last_pos_.h <= 0.f) {
+        return input_response::empty();
+    }
 
     float mouse_x, mouse_y;
     input.event().get_cursor_pos(mouse_x, mouse_y);
