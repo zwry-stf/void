@@ -43,10 +43,10 @@ public:
         return alpha_;
     }
     [[nodiscard]] bool is_childwindow() const noexcept {
-        return has_overlays_;
+        return is_childwindow_;
     }
     [[nodiscard]] bool has_overlays() const noexcept {
-        return is_childwindow_;
+        return has_overlays_;
     }
 
 protected:

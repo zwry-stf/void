@@ -23,6 +23,7 @@ class group;
 class childwindow;
 class keybind_owner;
 class menu_builder;
+class keybind_owner;
 
 template <class T>
 class group_access;
@@ -533,6 +534,7 @@ public:
     owner_type& key(mouse_button k);
     owner_type& no_config();
     owner_type& name(const xstr& name);
+    owner_type& get_bind(vo::keybind_owner*& out);
 };
 
 class group_builder : public base_builder_object {

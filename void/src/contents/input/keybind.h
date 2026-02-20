@@ -73,8 +73,11 @@ public:
     [[nodiscard]] const auto& name() const noexcept {
         return name_;
     }
+    [[nodiscard]] auto mode() const noexcept {
+        return static_cast<keybind_mode>(mode_);
+    }
 
-    [[nodiscard]] auto& mode_ref() noexcept { 
+    [[nodiscard]] auto& mode_ref() noexcept {
         return mode_;
     }
     [[nodiscard]] auto& key_ref() noexcept {

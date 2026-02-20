@@ -1423,6 +1423,12 @@ group_keybind_options::owner_type& group_keybind_options::name(const xstr& name)
     return *group_instance_;
 }
 
+group_keybind_options::owner_type& group_keybind_options::get_bind(vo::keybind_owner*& out)
+{
+    out = keybind_instance_;
+    return *group_instance_;
+}
+
 
 /// group_builder
 
