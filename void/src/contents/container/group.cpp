@@ -27,7 +27,6 @@ float group::update(float x, float y, float w, const render_input& input, float&
         }
     if (dont_render) {
         occluded_ = true;
-        return 0.f;
     }
 
     instance()->fonts().bind_font_small();
@@ -50,14 +49,14 @@ float group::update(float x, float y, float w, const render_input& input, float&
     for (auto& widget : widgets_) {
         if (!widget->is_skipped() &&
             widget->is_visible()) {
-            bool occluded = (pos_y > lowest_pos) ? true : false;
+            bool occluded = occluded_ || (pos_y > lowest_pos) ? true : false;
 
             widget->update(
                 x + spacing,
                 pos_y,
                 w - spacing * 2.f,
                 input,
-                occluded_ || occluded
+                occluded
             );
 
             pos_y += widget->get_height() + widget_spacing;

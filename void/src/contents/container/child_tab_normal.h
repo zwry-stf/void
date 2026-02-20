@@ -19,6 +19,7 @@ private:
     float no_results_width_;
 
     float positions_areas_[std::to_underlying(group_area::max)];
+    float highest_areas_[std::to_underlying(group_area::max)];
 
 public:
     child_tab_normal(void_* instance, input_owner* input_owner, 

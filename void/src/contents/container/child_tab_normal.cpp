@@ -69,10 +69,12 @@ float child_tab_normal::update(float x, float y, bool selected, const render_inp
     const float group_spacing = std::round(spacing * 1.5f);
 
     const float pos_y = menu_pos.y + top_bar_height + side_spacing - (scroll_disabled_ ? 0.f : scrollbar_->get_scroll());
-    positions_areas_[std::to_underlying(group_area::left)] = pos_y;
-    positions_areas_[std::to_underlying(group_area::right)] = pos_y;
+    for (auto& f : positions_areas_)
+        f = pos_y;
+    for (auto& f : highest_areas_)
+        f = 0.f;
 
-    float highest = pos_y;
+    float highest = 0.f;
 
     float substract_last = 0.f;
     no_results_found_ = true;
@@ -91,20 +93,22 @@ float child_tab_normal::update(float x, float y, bool selected, const render_inp
         if (!group->is_occluded()) {
             positions_areas_[(int)area] += group_height;
             no_results_found_ = false;
+            highest_areas_[(int)area] += group_height;
         }
 
-        if (positions_areas_[(int)area] > highest) {
-            highest = positions_areas_[(int)area];
+        if (highest_areas_[(int)area] > highest) {
+            highest = highest_areas_[(int)area];
             substract_last = substract;
         }
 
         if (!group->is_occluded()) {
             positions_areas_[(int)area] += group_spacing;
+            highest_areas_[(int)area] += group_spacing;
         }
     }
 
     highest_pos_ = std::max(
-        highest - pos_y - substract_last, 
+        highest - substract_last, 
         0.f
     );
     if (highest_pos_ > 0.f)
