@@ -143,6 +143,8 @@ public:
     owner_type& last_childwindow();
     /// Adds the last created keybind as child widget.
     owner_type& last_keybind();
+    /// Adds existing keybind as child widget.
+    owner_type& existing_keybind(vo::keybind_owner* bind);
     /// Add a custom child widget to the last created widget.
     owner_type& custom_child(std::unique_ptr<widget_child>&& child);
 };
@@ -188,6 +190,8 @@ public:
     owner_type& last_childwindow();
     /// Adds the last created keybind as child widget.
     owner_type& last_keybind();
+    /// Adds existing keybind as child widget.
+    owner_type& existing_keybind(vo::keybind_owner* bind);
     /// Add a custom child widget to the last created widget.
     owner_type& custom_child(std::unique_ptr<widget_child>&& child);
 

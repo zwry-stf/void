@@ -262,6 +262,8 @@ void group_with_child_base_options::last_childwindow(std::int32_t overlay_id)
 
 void group_with_child_base_options::last_keybind(keybind_owner* bind)
 {
+    assert(bind != nullptr);
+
     if (bind->name().empty())
         bind->set_name(name_);
 
@@ -371,6 +373,12 @@ group_with_child_options::owner_type& group_with_child_options::last_keybind()
     return *group_instance_;
 }
 
+group_with_child_options::owner_type& group_with_child_options::existing_keybind(vo::keybind_owner* bind)
+{
+    group_with_child_base_options::last_keybind(bind);
+    return *group_instance_;
+}
+
 group_with_child_options::owner_type& group_with_child_options::custom_child(std::unique_ptr<class widget_child>&& child)
 {
     group_with_child_base_options::custom_child(std::move(child));
@@ -472,6 +480,12 @@ group_textfield_options::owner_type& group_textfield_options::last_keybind()
     assert(keybind != nullptr);
 
     group_with_child_base_options::last_keybind(keybind);
+    return *group_instance_;
+}
+
+group_textfield_options::owner_type& group_textfield_options::existing_keybind(vo::keybind_owner* bind)
+{
+    group_with_child_base_options::last_keybind(bind);
     return *group_instance_;
 }
 
