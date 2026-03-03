@@ -12,8 +12,8 @@ class slider : public widget {
 private:
     const xstr name_;
     float* const value_;
-    const float min_;
-    const float max_;
+    float min_;
+    float max_;
     const std::format_string<float> format_;
     float last_value_;
     std::string formatted_text_;
@@ -28,6 +28,8 @@ private:
     float text_width_;
 
     std::vector<format_condition> conditions_;
+    std::function<float()> get_min_callback_;
+    std::function<float()> get_max_callback_;
 
 public:
     slider(void_* instance, input_owner* input_owner,
@@ -49,6 +51,13 @@ public:
 
     void add_format_condition(format_condition&& condition) {
         conditions_.emplace_back(std::move(condition));
+    }
+
+    void set_get_min_callback(std::function<float()>&& callback) {
+        get_min_callback_ = std::move(callback);
+    }
+    void set_get_max_callback(std::function<float()>&& callback) {
+        get_max_callback_ = std::move(callback);
     }
 
 private:

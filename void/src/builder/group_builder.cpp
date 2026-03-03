@@ -1000,6 +1000,18 @@ overlay_slider_options::owner_type& overlay_slider_options::decimal_count(int co
     return *group_instance_;
 }
 
+overlay_slider_options::owner_type& overlay_slider_options::min_callback(std::function<float()>&& callback)
+{
+    get_widget<slider>()->set_get_min_callback(std::move(callback));
+    return *group_instance_;
+}
+
+overlay_slider_options::owner_type& overlay_slider_options::max_callback(std::function<float()>&& callback)
+{
+    get_widget<slider>()->set_get_max_callback(std::move(callback));
+    return *group_instance_;
+}
+
 overlay_slider_options::owner_type& overlay_slider_options::format_condition(std::function<bool(float, std::string&)>&& condition)
 {
     get_widget<slider>()->add_format_condition(std::move(condition));

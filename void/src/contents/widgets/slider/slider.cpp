@@ -29,8 +29,10 @@ void slider::update(float x, float y, float w, const render_input& input, bool o
     const float target_animation = std::clamp((*value_ - min_) / (max_ - min_), 0.f, 1.f);
     animation_ = util.lerp(animation_, target_animation, 1.5f);
 
-    if (occluded)
-        return;
+    if (get_max_callback_)
+        max_ = get_max_callback_();
+    if (get_min_callback_)
+        min_ = get_max_callback_();
 }
 
 void slider::render(float alpha)

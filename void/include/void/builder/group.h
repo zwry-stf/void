@@ -439,6 +439,12 @@ public:
 public:
     /// Sets how many decimals the slider should round to.
     owner_type& decimal_count(int count);
+
+    /// Add callback to override max value
+    owner_type& min_callback(std::function<float()>&& callback);
+
+    /// Add callback to override max value
+    owner_type& max_callback(std::function<float()>&& callback);
     
     /// Adds a custom format applied when condition returns true on value.
     owner_type& format_condition(std::function<bool(float, std::string&)>&& condition);
