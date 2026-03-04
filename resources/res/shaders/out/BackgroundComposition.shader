@@ -176,9 +176,10 @@ float4 main(PSInput input) : SV_TARGET {
         float g_ratio = g_data.background_color.g / background_avarage;
         float b_ratio = g_data.background_color.b / background_avarage;
         
-        base_color.r = lerp(base_color.r, avarage * r_ratio, g_data.blend_amount);
-        base_color.g = lerp(base_color.g, avarage * g_ratio, g_data.blend_amount);
-        base_color.b = lerp(base_color.b, avarage * b_ratio, g_data.blend_amount);
+        float blend_amount = g_data.blend_amount * sqrt(background_avarage);
+        base_color.r = lerp(base_color.r, avarage * r_ratio, blend_amount);
+        base_color.g = lerp(base_color.g, avarage * g_ratio, blend_amount);
+        base_color.b = lerp(base_color.b, avarage * b_ratio, blend_amount);
         
         
         if (g_data.noise_scale > 0.003)
