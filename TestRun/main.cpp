@@ -357,7 +357,7 @@ void add_widgets() {
                 const float offset = style.spacing->get(instance->scale()) * 2.f;
 
                 overlay.set_pos_scaled(r2::vec2(menu_pos.x + menu_pos.w + offset, menu_pos.y));
-                overlay.set_size(r2::vec2(150.f, menu_pos.h));
+                overlay.set_size(r2::vec2(150.f, menu_pos.h / instance->scale()));
                 overlay.set_animation(instance->alpha());
                 overlay.data().rounding_bottom =
                     overlay.data().rounding_top =
