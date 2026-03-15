@@ -110,7 +110,9 @@ void notifications::render()
         }
 
         const float animation_size = noti_height * 0.7f;
-        const float notification_pos_x = screen_spacing_x + std::pow(1.f - progress_in, 2.f) * animation_size - (1.f - alpha_out) * animation_size;
+        const float notification_pos_x = screen_spacing_x + 
+            std::pow(1.f - progress_in, 2.f) * animation_size -
+            std::pow(1.f - alpha_out, 2.f) * animation_size;
 
         // animate, if not set yet, force to position
         if (notification.pos_y < 0.f)
