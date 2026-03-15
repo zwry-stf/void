@@ -98,7 +98,7 @@ void notifications::render()
         );
 
         const float alpha_in = progress_in * progress_in * progress_in; // ease in
-        const float alpha_out = 1.f - progress_out * progress_out * progress_out; // ease out
+        const float alpha_out = std::pow(1.f - progress_out, 3.f); // ease out
 
         float alpha = std::min(alpha_in, alpha_out);
         if (alpha < util::g_min_alpha) {
@@ -108,6 +108,9 @@ void notifications::render()
                 it++;
             continue;
         }
+
+        const float animation_size = noti_height * 0.7f;
+        const float notification_pos_x = screen_spacing_x + std::pow(1.f - progress_in, 2.f) * animation_size - (1.f - alpha_out) * animation_size;
 
         // animate, if not set yet, force to position
         if (notification.pos_y < 0.f)
@@ -128,7 +131,7 @@ void notifications::render()
         // background
         const float max_rounding = (noti_height - spacing) * 0.5f;
         const float background_rounding = std::round(std::min(rounding * 0.5f, max_rounding));
-        const auto min = r2::vec2(screen_spacing_x, screen_spacing_y + notification.pos_y);
+        const auto min = r2::vec2(notification_pos_x, screen_spacing_y + notification.pos_y);
         const auto max = min + r2::vec2(full_width, noti_height);
 
         renderer.add_shadow_rect_filled(
