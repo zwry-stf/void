@@ -134,6 +134,22 @@ menu_options::menu_options(void_* instance, input_owner* input_owner,
             &instance->options().get<options::option_AllowKeyInput>()
         )
     );
+
+    /// watermark
+    widgets_.emplace_back(
+        std::make_unique<toggle>(
+            instance, input_owner,
+            xstr("Watermark"),
+            &instance->options().get<options::option_Watermark>()
+        )
+    );
+
+    instance->config().add_module(
+        std::make_unique<default_config_module<bool>>(
+            vo::xstr("watermark"),
+            &instance->options().get<options::option_Watermark>()
+        )
+    );
 }
 
 void menu_options::update(const overlay_render_input& input)

@@ -338,19 +338,21 @@ void _background::do_blur_pass(const r2::vec4& area, r2::framebuffer* out_target
                 (std::min)(static_cast<std::int32_t>(std::ceil(area.w)) + offset, max_bottom),
             };
 
-            if (needs_resolve_)
+            if (needs_resolve_) {
                 ctx->resolve_subresource(
                     data_offscreen_fbo_.get(),
                     render_target.main_fbo(),
                     std::nullopt,
                     blur_rect, blur_rect
                 );
-            else
+            }
+            else {
                 ctx->copy_subresource(
                     data_offscreen_fbo_.get(),
                     render_target.main_fbo(),
                     blur_rect, blur_rect
                 );
+            }
         }
 
         in_texture = data_offscreen_view_.get();
@@ -440,6 +442,48 @@ void _background::do_blur_pass(const r2::vec4& area, r2::framebuffer* out_target
     );
 
     ctx->draw_indexed(6u);
+}
+
+void _background::copy_backbuffer(const r2::vec4& area)
+{
+    if (data_use_backbuffer_) {
+        return;
+    }
+
+    auto& renderer = instance()->renderer();
+    auto& render_target = instance()->render_target();
+    auto* ctx = renderer.context();
+
+    const std::int32_t max_right = static_cast<std::int32_t>(renderer.get_render_size().x);
+    const std::int32_t max_bottom = static_cast<std::int32_t>(renderer.get_render_size().y);
+
+    const r2::rect blur_rect = {
+        (std::max)(static_cast<std::int32_t>(std::floor(area.x)), 0),
+        (std::max)(static_cast<std::int32_t>(std::floor(area.y)), 0),
+        (std::min)(static_cast<std::int32_t>(std::ceil(area.z)), max_right),
+        (std::min)(static_cast<std::int32_t>(std::ceil(area.w)), max_bottom),
+    };
+
+    if (needs_resolve_) {
+        ctx->resolve_subresource(
+            data_offscreen_fbo_.get(),
+            render_target.main_fbo(),
+            std::nullopt,
+            blur_rect, blur_rect
+        );
+    }
+    else {
+        ctx->copy_subresource(
+            data_offscreen_fbo_.get(),
+            render_target.main_fbo(),
+            blur_rect, blur_rect
+        );
+    }
+}
+
+r2::textureview* _background::get_offscreen_backbuffer() const
+{
+    return data_offscreen_view_.get();
 }
 
 void _background::restore_render_states() const noexcept

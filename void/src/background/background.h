@@ -89,6 +89,8 @@ public:
 
     void do_blur_pass(const r2::vec4& area, r2::framebuffer* out_target, float radius,
                       blur_shader_constants* constants = nullptr, r2::textureview* in_texture = nullptr);
+    void copy_backbuffer(const r2::vec4& area);
+    [[nodiscard]] r2::textureview* get_offscreen_backbuffer() const;
 
     void restore_render_states() const noexcept;
 

@@ -77,6 +77,8 @@ const scaled_icon* icons::get_or_create(icon_handle handle, std::uint32_t size, 
     instance()->renderer().assert_render_thread();
 #endif
 
+    size = std::max<std::uint32_t>(size, 2u);
+
     assert(handle != kInvalidHandle);
     assert(handle < icons_.size());
 
