@@ -24,6 +24,7 @@ float label::update(float x, float y, float w, const render_input&, bool)
     auto& renderer = instance()->renderer();
 
     if (!text_width_calculated_) {
+        instance()->fonts().bind_font_small();
         if (renderer.get_text_width_strict(name(), text_width_))
             text_width_calculated_ = true;
         else
