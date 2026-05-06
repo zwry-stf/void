@@ -52,13 +52,15 @@ void custom_overlay::update()
         set_pos_scaled(pos);
     }
 
+    if (update_callback_ != nullptr)
+        update_callback_(instance(), *this);
+
+    pos = get_pos();
+    size = get_size();
     last_pos_.x = pos.x;
     last_pos_.y = pos.y;
     last_pos_.w = size.x;
     last_pos_.h = size.y;
-
-    if (update_callback_ != nullptr)
-        update_callback_(instance(), *this);
 }
 
 void custom_overlay::render()

@@ -111,33 +111,40 @@ void render_target::bind_menu() const noexcept
 void render_target::draw_menu() noexcept
 {
     auto& renderer = instance()->renderer();
+
+    const auto& menu_pos = instance()->pos();
+    const auto render_size = renderer.get_render_size();
+
+    constexpr float kAnimationValue = 0.15f;
+
+    const r2::vec2 base_min = { menu_pos.x, menu_pos.y };
+    const r2::vec2 base_max = { menu_pos.x + menu_pos.w, menu_pos.y + menu_pos.h };
+
+    r2::vec2 uv_min = base_min / render_size;
+    r2::vec2 uv_max = base_max / render_size;
+
+    const r2::vec2 offset = r2::vec2{
+        menu_pos.w * kAnimationValue * (1.f - instance()->animation()),
+        menu_pos.h * kAnimationValue * (1.f - instance()->animation())
+    };
+
+    const r2::vec2 draw_min = base_min + offset;
+    const r2::vec2 draw_max = base_max - offset;
+
+    draw_menu_impl(draw_min, draw_max, uv_min, uv_max, instance()->alpha());
+}
+
+void render_target::draw_menu_impl(const r2::vec2& screen_min, const r2::vec2& screen_max, 
+                                   const r2::vec2& uv_min, const r2::vec2& uv_max, float alpha) noexcept
+{
+    auto& renderer = instance()->renderer();
     auto* ctx = renderer.context();
 
     ctx->set_texture(nullptr);
 
     auto* background = instance()->background().get_background_instance();
 
-    const auto& menu_pos = instance()->pos();
-
     const auto render_size = renderer.get_render_size();
-
-    constexpr float kAnimationValue = 0.15f;
-    const r2::vec2 min = { 
-        menu_pos.x, 
-        menu_pos.y
-    };
-    const r2::vec2 max = { 
-        menu_pos.x + menu_pos.w, 
-        menu_pos.y + menu_pos.h 
-    };
-
-    r2::vec2 uv_min = min / render_size;
-    r2::vec2 uv_max = max / render_size;
-
-    const r2::vec2 offset = r2::vec2{
-        menu_pos.w * kAnimationValue * (1.f - instance()->animation()),
-        menu_pos.h * kAnimationValue * (1.f - instance()->animation())
-    };
 
     if (instance()->options().get<options::option_MenuMSAA>()) {
         r2::vec4 vertices[4] = {
@@ -146,22 +153,23 @@ void render_target::draw_menu() noexcept
             { 0.f, 0.f, uv_max.x, uv_max.y },
             { 0.f, 0.f, uv_max.x, uv_min.y },
         };
-        const float anim_x = offset.x / render_size.x * 2.f;
-        const float anim_y = offset.y / render_size.y * 2.f;
-        for (auto& v : vertices) {
-            v.x = v.z * 2.f - 1.f;
-            v.y = (1.f - v.w) * 2.f - 1.f;
 
-            v.x += (v.z < uv_max.x ? +anim_x : -anim_x);
-            v.y += (v.w > uv_min.y ? +anim_y : -anim_y);
-        }
+        const float ndc_left = screen_min.x / render_size.x * 2.f - 1.f;
+        const float ndc_right = screen_max.x / render_size.x * 2.f - 1.f;
+        const float ndc_top = (1.f - screen_min.y / render_size.y) * 2.f - 1.f;
+        const float ndc_bottom = (1.f - screen_max.y / render_size.y) * 2.f - 1.f;
+
+        vertices[0].x = ndc_left;   vertices[0].y = ndc_bottom;
+        vertices[1].x = ndc_left;   vertices[1].y = ndc_top;
+        vertices[2].x = ndc_right;  vertices[2].y = ndc_bottom;
+        vertices[3].x = ndc_right;  vertices[3].y = ndc_top;
 
         menu_vb_->update(vertices, sizeof(vertices));
         assert(!menu_vb_->has_error());
 
         downsample_data cdata;
         cdata.resolution = render_size;
-        cdata.animation = instance()->alpha();
+        cdata.animation = alpha;
         menu_cb_->update(&cdata, sizeof(cdata));
         assert(!menu_cb_->has_error());
 
@@ -177,10 +185,10 @@ void render_target::draw_menu() noexcept
 
         ctx->set_scissor_rect(
             {
-                static_cast<std::int32_t>(min.x),
-                static_cast<std::int32_t>(min.y),
-                static_cast<std::int32_t>(max.x),
-                static_cast<std::int32_t>(max.y),
+                static_cast<std::int32_t>(screen_min.x),
+                static_cast<std::int32_t>(screen_min.y),
+                static_cast<std::int32_t>(screen_max.x),
+                static_cast<std::int32_t>(screen_max.y),
             }
         );
 
@@ -189,16 +197,20 @@ void render_target::draw_menu() noexcept
         background->restore_render_states();
     }
     else {
+        r2::vec2 adjusted_uv_min = uv_min;
+        r2::vec2 adjusted_uv_max = uv_max;
 #if defined(R2_BACKEND_OPENGL)
-        uv_min.y = 1.f - uv_min.y;
-        uv_max.y = 1.f - uv_max.y;
+        adjusted_uv_min.y = 1.f - adjusted_uv_min.y;
+        adjusted_uv_max.y = 1.f - adjusted_uv_max.y;
 #endif
+
         renderer.add_image(
             menu_view_->native_texture_handle(),
-            min + offset,
-            max - offset,
-            r2::color::white().alpha(instance()->alpha()),
-            uv_min, uv_max
+            screen_min,
+            screen_max,
+            r2::color::white().alpha(alpha),
+            adjusted_uv_min,
+            adjusted_uv_max
         );
         renderer.render();
         renderer.reset_render_data();

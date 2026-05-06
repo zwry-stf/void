@@ -32,6 +32,8 @@ public:
     void clear_menu() const noexcept;
     void bind_menu() const noexcept;
     void draw_menu() noexcept;
+    void draw_menu_impl(const r2::vec2& screen_min, const r2::vec2& screen_max, 
+                        const r2::vec2& uv_min, const r2::vec2& uv_max, float alpha) noexcept;
     
 public:
     [[nodiscard]] auto* main_rtv() const noexcept {
