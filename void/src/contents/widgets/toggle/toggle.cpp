@@ -54,6 +54,10 @@ void toggle::update(float x, float y, float w, const render_input& input, bool o
 
 void toggle::render(float alpha)
 {
+    if (was_occluded_) {
+        return;
+    }
+
     auto& util = instance()->util();
     auto& style = instance()->style();
     auto& renderer = instance()->renderer();

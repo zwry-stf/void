@@ -7,6 +7,8 @@ workspace "void"
     filter "platforms:x64"
         architecture "x86_64"
     filter {}
+    
+    startproject "TestRun"
 
     newoption {
         trigger = "has-glfw",
