@@ -66,8 +66,6 @@ void void_::init(const r2::platform_init_data& pinit, const r2::backend_init_dat
     // build fonts
     fonts().build();
 
-    renderer_.create_font_texture();
-
     icons().init();
 
     // background

@@ -71,13 +71,8 @@ void fonts::build()
     assert(font_large_ != nullptr);
 
     auto& renderer = instance()->renderer();
-    if (renderer.is_initialized()) {
-        font_small_->build();
-        font_large_->build();
-    }
-    else {
-        renderer.build_fonts();
-    }
+    renderer.build_fonts();
+    renderer.create_font_texture();
 }
 
 void fonts::bind_font_small() const

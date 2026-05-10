@@ -7,7 +7,7 @@
   </Configurations>
   <Project Path="..\..\..\resources\resources.vcxproj" Id="202B5BA7-8C95-0F1E-D5D3-C0C3417DED72">
   </Project>
-  <Project Path="..\..\..\TestRun\TestRun.vcxproj" Id="7A9ED639-E67D-55D5-EF95-E0AB5BF4BB36">
+  <Project Path="..\..\..\TestRun\TestRun.vcxproj" Id="7A9ED639-E67D-55D5-EF95-E0AB5BF4BB36" DefaultStartup="true">
     <BuildDependency Project="..\..\..\void\void.vcxproj" />
   </Project>
   <Project Path="..\..\..\void\void.vcxproj" Id="57AA9F7C-43E1-A00D-ECCD-8610D8E31C0F">

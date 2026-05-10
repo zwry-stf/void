@@ -38,14 +38,14 @@ public:
 
 public:
     virtual void cache_text_size(r2::renderer2d& renderer) override {
-        if (renderer.get_text_width_strict<String>(string_, text_width))
+        if (renderer.get_text_width_strict(string_, text_width))
             text_width_calculated = true;
         else
-            text_width = renderer.get_text_width<String>(string_);
+            text_width = renderer.get_text_width(string_);
         text_width = std::ceil(text_width);
     }
     virtual void render(r2::renderer2d& renderer, const r2::vec2& pos, r2::color_u32 col) const override {
-        renderer.add_text<String>(pos, col, string_);
+        renderer.add_text(pos, col, string_);
     }
 };
 
