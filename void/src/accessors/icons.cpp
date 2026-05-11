@@ -165,8 +165,6 @@ void icons::create_icon(int resource_id, internal_scaled_icon& data, bool ignore
         data_height = static_cast<int>(data.icon_data.size);
     }
 
-    std::uint32_t* dst_data = nullptr;
-    int data_stride;
     if (data.add_to_atlas) {
         data.rect_id = font_atlas->register_rect(
             static_cast<std::uint32_t>(data_width),
@@ -179,22 +177,14 @@ void icons::create_icon(int resource_id, internal_scaled_icon& data, bool ignore
         );
         data.icon_data.tex = renderer.font_texture();
         data.created = true;
-
-        const auto& r = font_atlas->get_rect(data.rect_id);
-
-        auto* dst_pixels = font_atlas->get_data32().data();
-        dst_data = dst_pixels + r.pos_y * font_atlas->get_width() + r.pos_x;
-        data_stride = static_cast<int>(font_atlas->get_width() * sizeof(std::uint32_t));
     }
-    else {
-        temp_buffer_.clear();
-        temp_buffer_.resize(
-            data_width * data_height * 4, /* channels */
-            0u
-        );
-        data_stride = data_width * 4;
-        dst_data = temp_buffer_.data();
-    }
+
+    temp_buffer_.clear();
+    temp_buffer_.resize(
+        data_width * data_height
+    );
+    auto data_stride = data_width * 4;
+    auto* dst_data = temp_buffer_.data();
 
     // resize
     unsigned char* _ret = stbir_resize_uint8_linear(
@@ -235,6 +225,11 @@ void icons::create_icon(int resource_id, internal_scaled_icon& data, bool ignore
         data.created = true;
     }
     else {
+        font_atlas->write_data(
+            data.rect_id,
+            temp_buffer_.data(),
+            temp_buffer_.size()
+        );
         renderer.queue_atlas_update();
     }
 }
