@@ -4,13 +4,13 @@
 
 void_begin_
 
-notification_buider::notification_buider(void_* instance)
+notification_builder::notification_builder(void_* instance)
     : vobj(instance),
       current_color_(instance->style().text())
 {
 }
 
-notification_buider::~notification_buider()
+notification_builder::~notification_builder()
 {
     if (data_.empty())
         return;
@@ -18,12 +18,12 @@ notification_buider::~notification_buider()
     instance()->notifications().add_notification(std::move(data_));
 }
 
-notification_buider notifications::create_notification()
+notification_builder notifications::create_notification()
 {
-    return notification_buider(instance());
+    return notification_builder(instance());
 }
 
-notification_buider notifications::create_note()
+notification_builder notifications::create_note()
 {
     auto& style = instance()->style();
     return std::move(create_notification()
@@ -33,7 +33,7 @@ notification_buider notifications::create_note()
         << style.text() << xstr(" : "));
 }
 
-notification_buider notifications::create_error()
+notification_builder notifications::create_error()
 {
     auto& style = instance()->style();
     return std::move(create_notification()

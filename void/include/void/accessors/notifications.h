@@ -49,34 +49,34 @@ public:
     }
 };
 
-class notification_buider : protected vobj {
+class notification_builder : protected vobj {
 private:
     r2::color current_color_;
     std::vector<std::unique_ptr<notification_data>> data_;
 
 public:
-    notification_buider(void_* instance);
-    ~notification_buider();
+    notification_builder(void_* instance);
+    ~notification_builder();
 
-    notification_buider(const notification_buider&) = delete;
-    notification_buider& operator=(const notification_buider&) = delete;
-    notification_buider(notification_buider&&) = default;
-    notification_buider& operator=(notification_buider&&) = default;
+    notification_builder(const notification_builder&) = delete;
+    notification_builder& operator=(const notification_builder&) = delete;
+    notification_builder(notification_builder&&) = default;
+    notification_builder& operator=(notification_builder&&) = default;
 
 public:
-    notification_buider& operator<<(const r2::color& color) {
+    notification_builder& operator<<(const r2::color& color) {
         current_color_ = color;
         return *this;
     }
 
     template <r2::unicode::string_like String>
-    notification_buider& operator<<(const String& s) {
+    notification_builder& operator<<(const String& s) {
         String owned = s;
         return (*this) << std::move(owned);
     }
 
     template <r2::unicode::string_like String>
-    notification_buider& operator<<(String&& s) {
+    notification_builder& operator<<(String&& s) {
         using stored_t = std::remove_cvref_t<String>;
         data_.push_back(
             std::make_unique<string_notification_data<stored_t>>(
@@ -107,9 +107,9 @@ public:
     using vobj::vobj;
 
 public:
-    notification_buider create_notification();
-    notification_buider create_note();
-    notification_buider create_error();
+    notification_builder create_notification();
+    notification_builder create_note();
+    notification_builder create_error();
 
     void add_notification(std::vector<std::unique_ptr<notification_data>>&& data);
 
