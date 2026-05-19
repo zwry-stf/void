@@ -49,9 +49,12 @@ void_::void_()
 
 void_::~void_() = default;
 
-void void_::init(const r2::platform_init_data& pinit, const r2::backend_init_data& binit)
+error void_::init(const r2::platform_init_data& pinit, const r2::backend_init_data& binit)
 {
-    renderer_.init(pinit, binit);
+    const auto renderer_error = renderer_.init(pinit, binit);
+    if (renderer_error.get_code() != r2::error_code::none) {
+        return error(error_code::renderer_init);
+    }
 
 #if defined(R2_BACKEND_OPENGL)
     renderer_.backup_render_state();
@@ -64,22 +67,45 @@ void void_::init(const r2::platform_init_data& pinit, const r2::backend_init_dat
     fonts().create();
 
     // build fonts
-    fonts().build();
+    if (!fonts().build()) {
+        return error(error_code::font_init);
+    }
 
-    icons().init();
+    if (auto res = icons().init();
+        res != error(error_code::none)) {
+        return res;
+    }
 
     // background
-    render_target().init_targets();
+    if (auto res = render_target().init_targets();
+        res != error(error_code::none)) {
+        return res;
+    }
 
-    background_->init();
-    background_overlay_->init(background_.get());
+    if (auto res = background_->init();
+        res != error(error_code::none)) {
+        return res;
+    }
+    if (auto res = background_overlay_->init(background_.get()); 
+        res != error(error_code::none)) {
+        return res;
+    }
 
     // render_target
-    render_target().init();
+    if (auto res = render_target().init();
+        res != error(error_code::none)) {
+        return res;
+    }
 
     // config
-    config_->init();
-    theme_->init();
+    if (auto res = config_->init();
+        res != error(error_code::none)) {
+        return res;
+    }
+    if (auto res = theme_->init();
+        res != error(error_code::none)) {
+        return res;
+    }
 
 #if defined(R2_BACKEND_OPENGL)
     renderer_.restore_render_state();
@@ -104,6 +130,8 @@ void void_::init(const r2::platform_init_data& pinit, const r2::backend_init_dat
     initialized_.store(true, std::memory_order_release);
 
     sidebar_->on_activate();
+
+    return error(error_code::none);
 }
 
 void void_::destroy()
@@ -115,33 +143,55 @@ void void_::destroy()
     theme_->destroy();
 }
 
-void void_::init_render(const r2::platform_init_data& pinit, const r2::backend_init_data& binit)
+error void_::init_render(const r2::platform_init_data& pinit, const r2::backend_init_data& binit)
 {
     // renderer
-    renderer_.init(pinit, binit);
+    const auto renderer_error = renderer_.init(pinit, binit);
+    if (renderer_error.get_code() != r2::error_code::none) {
+        return error(error_code::renderer_init);
+    }
 
 #if defined(R2_BACKEND_OPENGL)
     renderer_.backup_render_state();
 #endif // R2_BACKEND_OPENGL
 
-    renderer_.create_font_texture();
+    if (!fonts().build()) {
+        return error(error_code::font_init);
+    }
 
-    icons().init();
+    if (auto res = icons().init();
+        res != error(error_code::none)) {
+        return res;
+    }
 
     // background
-    render_target().init_targets();
+    if (auto res = render_target().init_targets();
+        res != error(error_code::none)) {
+        return res;
+    }
 
-    background_->init();
-    background_overlay_->init(background_.get());
+    if (auto res = background_->init();
+        res != error(error_code::none)) {
+        return res;
+    }
+    if (auto res = background_overlay_->init(background_.get());
+        res != error(error_code::none)) {
+        return res;
+    }
 
     // render_target
-    render_target().init();
+    if (auto res = render_target().init();
+        res != error(error_code::none)) {
+        return res;
+    }
 
 #if defined(R2_BACKEND_OPENGL)
     renderer_.restore_render_state();
 #endif
 
     initialized_.store(true, std::memory_order_release);
+
+    return error(error_code::none);
 }
 
 void void_::destroy_render()
@@ -165,12 +215,21 @@ void void_::pre_resize()
     renderer_.pre_resize();
 }
 
-void void_::post_resize()
+error void_::post_resize()
 {
     renderer_.post_resize();
 
-    render_target().init_targets();
-    background_->post_resize();
+    if (auto res = render_target().init_targets();
+        res != error(error_code::none)) {
+        return res;
+    }
+
+    if (auto res = background_->post_resize();
+        res != error(error_code::none)) {
+        return res;
+    }
+
+    return error(error_code::none);
 }
 
 void void_::render()

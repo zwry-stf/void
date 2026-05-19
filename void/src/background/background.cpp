@@ -11,7 +11,7 @@
 
 void_begin_
 
-void _background::init()
+error _background::init()
 {
     // check if downsample value is valid
 #if defined(_DEBUG)
@@ -29,7 +29,10 @@ void _background::init()
     assert(found && "invalid downsample value");
 #endif
 
-    init_targets();
+    if (auto res = init_targets();
+        res != error(error_code::none)) {
+        return res;
+    }
 
     auto& renderer = instance()->renderer();
     auto* ctx = renderer.context();
@@ -46,22 +49,34 @@ void _background::init()
     auto compiled_vs = ctx->compile_vertexshader(
         reinterpret_cast<const char*>(vs_res.data()), vs_res.size()
     );
-    if (compiled_vs->has_error())
-        throw error(error_code::background_init, 
-            compiled_vs->get_error(), compiled_vs->get_detail());
+    if (compiled_vs->has_error()) {
+        return error(
+            error_code::background_init,
+            compiled_vs->get_error(),
+            compiled_vs->get_detail()
+        );
+    }
 
     data_blur_vs_ = ctx->create_vertexshader(compiled_vs.get());
-    if (data_blur_vs_->has_error())
-        throw error(error_code::background_init, 
-            data_blur_vs_->get_error(), data_blur_vs_->get_detail());
+    if (data_blur_vs_->has_error()) {
+        return error(
+            error_code::background_init,
+            data_blur_vs_->get_error(),
+            data_blur_vs_->get_detail()
+        );
+    }
 
     data_inputlayout_ = ctx->create_inputlayout(
         vs_desc, static_cast<std::uint32_t>(sizeof(vs_desc) / sizeof(vs_desc[0])),
         compiled_vs->data(), compiled_vs->size()
     );
-    if (data_inputlayout_->has_error())
-        throw error(error_code::background_init, 
-            data_inputlayout_->get_error(), data_inputlayout_->get_detail());
+    if (data_inputlayout_->has_error()) {
+        return error(
+            error_code::background_init,
+            data_inputlayout_->get_error(), 
+            data_inputlayout_->get_detail()
+        );
+    }
 
     /// composition pixel shader
     auto ps_comp_res = instance()->resources().load_resource(
@@ -69,21 +84,33 @@ void _background::init()
     auto compiled_ps = ctx->compile_pixelshader(
         reinterpret_cast<const char*>(ps_comp_res.data()), ps_comp_res.size()
     );
-    if (compiled_ps->has_error())
-        throw error(error_code::background_init,
-            compiled_ps->get_error(), compiled_ps->get_detail());
+    if (compiled_ps->has_error()) {
+        return error(
+            error_code::background_init,
+            compiled_ps->get_error(), 
+            compiled_ps->get_detail()
+        );
+    }
 
     auto ps = ctx->create_pixelshader(compiled_ps.get());
-    if (ps->has_error())
-        throw error(error_code::background_init,
-            ps->get_error(), ps->get_detail());
+    if (ps->has_error()) {
+        return error(
+            error_code::background_init,
+            ps->get_error(),
+            ps->get_detail()
+        );
+    }
 
     data_shader_composition_ = ctx->create_shaderprogram(
         data_blur_vs_.get(), ps.get()
     );
-    if (data_shader_composition_->has_error())
-        throw error(error_code::background_init, 
-            data_shader_composition_->get_error(), data_shader_composition_->get_detail());
+    if (data_shader_composition_->has_error()) {
+        return error(
+            error_code::background_init,
+            data_shader_composition_->get_error(),
+            data_shader_composition_->get_detail()
+        );
+    }
 
     if (!instance()->options().get<options::option_NoBlur>()) {
         /// blur pixel shader
@@ -92,21 +119,33 @@ void _background::init()
         compiled_ps = ctx->compile_pixelshader(
             reinterpret_cast<const char*>(ps_blur_res.data()), ps_blur_res.size()
         );
-        if (compiled_ps->has_error())
-            throw error(error_code::background_init,
-                compiled_ps->get_error(), compiled_ps->get_detail());
+        if (compiled_ps->has_error()) {
+            return error(
+                error_code::background_init,
+                compiled_ps->get_error(),
+                compiled_ps->get_detail()
+            );
+        }
 
         ps = ctx->create_pixelshader(compiled_ps.get());
-        if (ps->has_error())
-            throw error(error_code::background_init,
-                ps->get_error(), ps->get_detail());
+        if (ps->has_error()) {
+            return error(
+                error_code::background_init,
+                ps->get_error(),
+                ps->get_detail()
+            );
+        }
 
         data_blur_shader_ = ctx->create_shaderprogram(
             data_blur_vs_.get(), ps.get()
         );
-        if (data_blur_shader_->has_error())
-            throw error(error_code::background_init, 
-                data_blur_shader_->get_error(), data_blur_shader_->get_detail());
+        if (data_blur_shader_->has_error()) {
+            return error(
+                error_code::background_init,
+                data_blur_shader_->get_error(), 
+                data_blur_shader_->get_detail()
+            );
+        }
 
         /// downsample pixel shader
         auto ps_ds_res = instance()->resources().load_resource(
@@ -114,21 +153,33 @@ void _background::init()
         compiled_ps = ctx->compile_pixelshader(
             reinterpret_cast<const char*>(ps_ds_res.data()), ps_ds_res.size()
         );
-        if (compiled_ps->has_error())
-            throw error(error_code::background_init,
-                compiled_ps->get_error(), compiled_ps->get_detail());
+        if (compiled_ps->has_error()) {
+            return error(
+                error_code::background_init,
+                compiled_ps->get_error(),
+                compiled_ps->get_detail()
+            );
+        }
 
         ps = ctx->create_pixelshader(compiled_ps.get());
-        if (ps->has_error())
-            throw error(error_code::background_init,
-                ps->get_error(), ps->get_detail());
+        if (ps->has_error()) {
+            return error(
+                error_code::background_init,
+                ps->get_error(),
+                ps->get_detail()
+            );
+        }
 
         data_shader_downsample_ = ctx->create_shaderprogram(
             data_blur_vs_.get(), ps.get()
         );
-        if (data_shader_downsample_->has_error())
-            throw error(error_code::background_init, 
-                data_shader_downsample_->get_error(), data_shader_downsample_->get_detail());
+        if (data_shader_downsample_->has_error()) {
+            return error(
+                error_code::background_init,
+                data_shader_downsample_->get_error(),
+                data_shader_downsample_->get_detail()
+            );
+        }
     }
 
     /// create constant buffer
@@ -138,22 +189,34 @@ void _background::init()
     cb_desc.size_bytes = sizeof(_shader_constants);
 
     data_constant_buffer_ = ctx->create_buffer(cb_desc);
-    if (data_constant_buffer_->has_error())
-        throw error(error_code::background_init,
-            data_constant_buffer_->get_error(), data_constant_buffer_->get_detail());
+    if (data_constant_buffer_->has_error()) {
+        return error(
+            error_code::background_init,
+            data_constant_buffer_->get_error(), 
+            data_constant_buffer_->get_detail()
+        );
+    }
 
     if (!instance()->options().get<options::option_NoBlur>()) {
         cb_desc.size_bytes = sizeof(blur_shader_constants_);
         data_blur_constant_buffer_ = ctx->create_buffer(cb_desc);
-        if (data_blur_constant_buffer_->has_error())
-            throw error(error_code::background_init, 
-                data_blur_constant_buffer_->get_error(), data_blur_constant_buffer_->get_detail());
+        if (data_blur_constant_buffer_->has_error()) {
+            return error(
+                error_code::background_init,
+                data_blur_constant_buffer_->get_error(),
+                data_blur_constant_buffer_->get_detail()
+            );
+        }
 
         cb_desc.size_bytes = sizeof(r2::vec4);
         data_cb_downsample_ = ctx->create_buffer(cb_desc);
-        if (data_cb_downsample_->has_error())
-            throw error(error_code::background_init, 
-                data_cb_downsample_->get_error(), data_cb_downsample_->get_detail());
+        if (data_cb_downsample_->has_error()) {
+            return error(
+                error_code::background_init,
+                data_cb_downsample_->get_error(), 
+                data_cb_downsample_->get_detail()
+            );
+        }
     }
 
     /// create vertex buffer
@@ -172,9 +235,13 @@ void _background::init()
     vb_desc.vb_stride = sizeof(r2::vec4);
 
     data_quad_vb_full_ = ctx->create_buffer(vb_desc, vertices_full);
-    if (data_quad_vb_full_->has_error())
-        throw error(error_code::background_init,
-            data_quad_vb_full_->get_error(), data_quad_vb_->get_detail());
+    if (data_quad_vb_full_->has_error()) {
+        return error(
+            error_code::background_init,
+            data_quad_vb_full_->get_error(),
+            data_quad_vb_->get_detail()
+        );
+    }
 
     data_inputlayout_->link(data_quad_vb_full_.get());
 
@@ -191,9 +258,13 @@ void _background::init()
 
         vb_desc.size_bytes = sizeof(vertices);
         data_quad_vb_ = ctx->create_buffer(vb_desc, vertices);
-        if (data_quad_vb_->has_error())
-            throw error(error_code::background_init,
-                data_quad_vb_->get_error(), data_quad_vb_->get_detail());
+        if (data_quad_vb_->has_error()) {
+            return error(
+                error_code::background_init,
+                data_quad_vb_->get_error(), 
+                data_quad_vb_->get_detail()
+            );
+        }
 
         data_inputlayout_->link(data_quad_vb_.get());
     }
@@ -210,9 +281,15 @@ void _background::init()
     ib_desc.usage = r2::buffer_usage::index;
     ib_desc.ib_type = r2::index_buffer_type::u16;
     data_quad_ib_ = ctx->create_buffer(ib_desc, indices);
-    if (data_quad_ib_->has_error())
-        throw error(error_code::background_init, 
-            data_quad_ib_->get_error(), data_quad_ib_->get_detail());
+    if (data_quad_ib_->has_error()) {
+        return error(
+            error_code::background_init,
+            data_quad_ib_->get_error(),
+            data_quad_ib_->get_detail()
+        );
+    }
+
+    return error(error_code::none);
 }
 
 void _background::destroy()
@@ -301,9 +378,9 @@ void _background::pre_resize()
     data_second_pass_fbo_.reset();
 }
 
-void _background::post_resize()
+error _background::post_resize()
 {
-    init_targets();
+    return init_targets();
 }
 
 void _background::do_blur_pass(const r2::vec4& area, r2::framebuffer* out_target, float rradius,
@@ -497,7 +574,7 @@ void _background::restore_render_states() const noexcept
     ctx->set_uniform_buffer(render_data->constant_buffer.get());
 }
 
-void _background::init_targets()
+error _background::init_targets()
 {
     data_use_backbuffer_ = false;
 
@@ -555,23 +632,35 @@ void _background::init_targets()
 
         if (!data_use_backbuffer_) {
             data_offscreen_tex_ = ctx->create_texture2d(tex_desc);
-            if (data_offscreen_tex_->has_error())
-                throw error(error_code::background_init,
-                    data_offscreen_tex_->get_error(), data_offscreen_tex_->get_detail());
+            if (data_offscreen_tex_->has_error()) {
+                return error(
+                    error_code::background_init,
+                    data_offscreen_tex_->get_error(),
+                    data_offscreen_tex_->get_detail()
+                );
+            }
 
             r2::textureview_desc view_desc{};
             view_desc.usage = r2::view_usage::shader_resource | r2::view_usage::render_target;
             data_offscreen_view_ = ctx->create_textureview(data_offscreen_tex_.get(), view_desc);
-            if (data_offscreen_view_->has_error())
-                throw error(error_code::background_init,
-                    data_offscreen_view_->get_error(), data_offscreen_view_->get_detail());
+            if (data_offscreen_view_->has_error()) {
+                return error(
+                    error_code::background_init,
+                    data_offscreen_view_->get_error(), 
+                    data_offscreen_view_->get_detail()
+                );
+            }
 
             r2::framebuffer_desc fbo_desc{};
             fbo_desc.color_attachment.view = data_offscreen_view_.get();
             data_offscreen_fbo_ = ctx->create_framebuffer(fbo_desc);
-            if (data_offscreen_fbo_->has_error())
-                throw error(error_code::background_init,
-                    data_offscreen_fbo_->get_error(), data_offscreen_fbo_->get_detail());
+            if (data_offscreen_fbo_->has_error()) {
+                return error(
+                    error_code::background_init,
+                    data_offscreen_fbo_->get_error(), 
+                    data_offscreen_fbo_->get_detail()
+                );
+            }
         }
 
         scaled_size_ = {
@@ -584,40 +673,66 @@ void _background::init_targets()
         tex_desc.height = static_cast<std::uint32_t>(scaled_size_.y);
 
         data_pass_tex_ = ctx->create_texture2d(tex_desc);
-        if (data_pass_tex_->has_error())
-            throw error(error_code::background_init, 
-                data_pass_tex_->get_error(), data_pass_tex_->get_detail());
+        if (data_pass_tex_->has_error()) {
+            return error(
+                error_code::background_init,
+                data_pass_tex_->get_error(), 
+                data_pass_tex_->get_detail()
+            );
+        }
 
         data_second_pass_tex_ = ctx->create_texture2d(tex_desc);
-        if (data_second_pass_tex_->has_error())
-            throw error(error_code::background_init,
-                data_second_pass_tex_->get_error(), data_second_pass_tex_->get_detail());
+        if (data_second_pass_tex_->has_error()) {
+            return error(
+                error_code::background_init,
+                data_second_pass_tex_->get_error(), 
+                data_second_pass_tex_->get_detail()
+            );
+        }
 
         r2::textureview_desc view_desc{};
         view_desc.usage = r2::view_usage::shader_resource | r2::view_usage::render_target;
         data_pass_view_ = ctx->create_textureview(data_pass_tex_.get(), view_desc);
-        if (data_pass_view_->has_error())
-            throw error(error_code::background_init,
-                data_pass_view_->get_error(), data_pass_view_->get_detail());
+        if (data_pass_view_->has_error()) {
+            return error(
+                error_code::background_init,
+                data_pass_view_->get_error(),
+                data_pass_view_->get_detail()
+            );
+        }
 
         data_second_pass_view_ = ctx->create_textureview(data_second_pass_tex_.get(), view_desc);
-        if (data_second_pass_view_->has_error())
-            throw error(error_code::background_init,
-                data_second_pass_view_->get_error(), data_second_pass_view_->get_detail());
+        if (data_second_pass_view_->has_error()) {
+            return error(
+                error_code::background_init,
+                data_second_pass_view_->get_error(), 
+                data_second_pass_view_->get_detail()
+            );
+        }
 
         r2::framebuffer_desc fbo_desc{};
         fbo_desc.color_attachment.view = data_pass_view_.get();
         data_pass_fbo_ = ctx->create_framebuffer(fbo_desc);
-        if (data_pass_fbo_->has_error())
-            throw error(error_code::background_init,
-                data_pass_fbo_->get_error(), data_pass_fbo_->get_detail());
+        if (data_pass_fbo_->has_error()) {
+            return error(
+                error_code::background_init,
+                data_pass_fbo_->get_error(),
+                data_pass_fbo_->get_detail()
+            );
+        }
 
         fbo_desc.color_attachment.view = data_second_pass_view_.get();
         data_second_pass_fbo_ = ctx->create_framebuffer(fbo_desc);
-        if (data_second_pass_fbo_->has_error())
-            throw error(error_code::background_init,
-                data_second_pass_fbo_->get_error(), data_second_pass_fbo_->get_detail());
+        if (data_second_pass_fbo_->has_error()) {
+            return error(
+                error_code::background_init,
+                data_second_pass_fbo_->get_error(), 
+                data_second_pass_fbo_->get_detail()
+            );
+        }
     }
+
+    return error(error_code::none);
 }
 
 void _background::update_constant_buffer(_shader_constants* data)

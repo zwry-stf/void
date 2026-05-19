@@ -54,7 +54,7 @@ public:
     inline static constexpr std::string_view kConfigExtension = ".cfg";
 
 public:
-    void init();
+    [[nodiscard]] error init();
     void destroy();
 
 public:

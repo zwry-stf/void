@@ -5,7 +5,7 @@
 
 void_begin_
 
-void _background_overlay::init(_background* background)
+error _background_overlay::init(_background* background)
 {
     auto& renderer = instance()->renderer();
     auto* ctx = renderer.context();
@@ -16,21 +16,33 @@ void _background_overlay::init(_background* background)
     auto compiled_ps = ctx->compile_pixelshader(
         reinterpret_cast<const char*>(ps_comp_res.data()), ps_comp_res.size()
     );
-    if (compiled_ps->has_error())
-        throw error(error_code::background_overlay_init,
-            compiled_ps->get_error(), compiled_ps->get_detail());
+    if (compiled_ps->has_error()) {
+        return error(
+            error_code::background_overlay_init,
+            compiled_ps->get_error(), 
+            compiled_ps->get_detail()
+        );
+    }
 
     auto ps = ctx->create_pixelshader(compiled_ps.get());
-    if (ps->has_error())
-        throw error(error_code::background_overlay_init,
-            ps->get_error(), ps->get_detail());
+    if (ps->has_error()) {
+        return error(
+            error_code::background_overlay_init,
+            ps->get_error(),
+            ps->get_detail()
+        );
+    }
 
     data_shader_composition_ = ctx->create_shaderprogram(
         background->data_blur_vs_.get(), ps.get()
     );
-    if (data_shader_composition_->has_error())
-        throw error(error_code::background_overlay_init,
-            data_shader_composition_->get_error(), data_shader_composition_->get_detail());
+    if (data_shader_composition_->has_error()) {
+        return error(
+            error_code::background_overlay_init,
+            data_shader_composition_->get_error(), 
+            data_shader_composition_->get_detail()
+        );
+    }
 
     /// liquid glass shader
     auto ps_lglass_res = instance()->resources().load_resource(
@@ -38,21 +50,33 @@ void _background_overlay::init(_background* background)
     compiled_ps = ctx->compile_pixelshader(
         reinterpret_cast<const char*>(ps_lglass_res.data()), ps_lglass_res.size()
     );
-    if (compiled_ps->has_error())
-        throw error(error_code::background_overlay_init,
-            compiled_ps->get_error(), compiled_ps->get_detail());
+    if (compiled_ps->has_error()) {
+        return error(
+            error_code::background_overlay_init,
+            compiled_ps->get_error(),
+            compiled_ps->get_detail()
+        );
+    }
 
     ps = ctx->create_pixelshader(compiled_ps.get());
-    if (ps->has_error())
-        throw error(error_code::background_overlay_init,
-            ps->get_error(), ps->get_detail());
+    if (ps->has_error()) {
+        return error(
+            error_code::background_overlay_init,
+            ps->get_error(),
+            ps->get_detail()
+        );
+    }
 
     data_shader_liquidglass_ = ctx->create_shaderprogram(
         background->data_blur_vs_.get(), ps.get()
     );
-    if (data_shader_liquidglass_->has_error())
-        throw error(error_code::background_overlay_init,
-            data_shader_liquidglass_->get_error(), data_shader_liquidglass_->get_detail());
+    if (data_shader_liquidglass_->has_error()) {
+        return error(
+            error_code::background_overlay_init,
+            data_shader_liquidglass_->get_error(), 
+            data_shader_liquidglass_->get_detail()
+        );
+    }
 
     /// constant buffer
     r2::buffer_desc cb_desc;
@@ -61,9 +85,15 @@ void _background_overlay::init(_background* background)
     cb_desc.usage = r2::buffer_usage::uniform;
 
     data_constant_buffer_ = ctx->create_buffer(cb_desc);
-    if (data_constant_buffer_->has_error())
-        throw error(error_code::background_overlay_init,
-            data_constant_buffer_->get_error(), data_constant_buffer_->get_detail());
+    if (data_constant_buffer_->has_error()) {
+        return error(
+            error_code::background_overlay_init,
+            data_constant_buffer_->get_error(),
+            data_constant_buffer_->get_detail()
+        );
+    }
+
+    return error(error_code::none);
 }
 
 void _background_overlay::destroy()

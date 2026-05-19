@@ -16,15 +16,19 @@ _theme::_theme(void_* instance)
 
 _theme::~_theme() = default;
 
-void _theme::init()
+error _theme::init()
 {
     const std::filesystem::path main_path = instance()->config().get_main_path();
 
-    do_init(main_path / "themes");
+    if (!do_init(main_path / "themes")) {
+        return error(error_code::theme_init);
+    }
 
     const std::wstring* v;
     if (load_last_file(v))
         load(*v, true);
+
+    return error(error_code::none);
 }
 
 void _theme::destroy()

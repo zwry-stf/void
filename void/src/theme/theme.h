@@ -55,7 +55,7 @@ public:
     inline static constexpr std::string_view kThemeExtension = ".theme";
 
 public:
-    void init();
+    [[nodiscard]] error init();
     void destroy();
 
 public:

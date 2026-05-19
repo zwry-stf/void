@@ -9,17 +9,22 @@
 
 void_begin_
 
-void icons::init()
+error icons::init()
 {
     auto& renderer = instance()->renderer();
     for (auto& i : icons_) {
         for (auto& s : i.sizes) {
             if (!s.created) {
-                create_icon(i.resource_id, s);
+                const auto res = create_icon(i.resource_id, s);
+                if (res != error(error_code::none)) {
+                    return res;
+                }
             }
             s.icon_data.tex = renderer.font_texture();
         }
     }
+
+    return error(error_code::none);
 }
 
 void icons::destroy()
@@ -108,7 +113,10 @@ const scaled_icon* icons::get_or_create(icon_handle handle, std::uint32_t size, 
     icon.icon_data.size = size;
     icon.add_to_atlas = add_to_atlas;
     if (instance()->is_initialized()) {
-        create_icon(created_icon.resource_id, icon);
+        if (create_icon(created_icon.resource_id, icon) != error(error_code::none)) {
+            instance()->options().get<options::option_CriticalErrorCallback>()();
+            return nullptr;
+        }
     }
 
     return &created_icon.sizes.emplace_back(std::move(icon)).icon_data;
@@ -130,7 +138,7 @@ icons::icon_handle icons::get_or_create_handle(int resource_id)
     return static_cast<icon_handle>(icons_.size() - 1u);
 }
 
-void icons::create_icon(int resource_id, internal_scaled_icon& data, bool ignore_size)
+error icons::create_icon(int resource_id, internal_scaled_icon& data, bool ignore_size)
 {
     assert(!data.created);
 
@@ -149,7 +157,7 @@ void icons::create_icon(int resource_id, internal_scaled_icon& data, bool ignore
         pixels,
         &width, &height
     )) {
-        throw error(error_code::load_icon);
+        return error(error_code::load_icon);
     }
 
     int data_width;
@@ -166,10 +174,15 @@ void icons::create_icon(int resource_id, internal_scaled_icon& data, bool ignore
     }
 
     if (data.add_to_atlas) {
-        data.rect_id = font_atlas->register_rect(
+        const auto rect_id = font_atlas->register_rect(
             static_cast<std::uint32_t>(data_width),
             static_cast<std::uint32_t>(data_height)
         );
+        if (!rect_id) {
+            return error(error_code::load_icon);
+        }
+
+        data.rect_id = *rect_id;
         font_atlas->get_rect_uv(
             data.rect_id,
             data.icon_data.uv_min,
@@ -195,7 +208,7 @@ void icons::create_icon(int resource_id, internal_scaled_icon& data, bool ignore
     );
     if (_ret == nullptr) {
         util.free_pixels(pixels);
-        throw error(error_code::load_icon);
+        return error(error_code::load_icon);
     }
 
     util.free_pixels(pixels);
@@ -208,15 +221,21 @@ void icons::create_icon(int resource_id, internal_scaled_icon& data, bool ignore
 
         data.texture = renderer.context()->create_texture2d(tdesc, dst_data);
         if (data.texture->has_error()) {
-            throw error(error_code::load_icon,
-                data.texture->get_error(), data.texture->get_detail());
+            return error(
+                error_code::load_icon,
+                data.texture->get_error(),
+                data.texture->get_detail()
+            );
         }
 
         r2::textureview_desc vdesc{};
         data.texture_view = renderer.context()->create_textureview(data.texture.get(), vdesc);
         if (data.texture_view->has_error()) {
-            throw error(error_code::load_icon,
-                data.texture_view->get_error(), data.texture_view->get_detail());
+            return error(
+                error_code::load_icon,
+                data.texture_view->get_error(), 
+                data.texture_view->get_detail()
+            );
         }
         
         data.icon_data.uv_min = r2::vec2(0.f);
@@ -232,6 +251,8 @@ void icons::create_icon(int resource_id, internal_scaled_icon& data, bool ignore
         );
         renderer.queue_atlas_update();
     }
+
+    return error(error_code::none);
 }
 
 void_end_

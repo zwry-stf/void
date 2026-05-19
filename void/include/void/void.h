@@ -39,13 +39,13 @@ public:
     ~void_();
 
 public:
-    void init(const r2::platform_init_data& pinit, const r2::backend_init_data& binit);
+    [[nodiscard]] error init(const r2::platform_init_data& pinit, const r2::backend_init_data& binit);
     void destroy();
 
     void pre_resize();
-    void post_resize();
+    [[nodiscard]] error post_resize();
 
-    void init_render(const r2::platform_init_data& pinit, const r2::backend_init_data& binit);
+    [[nodiscard]] error init_render(const r2::platform_init_data& pinit, const r2::backend_init_data& binit);
     void destroy_render();
 
     void render();

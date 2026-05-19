@@ -4,6 +4,8 @@
 #include <r2/renderer_definitions.h>
 #include <void/contents/input/message_event.h>
 
+#include <functional>
+
 
 void_begin_
 
@@ -167,6 +169,8 @@ private:
     // Default: -1
     // Mutable after init: no
     _new_void_option(SidebarIcon,     int,          -1,                    false);
+
+    _new_void_option(CriticalErrorCallback, std::function<void()>, std::abort, false);
 
 public:
     template <typename T>

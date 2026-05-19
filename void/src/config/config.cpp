@@ -49,7 +49,7 @@ _config::_config(void_* instance)
 
 _config::~_config() = default;
 
-void _config::init()
+error _config::init()
 {
 #if defined(R2_PLATFORM_WINDOWS)
     HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
@@ -59,7 +59,8 @@ void _config::init()
         hr = S_OK;
     }
     if (FAILED(hr)) {
-        throw error(error_code::config_init,
+        return error(
+            error_code::config_init,
             1,
             static_cast<std::int32_t>(hr)
         );
@@ -69,7 +70,8 @@ void _config::init()
 
     hr = SHGetKnownFolderPath(FOLDERID_Documents, KF_FLAG_DEFAULT, nullptr, &path);
     if (FAILED(hr)) {
-        throw error(error_code::config_init,
+        return error(
+            error_code::config_init,
             1,
             static_cast<std::int32_t>(hr)
         );
@@ -92,11 +94,15 @@ void _config::init()
 
     main_path_ /= base_name;
 
-    do_init(main_path_ / "cfg");
+    if (!do_init(main_path_ / "cfg")) {
+        return error(error_code::config_init);
+    }
 
     if (instance()->options().get<options::option_LoadLastConfig>()) {
         load_last_config();
     }
+
+    return error(error_code::none);
 }
 
 void _config::destroy()

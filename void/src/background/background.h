@@ -1,5 +1,6 @@
 #pragma once
 #include <void/util/vobj.h>
+#include <void/util/error.h>
 #include <void/util/default_value.h>
 #include <void/util/scalable_float.h>
 #include <r2/renderer_definitions.h>
@@ -81,11 +82,11 @@ private:
     };
 
 public:
-    void init();
+    [[nodiscard]] error init();
     void destroy();
     void render();
     void pre_resize();
-    void post_resize();
+    [[nodiscard]] error post_resize();
 
     void do_blur_pass(const r2::vec4& area, r2::framebuffer* out_target, float radius,
                       blur_shader_constants* constants = nullptr, r2::textureview* in_texture = nullptr);
@@ -95,7 +96,7 @@ public:
     void restore_render_states() const noexcept;
 
 private:
-    void init_targets();
+    [[nodiscard]] error init_targets();
     void update_constant_buffer(_shader_constants* data);
     void update_blur_constant_buffer(std::uint32_t& radius, blur_shader_constants* data);
 };

@@ -65,14 +65,21 @@ void fonts::create()
     instance()->callbacks().invoke<callbacks::callback_OnCreateFonts>();
 }
 
-void fonts::build()
+bool fonts::build()
 {
     assert(font_small_ != nullptr);
     assert(font_large_ != nullptr);
 
     auto& renderer = instance()->renderer();
-    renderer.build_fonts();
-    renderer.create_font_texture();
+    if (!renderer.build_fonts()) {
+        return false;
+    }
+
+    if (!renderer.create_font_texture()) {
+        return false;
+    }
+
+    return true;
 }
 
 void fonts::bind_font_small() const

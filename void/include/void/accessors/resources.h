@@ -27,11 +27,6 @@ public:
     }
 };
 
-class resource_error {
-public:
-    resource_error() = default;
-};
-
 class resources : protected vobj {
 private:
     struct resource_source {

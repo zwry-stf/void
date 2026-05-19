@@ -1,6 +1,7 @@
 #include <void/accessors/resources.h>
 #include <res/resource_data.h>
 #include <resources/parser.h>
+#include <void/void.h>
 
 
 void_begin_
@@ -33,8 +34,10 @@ loaded_resource resources::load_resource(int id)
                 break;
         }
     }
-    if (!found)
-        throw resource_error();
+    if (!found) {
+        instance()->options().get<options::option_CriticalErrorCallback>()();
+        return { nullptr, 0 };
+    }
 
     return { f.data, f.size };
 }

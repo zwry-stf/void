@@ -15,7 +15,7 @@ private:
 
 public:
     void create();
-    void build();
+    bool build();
 
     void bind_font_small() const;
     void bind_font_large() const;

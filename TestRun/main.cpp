@@ -107,14 +107,17 @@ int __stdcall WinMain(HINSTANCE /* instance */,
     g_void->options().set<vo::options::option_FullFrameUpdate>(false);
     g_void->options().set<vo::options::option_UpdateFrameTime>(false);
     g_void->options().set<vo::options::option_MenuMSAA>(false);
+    g_void->options().set<vo::options::option_CriticalErrorCallback>(
+        []() -> void {
+            std::abort();
+        }
+    );
 
     add_widgets();
 
-    try {
-        g_void->init(pinit, binit);
-    }
-    catch (const r2::error& e) {
-        show_error_and_exit("renderer initialization failed: {}", e.to_string());
+    const auto err = g_void->init(pinit, binit);
+    if (err != vo::error(vo::error_code::none)) {
+        show_error_and_exit("failed to initialize void");
     }
 
     // run
@@ -608,7 +611,10 @@ bool resize(int width, int height) {
         return false;
 #endif
 
-    g_void->post_resize();
+    const auto err = g_void->post_resize();
+    if (err != vo::error(vo::error_code::none)) {
+        show_error_and_exit("failed to resize void");
+    }
 
     g_data.window_data.fb_width = width;
     g_data.window_data.fb_height = height;

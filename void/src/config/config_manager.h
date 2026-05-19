@@ -1,5 +1,6 @@
 #pragma once
 #include <void/util/vobj.h>
+#include <void/util/error.h>
 #include <filesystem>
 #include <string>
 #include <void/util/xstr.h>
@@ -22,7 +23,7 @@ public:
     config_manager(void_* instance, std::wstring&& extension, const std::string& type_name);
 
 public:
-    void do_init(const std::filesystem::path& path);
+    [[nodiscard]] bool do_init(const std::filesystem::path& path);
 
     bool load_last_file(const std::wstring*& out);
     bool save_last_file(const std::wstring& path);

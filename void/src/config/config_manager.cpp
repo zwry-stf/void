@@ -102,20 +102,19 @@ config_manager::config_manager(void_* instance, std::wstring&& extension, const 
     );
 }
 
-void config_manager::do_init(const std::filesystem::path& path)
+bool config_manager::do_init(const std::filesystem::path& path)
 {
     path_ = path;
 
-    try {
-        std::filesystem::create_directories(path);
-    }
-    catch (const std::filesystem::filesystem_error& e) {
-        throw error(error_code::config_init, 
-            0, static_cast<std::int32_t>(e.code().value())
-        );
+    std::error_code ec;
+    std::filesystem::create_directories(path, ec);
+    if (ec) {
+        return false;
     }
 
     last_file_path_ = path / kLastFileName;
+
+    return true;
 }
 
 bool config_manager::load_last_file(const std::wstring*& out)

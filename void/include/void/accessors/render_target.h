@@ -1,5 +1,6 @@
 #pragma once
 #include <void/util/vobj.h>
+#include <void/util/error.h>
 #include <r2/renderer_definitions.h>
 
 
@@ -23,8 +24,8 @@ public:
     using vobj::vobj;
 
 public:
-    void init();
-    void init_targets();
+    [[nodiscard]] error init();
+    [[nodiscard]] error init_targets();
     void destroy();
     void destroy_targets();
 

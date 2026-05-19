@@ -1,5 +1,6 @@
 #pragma once
 #include <void/util/vobj.h>
+#include <void/util/error.h>
 #include <r2/renderer_definitions.h>
 
 
@@ -36,7 +37,7 @@ public:
     inline static constexpr icon_handle kInvalidHandle = static_cast<icon_handle>(-1);
 
 public:
-    void init();
+    [[nodiscard]] error init();
     void destroy();
     void destroy_render();
     void on_scale_changed();
@@ -55,7 +56,7 @@ public:
     [[nodiscard]] icon_handle get_or_create_handle(int resource_id);
 
 private:
-    void create_icon(int resource_id, internal_scaled_icon& data, bool ignore_size = false);
+    [[nodiscard]] error create_icon(int resource_id, internal_scaled_icon& data, bool ignore_size = false);
 };
 
 void_end_

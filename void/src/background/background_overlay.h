@@ -1,6 +1,7 @@
 #pragma once
-#include <r2/renderer_definitions.h>
 #include <void/util/vobj.h>
+#include <void/util/error.h>
+#include <r2/renderer_definitions.h>
 #include <void/util/default_value.h>
 #include <background/background.h>
 #include <void/contents/input/input_response.h>
@@ -57,7 +58,7 @@ public:
     using vobj::vobj;
 
 public:
-    void init(_background* background);
+    [[nodiscard]] error init(_background* background);
     void destroy();
     void reset_data();
     void render(_background* background);

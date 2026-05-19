@@ -8,11 +8,15 @@
 void_begin_
 
 enum class error_code : std::int32_t {
+    none,
+    renderer_init,
     background_init,
     background_overlay_init,
     render_target_init,
     load_icon,
     config_init,
+    theme_init,
+    font_init,
 };
 
 class error {

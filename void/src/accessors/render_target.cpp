@@ -15,35 +15,47 @@ struct downsample_data {
     float _pad;
 };
 
-void render_target::init()
+error render_target::init()
 {
     auto* ctx = instance()->renderer().context();
     auto* background = instance()->background().get_background_instance();
 
     if (!instance()->options().get<options::option_MenuMSAA>())
-        return; /* we'll use the 2d renderer instead */
+        return error(error_code::none); /* we'll use the 2d renderer instead */
 
     /// pixel shader
     auto ps_res = instance()->resources().load_resource(void_resources::MenuDownsample_shader);
     std::unique_ptr<r2::compiled_shader> cshader = ctx->compile_pixelshader(
         reinterpret_cast<const char*>(ps_res.data()), ps_res.size()
     );
-    if (cshader->has_error())
-        throw error(error_code::render_target_init,
-            cshader->get_error(), cshader->get_detail());
+    if (cshader->has_error()) {
+        return error(
+            error_code::render_target_init,
+            cshader->get_error(), 
+            cshader->get_detail()
+        );
+    }
 
     std::unique_ptr<r2::pixelshader> ps = ctx->create_pixelshader(cshader.get());
-    if (ps->has_error())
-        throw error(error_code::render_target_init, 
-            ps->get_error(), ps->get_detail());
+    if (ps->has_error()) {
+        return  error(
+            error_code::render_target_init,
+            ps->get_error(),
+            ps->get_detail()
+        );
+    }
 
     menu_shader_ = ctx->create_shaderprogram(
         background->data_blur_vs_.get(), 
         ps.get()
     );
-    if (menu_shader_->has_error())
-        throw error(error_code::render_target_init,
-            menu_shader_->get_error(), menu_shader_->get_detail());
+    if (menu_shader_->has_error()) {
+        return error(
+            error_code::render_target_init,
+            menu_shader_->get_error(), 
+            menu_shader_->get_detail()
+        );
+    }
 
     /// constant buffer
     r2::buffer_desc bdesc{};
@@ -52,9 +64,13 @@ void render_target::init()
     bdesc.usage = r2::buffer_usage::uniform;
 
     menu_cb_ = ctx->create_buffer(bdesc);
-    if (menu_cb_->has_error())
-        throw error(error_code::render_target_init,
-            menu_cb_->get_error(), menu_cb_->get_detail());
+    if (menu_cb_->has_error()) {
+        return error(
+            error_code::render_target_init,
+            menu_cb_->get_error(),
+            menu_cb_->get_detail()
+        );
+    }
 
     /// vertex buffer
     bdesc.size_bytes = sizeof(r2::vec4) * 4u;
@@ -62,11 +78,17 @@ void render_target::init()
     bdesc.vb_stride = sizeof(r2::vec4);
 
     menu_vb_ = ctx->create_buffer(bdesc);
-    if (menu_vb_->has_error())
-        throw error(error_code::render_target_init,
-            menu_vb_->get_error(), menu_vb_->get_detail());
+    if (menu_vb_->has_error()) {
+        return error(
+            error_code::render_target_init,
+            menu_vb_->get_error(), 
+            menu_vb_->get_detail()
+        );
+    }
 
     background->data_inputlayout_->link(menu_vb_.get());
+
+    return error(error_code::none);
 }
 
 void render_target::destroy()
@@ -217,7 +239,7 @@ void render_target::draw_menu_impl(const r2::vec2& screen_min, const r2::vec2& s
     }
 }
 
-void render_target::init_targets()
+error render_target::init_targets()
 {
     auto& renderer = instance()->renderer();
     auto* ctx = renderer.context();
@@ -226,16 +248,24 @@ void render_target::init_targets()
     view_desc.usage = r2::view_usage::render_target;
 
     main_rtv_ = ctx->create_textureview(ctx->get_backbuffer(), view_desc);
-    if (main_rtv_->has_error())
-        throw error(error_code::render_target_init,
-            main_rtv_->get_error(), main_rtv_->get_detail());
+    if (main_rtv_->has_error()) {
+        return error(
+            error_code::render_target_init,
+            main_rtv_->get_error(), 
+            main_rtv_->get_detail()
+        );
+    }
 
     r2::framebuffer_desc fbo_desc{};
     fbo_desc.color_attachment.view = main_rtv_.get();
     main_fbo_ = ctx->create_framebuffer(fbo_desc);
-    if (main_fbo_->has_error())
-        throw error(error_code::render_target_init,
-            main_fbo_->get_error(), main_fbo_->get_detail());
+    if (main_fbo_->has_error()) {
+        return error(
+            error_code::render_target_init,
+            main_fbo_->get_error(), 
+            main_fbo_->get_detail()
+        );
+    }
 
     const std::uint32_t msaa_count = 1u;
     std::uint32_t msaa_quality = instance()->options().get<options::option_MenuMSAA>() ? 4u : 1u;
@@ -264,22 +294,36 @@ void render_target::init_targets()
     tex_desc.usage = r2::texture_usage::render_target | r2::texture_usage::shader_resource;
 
     menu_tex_ = ctx->create_texture2d(tex_desc);
-    if (menu_tex_->has_error())
-        throw error(error_code::render_target_init, 
-            menu_tex_->get_error(), menu_tex_->get_detail());
+    if (menu_tex_->has_error()) {
+        return error(
+            error_code::render_target_init,
+            menu_tex_->get_error(),
+            menu_tex_->get_detail()
+        );
+    }
 
     view_desc.usage = r2::view_usage::render_target | r2::view_usage::shader_resource;
 
     menu_view_ = ctx->create_textureview(menu_tex_.get(), view_desc);
-    if (menu_view_->has_error())
-        throw error(error_code::render_target_init,
-            menu_view_->get_error(), menu_view_->get_detail());
+    if (menu_view_->has_error()) {
+        return error(
+            error_code::render_target_init,
+            menu_view_->get_error(), 
+            menu_view_->get_detail()
+        );
+    }
 
     fbo_desc.color_attachment.view = menu_view_.get();
     menu_fbo_ = ctx->create_framebuffer(fbo_desc);
-    if (menu_fbo_->has_error())
-        throw error(error_code::render_target_init,
-            menu_fbo_->get_error(), menu_fbo_->get_detail());
+    if (menu_fbo_->has_error()) {
+        return error(
+            error_code::render_target_init,
+            menu_fbo_->get_error(),
+            menu_fbo_->get_detail()
+        );
+    }
+
+    return error(error_code::none);
 }
 
 void_end_
