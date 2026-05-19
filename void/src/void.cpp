@@ -155,6 +155,7 @@ error void_::init_render(const r2::platform_init_data& pinit, const r2::backend_
     renderer_.backup_render_state();
 #endif // R2_BACKEND_OPENGL
 
+    fonts().create();
     if (!fonts().build()) {
         return error(error_code::font_init);
     }
