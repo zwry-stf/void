@@ -18,7 +18,8 @@ private:
     float alpha_{ 0.f };
     time_point frame_start_{};
     float delta_time_{ 0.f };
-    float scale_;
+    float scale_{ 1.f };
+    bool was_initialized_{ false };
 
     // search
     std::unique_ptr<class textfield> search_text_field_;

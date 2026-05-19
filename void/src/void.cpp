@@ -131,6 +131,8 @@ error void_::init(const r2::platform_init_data& pinit, const r2::backend_init_da
 
     sidebar_->on_activate();
 
+    was_initialized_ = true;
+
     return error(error_code::none);
 }
 
@@ -141,10 +143,14 @@ void void_::destroy()
 
     config_->destroy();
     theme_->destroy();
+
+    was_initialized_ = false;
 }
 
 error void_::init_render(const r2::platform_init_data& pinit, const r2::backend_init_data& binit)
 {
+    assert(was_initialized_);
+
     // renderer
     const auto renderer_error = renderer_.init(pinit, binit);
     if (renderer_error.get_code() != r2::error_code::none) {
