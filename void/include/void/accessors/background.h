@@ -12,8 +12,8 @@ public:
     using vobj::vobj;
 
 public:
-    void do_blur_pass(const r2::vec4& area, r2::framebuffer* out_target, float radius,
-                      r2::textureview* in_texture = nullptr /* if 0, backbuffer will be sampled (and potentially copied into offscreen tex first */);
+    void do_blur_pass(const r2::vec4& area, r2::framebuffer* out_target,
+                      float radius, r2::textureview* in_texture = nullptr);
     void copy_backbuffer(const r2::vec4& area);
     [[nodiscard]] r2::textureview* get_offscreen_backbuffer() const;
 

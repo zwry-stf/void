@@ -12,8 +12,8 @@ private:
     const std::vector<bool> default_value_;
 
 public:
-    multiselect_config_module(const xstr& name, std::vector<bool>* value)
-        : config_module(name, static_cast<std::uint32_t>(value->size())),
+    multiselect_config_module(const string_token& name, std::vector<bool>* value)
+        : config_module(name),
           value_(value),
           default_value_(value->begin(), value->end()) { }
 
@@ -21,20 +21,24 @@ public:
     virtual void reset() override {
         *value_ = default_value_;
     }
-    virtual void load(const std::uint8_t* buffer) override {
-        assert(value_->size() == size_ / sizeof(bool));
+    virtual bool load(const std::uint8_t* buffer, std::uint32_t size) override {
+        if (value_->size() * sizeof(bool) != size) {
+            return false;
+        }
 
-        for (std::size_t i = 0; i < size_; i++) {
+        for (std::size_t i = 0; i < value_->size(); i++) {
             value_->at(i) = buffer[i] != 0u;
         }
+
+        return true;
     }
     virtual void save(std::vector<std::uint8_t>& out_buffer) override {
-        assert(value_->size() == size_ / sizeof(bool));
-
         auto old_size = out_buffer.size();
-        out_buffer.resize(old_size + static_cast<std::size_t>(size_));
+        out_buffer.resize(
+            old_size + static_cast<std::size_t>(value_->size() * sizeof(bool))
+        );
 
-        for (std::size_t i = 0; i < size_; i++) {
+        for (std::size_t i = 0; i < value_->size(); i++) {
             out_buffer[old_size + i] = value_->at(i) ? 1u : 0u;
         }
     }

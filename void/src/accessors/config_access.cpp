@@ -30,18 +30,4 @@ void config::load_last_config()
     get_config_instance()->load_last_config();
 }
 
-config_module::config_module(const xstr& name, std::uint32_t size)
-    : name_(name),
-      size_(size),
-      is_dynamic_(false)
-{
-}
-
-config_module::config_module(const xstr& name)
-    : name_(name),
-      is_dynamic_(true),
-      size_(0u)
-{
-}
-
 void_end_

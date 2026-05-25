@@ -1,48 +1,33 @@
 #pragma once
 #include <void/util/vobj.h>
-#include <void/util/xstr.h>
+#include <void/util/string_token.h>
+
 #include <vector>
 #include <memory>
 #include <string>
-#include <assert.h>
+#include <cassert>
 
 
 void_begin_
 
 class config_module {
 protected:
-    xstr name_;
-    const std::uint32_t size_;
-    const bool is_dynamic_;
+    string_token name_;
 
 public:
-    config_module(const xstr& name, std::uint32_t size); // non dynamic
-    config_module(const xstr& name); // dynamic
+    config_module(const string_token& name)
+        : name_(name) { }
 
 public:
     virtual void reset() = 0;
-    virtual void load(const std::uint8_t* buffer) { 
-        (void)buffer;
-        assert(false);
-    };
-    virtual bool load_dynamic(const std::uint8_t* buffer, std::uint32_t size) {
-        (void)buffer; (void)size;
-        assert(false);
-        return false;
-    };
+    virtual bool load(const std::uint8_t* buffer, std::uint32_t size) = 0;
     virtual void save(std::vector<std::uint8_t>& out_buffer) = 0;
 
 public:
-    [[nodiscard]] const auto& get_name() const noexcept {
+    [[nodiscard]] string_token get_name() const noexcept {
         return name_;
     }
-    [[nodiscard]] auto get_size() const noexcept {
-        return size_;
-    }
-    [[nodiscard]] auto is_dynamic() const noexcept {
-        return is_dynamic_;
-    }
-    void set_name(const xstr& name) noexcept {
+    void set_name(const string_token& name) noexcept {
         name_ = name;
     }
 };

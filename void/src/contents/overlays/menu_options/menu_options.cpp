@@ -44,7 +44,7 @@ menu_options::menu_options(void_* instance, input_owner* input_owner,
 
     instance->config().add_module(
         std::make_unique<default_config_module<std::size_t>>(
-            vo::xstr("menu_scale"),
+            string_token("menu_scale"),
             &selected_scale_
         )
     );
@@ -78,7 +78,7 @@ menu_options::menu_options(void_* instance, input_owner* input_owner,
     );
     instance->config().add_module(
         std::make_unique<default_config_module<bool>>(
-            vo::xstr("hide_always_on"),
+            string_token("hide_always_on"),
             &instance->get_keybind_list()->hide_always_on
         )
     );
@@ -92,7 +92,7 @@ menu_options::menu_options(void_* instance, input_owner* input_owner,
     );
     instance->config().add_module(
         std::make_unique<default_config_module<bool>>(
-            vo::xstr("hide_hold"),
+            string_token("hide_hold"),
             &instance->get_keybind_list()->hide_hold
         )
     );
@@ -106,7 +106,7 @@ menu_options::menu_options(void_* instance, input_owner* input_owner,
     );
     instance->config().add_module(
         std::make_unique<default_config_module<bool>>(
-            vo::xstr("enable_keybind_list"),
+            string_token("enable_keybind_list"),
             &instance->options().get<options::option_KeybindList>()
         )
     );
@@ -130,7 +130,7 @@ menu_options::menu_options(void_* instance, input_owner* input_owner,
 
     instance->config().add_module(
         std::make_unique<default_config_module<bool>>(
-            vo::xstr("allow_movement"),
+            string_token("allow_movement"),
             &instance->options().get<options::option_AllowKeyInput>()
         )
     );
@@ -146,7 +146,7 @@ menu_options::menu_options(void_* instance, input_owner* input_owner,
 
     instance->config().add_module(
         std::make_unique<default_config_module<bool>>(
-            vo::xstr("watermark"),
+            string_token("watermark"),
             &instance->options().get<options::option_Watermark>()
         )
     );

@@ -1,16 +1,18 @@
 #pragma once
 #include "base.h"
 
+#include <r2/renderer_definitions.h>
+#include <void/contents/widgets/list_options.h>
+#include <void/util/xstr.h>
+#include <void/util/string_token.h>
+#include <void/contents/widgets/textfield.h>
+#include <void/contents/input/keybind.h>
+
 #include <functional>
 #include <format>
 #include <utility>
 #include <vector>
-
-#include <r2/renderer_definitions.h>
-#include <void/contents/widgets/list_options.h>
-#include <void/util/xstr.h>
-#include <void/contents/widgets/textfield.h>
-#include <void/contents/input/keybind.h>
+#include <string>
 
 
 void_begin_
@@ -58,6 +60,7 @@ protected:
 class group_item_options : public group_base_options {
 public:
     using owner_type = group_access<group_item_options>;
+
 protected:
     owner_type* group_instance_;
 
@@ -86,14 +89,14 @@ public:
 class group_with_child_base_options : public group_base_options {
 protected:
     const xstr name_;
-    const xstr config_path_;
+    const string_token config_path_;
 
 protected:
-    xstr build_child_config_path(const xstr& type);
+    [[nodiscard]] string_token build_child_config_path(const xstr& type) const;
 
 public:
     group_with_child_base_options(void_* instance, menu_builder* builder,
-                                  widget* widget_instance, const xstr& config_path, 
+                                  widget* widget_instance, const string_token& config_path,
                                   const xstr& name, std::size_t config_id);
 
 protected:
@@ -109,13 +112,14 @@ protected:
 class group_with_child_options : public virtual group_with_child_base_options {
 public:
     using owner_type = group_access<group_with_child_options>;
+
 protected:
     owner_type* group_instance_;
 
 public:
     group_with_child_options(void_* instance, menu_builder* builder,
                              owner_type* group_instance, widget* widget_instance,
-                             const xstr& config_path, const xstr& name,
+                             const string_token& config_path, const xstr& name,
                              std::size_t config_id);
 
 public:
@@ -152,6 +156,7 @@ public:
 class group_textfield_options : public group_with_child_base_options {
 public:
     using owner_type = group_access<group_textfield_options>;
+
 protected:
     owner_type* group_instance_;
 
@@ -164,7 +169,7 @@ private:
 public:
     group_textfield_options(void_* instance, menu_builder* builder,
                             owner_type* group_instance, widget* widget_instance,
-                            const xstr& config_path, const xstr& name,
+                            const string_token& config_path, const xstr& name,
                             std::size_t config_id);
     virtual ~group_textfield_options();
 
@@ -216,6 +221,7 @@ public:
 class group_slider_options : public group_base_options {
 public:
     using owner_type = group_access<group_slider_options>;
+
 protected:
     owner_type* group_instance_;
 
@@ -269,6 +275,7 @@ class childwindow_options;
 class overlay_item_options : public group_base_options {
 public:
     using owner_type = childwindow_access<childwindow_options, overlay_item_options>;
+
 protected:
     owner_type* group_instance_;
     
@@ -297,15 +304,15 @@ public:
 class overlay_with_child_base_options : public group_base_options {
 protected:
     childwindow* const childwindow_instance_;
-    const xstr config_path_;
+    const string_token config_path_;
 
 protected:
-    xstr build_overlay_child_config_path(const xstr& type);
+    [[nodiscard]] string_token build_overlay_child_config_path(const xstr& type) const;
     
 public:
     overlay_with_child_base_options(void_* instance, menu_builder* builder,
                                     widget* widget_instance, childwindow* childwindow_instance, 
-                                    const xstr& config_path, std::size_t config_id);
+                                    const string_token& config_path, std::size_t config_id);
 public:
     void colorpicker(r2::color& value, bool has_alpha = true);
     void optional_colorpicker(r2::color& value, bool& enabled, bool has_alpha = true);
@@ -317,13 +324,14 @@ public:
 class overlay_with_child_options : public overlay_with_child_base_options {
 public:
     using owner_type = childwindow_access<childwindow_options, overlay_with_child_options>;
+
 protected:
     owner_type* const group_instance_;
     
 public:
     overlay_with_child_options(void_* instance, menu_builder* builder,
                                owner_type* group_instance, widget* widget_instance,
-                               childwindow* childwindow_instance, const xstr& config_path,
+                               childwindow* childwindow_instance, const string_token& config_path,
                                std::size_t config_id);
 
 public:
@@ -354,6 +362,7 @@ public:
 class overlay_textfield_options : public overlay_with_child_base_options {
 public:
     using owner_type = childwindow_access<childwindow_options, overlay_textfield_options>;
+
 protected:
     owner_type* const group_instance_;
 
@@ -366,7 +375,7 @@ private:
 public:
     overlay_textfield_options(void_* instance, menu_builder* builder,
                               owner_type* group_instance, widget* widget_instance,
-                              childwindow* childwindow_instance, const xstr& config_path,
+                              childwindow* childwindow_instance, const string_token& config_path,
                               std::size_t config_id);
     virtual ~overlay_textfield_options() override;
 
@@ -412,6 +421,7 @@ public:
 class overlay_slider_options : public group_base_options {
 public:
     using owner_type = childwindow_access<childwindow_options, overlay_slider_options>;
+
 protected:
     owner_type* group_instance_;
     
@@ -453,6 +463,7 @@ public:
 class overlay_spacing_options : public group_base_options {
 public:
     using owner_type = childwindow_access<childwindow_options, overlay_spacing_options>;
+
 protected:
     owner_type* group_instance_;
 
@@ -468,6 +479,7 @@ public:
 class childwindow_options : public base_builder_object {
 public:
     using owner_type = group_access<childwindow_options>;
+
 private:
     owner_type* const group_instance_;
     childwindow* const childwindow_instance_;
@@ -476,7 +488,7 @@ private:
     friend class overlay_with_child_options;
 
 protected:
-    xstr build_overlay_config_path(const xstr& type);
+    [[nodiscard]] string_token build_overlay_config_path(const xstr& type) const;
 
 public:
     childwindow_options(void_* instance, menu_builder* builder,
@@ -519,6 +531,7 @@ public:
 class group_keybind_options : public keybind_options_base {
 public:
     using owner_type = group_access<group_keybind_options>;
+
 private:
     owner_type* const group_instance_;
     std::size_t config_id1_;
@@ -561,7 +574,7 @@ protected:
     friend class childwindow_options;
 
 protected:
-    xstr build_config_path(const xstr& type);
+    [[nodiscard]] string_token build_config_path(const xstr& type) const;
 
 protected:
     group_builder(const group_builder&) = default;

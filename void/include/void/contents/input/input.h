@@ -1,8 +1,10 @@
 #pragma once
 #include <void/util/vobj.h>
+#include <r2/renderer_definitions.h>
 #include "input_response.h"
 #include "message_event.h"
 #include "keybind.h"
+
 #include <bitset>
 #include <memory>
 #include <vector>
@@ -66,6 +68,13 @@ public:
 
     [[nodiscard]] auto* keybind_manager() const noexcept {
         return keybind_manager_.get();
+    }
+
+    [[nodiscard]] r2::vec2 get_last_mouse_pos() const noexcept {
+        return r2::vec2(
+            static_cast<float>(last_mouse_x_),
+            static_cast<float>(last_mouse_y_)
+        );
     }
 
     void clear_queue();
