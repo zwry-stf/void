@@ -192,7 +192,7 @@ bool _config::create_new()
 
 /*
 Format:
-name (null terminated)
+name (string token 4 bytes)
 size (4 bytes)
 data (must match size)
 */
