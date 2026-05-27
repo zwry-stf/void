@@ -3,3 +3,5 @@ build/
 .git/
 *.vcxproj
 *.vcxproj.*
+*.sln
+out/
