@@ -1,6 +1,6 @@
 #pragma once
 #include <void/util/vobj.h>
-#include <void/util/xstr.h>
+#include <void/util/string_token.h>
 #include <functional>
 
 
@@ -9,7 +9,7 @@ void_begin_
 class overlay_builder : protected vobj {
 private:
     class custom_overlay* const overlay_instance_;
-    xstr config_path_{};
+    string_token config_path_{};
 
 public:
     overlay_builder(void_* instance, class custom_overlay* overlay_instance);
@@ -54,7 +54,7 @@ public:
     overlay_builder& on_input(std::function<class input_response(void_*, class custom_overlay&, const class input_base&)>&& callback);
 
     // set the config path
-    overlay_builder& config(const xstr& path);
+    overlay_builder& config(const string_token& path);
 };
 
 void_end_

@@ -383,8 +383,9 @@ error _background::post_resize()
     return init_targets();
 }
 
-void _background::do_blur_pass(const r2::vec4& area, r2::framebuffer* out_target, float rradius,
-                               blur_shader_constants* constants, r2::textureview* in_texture)
+void _background::do_blur_pass(const r2::vec4& area, r2::framebuffer* out_target,
+                               float rradius, blur_shader_constants* constants, 
+                               r2::textureview* in_texture)
 {
     blur_shader_constants local_constants{};
     blur_shader_constants* blur_constants = constants == nullptr ? &local_constants : constants;
@@ -507,13 +508,13 @@ void _background::do_blur_pass(const r2::vec4& area, r2::framebuffer* out_target
 
     ctx->set_scissor_rect(
         {
-            static_cast<std::int32_t>(std::floor(area.x*
+            static_cast<std::int32_t>(std::floor(area.x *
                 instance()->options().get<options::option_DownsampleValue>())),
-            static_cast<std::int32_t>(std::floor(area.y*
+            static_cast<std::int32_t>(std::floor(area.y *
                 instance()->options().get<options::option_DownsampleValue>())),
-            static_cast<std::int32_t>(std::ceil((area.z) *
+            static_cast<std::int32_t>(std::ceil(area.z *
                 instance()->options().get<options::option_DownsampleValue>())),
-            static_cast<std::int32_t>(std::ceil((area.w) *
+            static_cast<std::int32_t>(std::ceil(area.w *
                 instance()->options().get<options::option_DownsampleValue>()))
         }
     );

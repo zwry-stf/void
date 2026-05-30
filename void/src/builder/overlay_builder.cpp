@@ -15,13 +15,10 @@ overlay_builder::overlay_builder(void_* instance, custom_overlay* overlay_instan
 
 overlay_builder::~overlay_builder()
 {
-    if (!config_path_.empty()) {
-        xstr config_path = xstr("overlay");
-        config_path.append_safe(config_path_);
-
+    if (config_path_ != string_token(0)) {
         instance()->config().add_module(
             std::make_unique<default_config_module<r2::rectf>>(
-                config_path,
+                config_path_.combine("overlay"),
                 &overlay_instance_->data().pos
             )
         );
@@ -117,7 +114,7 @@ overlay_builder& overlay_builder::on_input(std::function<input_response(void_*, 
     return *this;
 }
 
-overlay_builder& overlay_builder::config(const xstr& path)
+overlay_builder& overlay_builder::config(const string_token& path)
 {
     config_path_ = path;
 

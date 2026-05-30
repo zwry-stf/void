@@ -16,20 +16,25 @@ private:
     const T default_value_;
 
 public:
-    default_config_module(const xstr& name, T* value, const T& default_value)
-        : config_module(name, static_cast<std::uint32_t>(sizeof(T))),
+    default_config_module(const string_token& name, T* value, const T& default_value)
+        : config_module(name),
           value_(value), 
           default_value_(default_value) { }
 
-    default_config_module(const xstr& name, T* value)
+    default_config_module(const string_token& name, T* value)
         : default_config_module(name, value, *value) { }
 
 public:
     virtual void reset() override {
         *value_ = default_value_;
     }
-    virtual void load(const std::uint8_t* data) override {
+    virtual bool load(const std::uint8_t* data, std::uint32_t length) override {
+        if (length != sizeof(T)) {
+            return false;
+        }
+
         std::memcpy(value_, data, sizeof(T));
+        return true;
     }
     virtual void save(std::vector<std::uint8_t>& out_buffer) override {
         auto old_size = out_buffer.size();

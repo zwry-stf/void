@@ -125,15 +125,20 @@ group_item_options::owner_type& group_item_options::no_config()
 
 /// group_with_child_base_options
 
-xstr group_with_child_base_options::build_child_config_path(const xstr& type)
+string_token group_with_child_base_options::build_child_config_path(const xstr& type) const
 {
-    xstr ret = type;
-    ret.append_safe(config_path_);
-    return ret;
+    char buf[type.kMaxSize];
+    type.get(buf);
+
+    const auto token = string_token(
+        std::string_view(buf, buf + type.length())
+    );
+
+    return token.combine(config_path_);
 }
 
 group_with_child_base_options::group_with_child_base_options(void_* instance, menu_builder* builder, 
-                                                             widget* widget_instance, const xstr& config_path,
+                                                             widget* widget_instance, const string_token& config_path,
                                                              const xstr& name, std::size_t config_id)
     : group_base_options(instance, builder, widget_instance, config_id),
       config_path_(config_path),
@@ -285,9 +290,10 @@ void group_with_child_base_options::custom_child(std::unique_ptr<widget_child>&&
 
 group_with_child_options::group_with_child_options(void_* instance, menu_builder* builder,
                                                    owner_type* group_instance, widget* widget_instance, 
-                                                   const xstr& config_path, const xstr& name,
+                                                   const string_token& config_path, const xstr& name,
                                                    std::size_t config_id)
-    : group_with_child_base_options(instance, builder, widget_instance, config_path, name, config_id),
+    : group_with_child_base_options(instance, builder, widget_instance, 
+        config_path, name, config_id),
       group_instance_(group_instance)
 {
 }
@@ -390,9 +396,12 @@ group_with_child_options::owner_type& group_with_child_options::custom_child(std
 
 group_textfield_options::group_textfield_options(void_* instance, menu_builder* builder, 
                                                  owner_type* group_instance, widget* widget_instance,
-                                                 const xstr& config_path, const xstr& name,
+                                                 const string_token& config_path, const xstr& name,
                                                  std::size_t config_id)
-    : group_with_child_base_options(instance, builder, widget_instance, config_path, name, config_id),
+    : group_with_child_base_options(
+        instance, builder, widget_instance,
+        config_path, name, config_id
+      ),
       group_instance_(group_instance)
 {
 }
@@ -632,17 +641,21 @@ overlay_item_options::owner_type& overlay_item_options::no_config()
 
 /// overlay_with_child_base_options
 
-xstr overlay_with_child_base_options::build_overlay_child_config_path(const xstr& type)
+string_token overlay_with_child_base_options::build_overlay_child_config_path(const xstr& type) const
 {
-    xstr ret = type;
-    ret.append_safe(config_path_);
+    char buf[type.kMaxSize];
+    type.get(buf);
 
-    return ret;
+    const auto token = string_token(
+        std::string_view(buf, buf + type.length())
+    );
+
+    return token.combine(config_path_);
 }
 
 overlay_with_child_base_options::overlay_with_child_base_options(void_* instance, menu_builder* builder,
                                                                  widget* widget_instance, childwindow* childwindow_instance,
-                                                                 const xstr& config_path, std::size_t config_id)
+                                                                 const string_token& config_path, std::size_t config_id)
     : group_base_options(instance, builder, widget_instance, config_id),
       childwindow_instance_(childwindow_instance),
       config_path_(config_path)
@@ -774,7 +787,7 @@ void overlay_with_child_base_options::custom_child(std::unique_ptr<widget_child>
 
 overlay_with_child_options::overlay_with_child_options(void_* instance, menu_builder* builder,
                                                        owner_type* group_instance, widget* widget_instance,
-                                                       childwindow* childwindow_instance, const xstr& config_path,
+                                                       childwindow* childwindow_instance, const string_token& config_path,
                                                        std::size_t config_id)
     : overlay_with_child_base_options(instance, builder, widget_instance, 
         childwindow_instance, config_path, config_id),
@@ -847,7 +860,7 @@ overlay_with_child_options::owner_type& overlay_with_child_options::custom_child
 
 overlay_textfield_options::overlay_textfield_options(void_* instance, menu_builder* builder,
                                                      owner_type* group_instance, widget* widget_instance,
-                                                     childwindow* childwindow_instance, const xstr& config_path,
+                                                     childwindow* childwindow_instance, const string_token& config_path,
                                                      std::size_t config_id)
     : overlay_with_child_base_options(instance, builder, widget_instance,
         childwindow_instance, config_path, config_id),
@@ -1036,7 +1049,7 @@ overlay_spacing_options::owner_type& overlay_spacing_options::condition(std::fun
 
 /// childwindow_options
 
-xstr childwindow_options::build_overlay_config_path(const xstr& type)
+string_token childwindow_options::build_overlay_config_path(const xstr& type) const
 {
     xstr ret = last_overlay_widget_name_;
     ret.append_safe(type);
@@ -1044,7 +1057,10 @@ xstr childwindow_options::build_overlay_config_path(const xstr& type)
     ret.append_safe(get_last_group_name());
     ret.append_safe(get_last_child_name());
 
-    return ret;
+    char buf[ret.kMaxSize];
+    ret.get(buf);
+
+    return string_token(std::string_view(buf, buf + ret.length()));
 }
 
 childwindow_options::childwindow_options(void_* instance, menu_builder* builder,
@@ -1458,14 +1474,17 @@ group_keybind_options::owner_type& group_keybind_options::get_bind(vo::keybind_o
 
 /// group_builder
 
-xstr group_builder::build_config_path(const xstr& type)
+string_token group_builder::build_config_path(const xstr& type) const
 {
     xstr ret = last_widget_name_;
     ret.append_safe(type);
     ret.append_safe(get_last_group_name());
     ret.append_safe(get_last_child_name());
 
-    return ret;
+    char buf[ret.kMaxSize];
+    ret.get(buf);
+
+    return string_token(std::string_view(buf, buf + ret.length()));
 }
 
 group_builder::group_builder(void_* instance, menu_builder* builder, group* group_instance)
@@ -1530,7 +1549,7 @@ group_with_child_options::owner_type group_builder::last_keybind(const xstr& nam
     return group_with_child_options::owner_type(
         *this,
         widget,
-        vo::xstr(),
+        string_token(),
         name,
         _config::kInvalidModuleId
     );

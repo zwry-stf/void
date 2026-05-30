@@ -116,10 +116,10 @@ void _config::destroy()
 std::size_t _config::add_module(std::unique_ptr<config_module>&& module)
 {
     // make sure not to add the same name twice
-    const xstr& name = module->get_name();
-    const xstr original_name = name;
+    const string_token original_name = module->get_name();
     int num = 0;
     for (;;) {
+        const string_token name = module->get_name();
         bool found = false;
         for (auto& m : modules_) {
             if (m) {
@@ -133,9 +133,9 @@ std::size_t _config::add_module(std::unique_ptr<config_module>&& module)
         if (!found)
             break;
 
-        xstr new_name;
-        new_name.append(std::to_string(num).c_str());
-        module->set_name(new_name + original_name);
+        module->set_name(
+            string_token(original_name.hash() + num + 1)
+        );
         num++;
     }
 
@@ -192,7 +192,7 @@ bool _config::create_new()
 
 /*
 Format:
-name (null terminated)
+name (string token 4 bytes)
 size (4 bytes)
 data (must match size)
 */
@@ -209,113 +209,101 @@ bool _config::load(const std::wstring& name, bool first)
             mod->reset();
     }
 
-    auto data = buffer.begin();
+    bool success = false;
+    if (!buffer.empty()) {
+        const std::uint8_t* ptr = buffer.data();
+        const std::uint8_t* const end = ptr + buffer.size();
 
-    if (buffer.empty()) {
-        goto done;
-    }
-
-    // parse data
-    while (data < buffer.end()) {
-        const char* module_name = reinterpret_cast<const char*>(&(*data));
-
-        auto data_backup = data;
-        bool found = false;
-        bool parse_failed = false;
-        for (auto& mod : modules_) {
-            if (!mod)
-                continue;
-
-            if (reinterpret_cast<const std::uint8_t*>(
-                    module_name + mod->get_name().length() + 1) >
-                buffer.data() + buffer.size()) {
-                continue;
-            }
-
-            if (mod->get_name() != module_name) { // == operator will never go past length + 1, so this is okay
-                continue;
-            }
-
-            data += mod->get_name().length();
-            data += 1; // '\0'
-
-            std::uint32_t data_length;
-
-            if (data + sizeof(data_length) >= buffer.end()) {
+        // parse data
+        while (ptr < end) {
+            if (ptr + sizeof(string_token) > end) {
                 break;
             }
 
-            std::memcpy(&data_length, &(*data), sizeof(data_length));
+            string_token module_name;
+            std::memcpy(&module_name, ptr, sizeof(module_name));
 
-            if (!mod->is_dynamic() &&
-                data_length != mod->get_size()) {
-                break;
-            }
+            ptr += sizeof(string_token);
 
-            data += sizeof(data_length);
+            auto* data_backup = ptr;
+            bool found = false;
+            bool parse_failed = false;
+            for (auto& mod : modules_) {
+                if (!mod)
+                    continue;
 
-            if (data + data_length > buffer.end()) {
-                break;
-            }
+                if (mod->get_name() != module_name) { // == operator will never go past length + 1, so this is okay
+                    continue;
+                }
 
-            found = true;
-            if (mod->is_dynamic()) {
-                if (!mod->load_dynamic(&(*data), data_length)) {
-                    parse_failed = true;
+                std::uint32_t data_length;
+                if (ptr + sizeof(data_length) >= end) {
                     break;
                 }
+
+                std::memcpy(&data_length, ptr, sizeof(data_length));
+
+                ptr += sizeof(data_length);
+
+                if (ptr + data_length > end) {
+                    break;
+                }
+
+                found = true;
+                if (!mod->load(ptr, data_length)) {
+                    success = false;
+                }
+
+                ptr += data_length;
+
+                break;
             }
-            else {
-                mod->load(&(*data));
+
+            if (!found) {
+                ptr = data_backup;
+
+                std::uint32_t data_length;
+                if (ptr + sizeof(data_length) >= end) {
+                    break;
+                }
+
+                std::memcpy(&data_length, ptr, sizeof(data_length));
+
+                ptr += sizeof(std::uint32_t);
+
+                if (ptr + data_length >= end) {
+                    break;
+                }
+
+                ptr += data_length;
             }
-
-            data += data_length;
-
-            break;
-        }
-
-        if (!found) {
-            data = data_backup;
-
-            auto str_len = strnlen_s(module_name,
-                static_cast<std::size_t>(buffer.end() - data));
-
-            if (str_len == static_cast<std::size_t>(buffer.end() - data) ||
-                str_len > xstr::kMaxSize) { // invalid config data
+            else if (parse_failed) {
                 show_error(xstr("Failed to parse config"), &name);
                 return false;
             }
-
-            data += str_len;
-            data += 1; // '\0'
-
-            std::uint32_t data_length;
-            if (data + sizeof(data_length) >= buffer.end())
-                break;
-
-            std::memcpy(&data_length, &(*data), sizeof(data_length));
-
-            data += sizeof(std::uint32_t);
-
-            data += data_length;
-        }
-        else if (parse_failed) {
-            show_error(xstr("Failed to parse config"), &name);
-            return false;
         }
     }
 
-done:
     if (!first)
         save_last_file(name);
 
-    if (!first) {
+    if (!first ||
+        !success) {
         // notification
         auto& style = instance()->style();
-        instance()->notifications().create_note()
-            << style.text_accent() << type_name_pascal_ << xstr(" loaded ")
-            << style.grey() << name
-            << style.text() << xstr(".");
+
+        if (success) {
+            instance()->notifications().create_note()
+                << style.text_accent() << type_name_pascal_ << xstr(" loaded ")
+                << style.grey() << name
+                << style.text() << xstr(".");
+        }
+        else {
+            instance()->notifications().create_note()
+                << style.text_accent() << type_name_pascal_ << xstr(" partially loaded ")
+                << style.grey() << name
+                << style.text() << xstr(".");
+        }
     }
 
     instance()->callbacks().invoke<callbacks::callback_OnLoadConfig>();
@@ -326,6 +314,7 @@ done:
 bool _config::save(const std::wstring& name, config_drawable* drawable)
 {
     std::vector<std::uint8_t> data;
+    std::vector<std::uint8_t> mod_data;
     data.reserve(modules_.size() * 10); // default estimated size
 
     for (const auto& mod : modules_) {
@@ -333,21 +322,27 @@ bool _config::save(const std::wstring& name, config_drawable* drawable)
             continue;
 
         // save name
-        for (std::uint8_t i = 0; i < mod->get_name().length(); i++)
-            data.push_back(mod->get_name()[i]);
-
-        data.push_back('\0');
+        auto old_size = data.size();
+        data.resize(old_size + sizeof(string_token));
+        const auto module_name = mod->get_name();
+        std::memcpy(data.data() + old_size, &module_name, sizeof(string_token));
 
         // save size
-        std::uint32_t data_length = mod->get_size();
+        mod_data.clear();
+        mod->save(mod_data);
 
-        auto old_size = data.size();
+        const std::uint32_t data_length = static_cast<std::uint32_t>(mod_data.size());
+
+        old_size = data.size();
         data.resize(old_size + sizeof(data_length));
 
         std::memcpy(data.data() + old_size, &data_length, sizeof(data_length));
 
-        // save data
-        mod->save(data);
+        data.insert(
+            data.end(),
+            mod_data.begin(),
+            mod_data.end()
+        );
     }
 
     if (data.empty()) {
