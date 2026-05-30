@@ -56,8 +56,8 @@ public:
 
     void toggle_menu(bool open);
 
-    void set_scale(float scale);
-    void set_scale_auto();
+    [[nodiscard]] error set_scale(float scale);
+    [[nodiscard]] error set_scale_auto();
     [[nodiscard]] float calculate_scale() noexcept;
 
 public:
@@ -141,7 +141,7 @@ private:
     e_resizing_type get_resizing_type(float mouse_x, float mouse_y) const noexcept;
     input_response input_move(const input_base& input);
     input_response input_search(const input_base& input);
-    void update_scale(float scale);
+    [[nodiscard]] error update_scale(float scale);
 
 private:
     std::unique_ptr<class _background> background_;

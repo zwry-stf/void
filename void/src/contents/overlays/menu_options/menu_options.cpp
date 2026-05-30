@@ -271,7 +271,10 @@ void menu_options::update(const overlay_render_input& input)
             break;
         }
 
-        instance()->set_scale(scale);
+        if (auto res = instance()->set_scale(scale);
+            res != error(error_code::none)) {
+            instance()->options().get<options::option_CriticalErrorCallback>()();
+        }
 
         set_opened(-1);
     }

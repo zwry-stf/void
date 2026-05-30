@@ -36,10 +36,10 @@ loaded_resource resources::load_resource(int id)
     }
     if (!found) {
         instance()->options().get<options::option_CriticalErrorCallback>()();
-        return { nullptr, 0 };
+        return { std::vector<std::uint8_t>() };
     }
 
-    return { f.data, f.size };
+    return { std::move(f.data) };
 }
 
 void_end_

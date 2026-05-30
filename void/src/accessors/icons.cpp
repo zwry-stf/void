@@ -49,8 +49,7 @@ void icons::destroy_render()
     for (auto& i : icons_) {
         for (auto it = i.sizes.begin(); it != i.sizes.end();) {
             auto& s = *it;
-            if (!s.created ||
-                s.add_to_atlas) {
+            if (!s.created) {
                 it++;
                 continue;
             }
@@ -147,7 +146,7 @@ error icons::create_icon(int resource_id, internal_scaled_icon& data, bool ignor
     auto* font_atlas = renderer.font_atlas();
 
     // load img
-    auto res = instance()->resources().load_resource(resource_id);
+    const auto res = instance()->resources().load_resource(resource_id);
 
     std::uint8_t* pixels;
     int width, height;

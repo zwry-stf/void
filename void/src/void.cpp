@@ -63,11 +63,9 @@ error void_::init(const r2::platform_init_data& pinit, const r2::backend_init_da
     // scale
     scale_ = calculate_scale();
 
-    // fonts
-    fonts().create();
-
     // build fonts
-    if (!fonts().build()) {
+    if (!fonts().create() ||
+        !fonts().build()) {
         return error(error_code::font_init);
     }
 
@@ -161,8 +159,8 @@ error void_::init_render(const r2::platform_init_data& pinit, const r2::backend_
     renderer_.backup_render_state();
 #endif // R2_BACKEND_OPENGL
 
-    fonts().create();
-    if (!fonts().build()) {
+    if (!fonts().create() ||
+        !fonts().build()) {
         return error(error_code::font_init);
     }
 
@@ -406,14 +404,14 @@ void void_::toggle_menu(bool open)
     callbacks().invoke<callbacks::callback_OnToggleMenu>(open);
 }
 
-void void_::set_scale(float scale)
+error void_::set_scale(float scale)
 {
-    update_scale(scale);
+    return update_scale(scale);
 }
 
-void void_::set_scale_auto()
+error void_::set_scale_auto()
 {
-    update_scale(calculate_scale());
+    return update_scale(calculate_scale());
 }
 
 menu_builder void_::get_builder() noexcept
@@ -853,13 +851,14 @@ input_response void_::input_search(const input_base& input)
     return input_response::empty();
 }
 
-void void_::update_scale(float scale)
+error void_::update_scale(float scale)
 {
 #if defined(_DEBUG)
     renderer_.assert_render_thread();
 #endif
-    if (scale == scale_)
-        return;
+    if (scale == scale_) {
+        return error(error_code::none);
+    }
     
     assert(scale > 0.f);
 
@@ -887,10 +886,14 @@ void void_::update_scale(float scale)
     search_text_field_->on_scale_changed();
 
     // rebuild fonts
-    fonts().create();
-    fonts().build();
+    if (!fonts().create() ||
+        !fonts().build()) {
+        return error(error_code::font_init);
+    }
 
     callbacks().invoke<callbacks::callback_OnScaleChange>(scale_);
+
+    return error(error_code::none);
 }
 
 void_end_

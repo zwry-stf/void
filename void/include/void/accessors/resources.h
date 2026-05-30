@@ -10,20 +10,27 @@ void_begin_
 
 class loaded_resource {
 private:
-    const std::uint8_t* data_;
-    const std::size_t size_;
+    std::vector<std::uint8_t> data_;
 
 public:
-    loaded_resource(const std::uint8_t* data, std::size_t size) noexcept
-        : data_(data),
-          size_(size) { }
+    loaded_resource(std::vector<std::uint8_t> data) noexcept
+        : data_(std::move(data)) { }
 
 public:
     [[nodiscard]] const auto* data() const noexcept {
-        return data_;
+        return data_.data();
     }
     [[nodiscard]] auto size() const noexcept {
-        return size_;
+        return data_.size();
+    }
+    [[nodiscard]] std::vector<std::uint8_t> move() noexcept {
+        return std::move(data_);
+    }
+    [[nodiscard]] std::vector<std::uint8_t>& vec() noexcept {
+        return data_;
+    }
+    [[nodiscard]] const std::vector<std::uint8_t>& vec() const noexcept {
+        return data_;
     }
 };
 

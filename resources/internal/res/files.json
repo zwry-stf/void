@@ -116,7 +116,7 @@
             "path": "../../res/shaders/out/BackgroundVertexShader.shader"
         },
         {
-            "id":204,
+            "id": 204,
             "name": "BackgroundComposition_shader",
             "path": "../../res/shaders/out/BackgroundComposition.shader"
         },
@@ -132,5 +132,6 @@
         }
     ],
     "resources_namespace": "void_resources",
-    "resources_path": "../../include/resources/resources.h"
+    "resources_path": "../../include/resources/resources.h",
+    "use_encryption": true
 }

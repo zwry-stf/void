@@ -1,13 +1,15 @@
 #pragma once
 #include "common.h"
+
 #include <cstdint>
 #include <cstring>
+#include <vector>
+#include <string>
 
 
 namespace resources {
 	struct parsed_file {
-		const std::uint8_t* data{};
-		std::size_t size{};
+		std::vector<std::uint8_t> data;
 	};
 
 	bool parse(const std::uint8_t* arr, std::size_t size, int id, parsed_file& out) {
@@ -24,8 +26,8 @@ namespace resources {
 		if (header.num_files == 0u)
 			return false;
 
-		for (std::size_t i = 0u; i < header.num_files; i++) {
-			const std::size_t offset = sizeof(header) + i * sizeof(file_header);
+		for (std::uint32_t i = 0u; i < header.num_files; i++) {
+			const std::uint32_t offset = static_cast<std::uint32_t>(sizeof(header) + i * sizeof(file_header));
 			if (size < offset + sizeof(file_header))
 				return false;
 
@@ -37,8 +39,26 @@ namespace resources {
 			);
 
 			if (fheader.id == id) {
-				out.data = arr + header.data_pointer + fheader.data_offset;
-				out.size = fheader.data_size;
+				const std::uint32_t data_start = header.data_pointer + fheader.data_offset;
+				const std::uint32_t data_end = data_start + fheader.data_size;
+				if (data_end > size || data_start > size) {
+					return false;
+				}
+
+				out.data.assign(
+					arr + data_start,
+					arr + data_end
+				);
+				if (header.use_encryption) {
+					std::uint8_t real_key[sizeof(fheader.encryption_key)];
+					derive_rc4_key(fheader.encryption_key, real_key);
+					rc4_crypt(
+						out.data.data(),
+						out.data.size(),
+						real_key,
+						sizeof(real_key)
+					);
+				}
 				return true;
 			}
 		}

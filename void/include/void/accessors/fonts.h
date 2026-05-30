@@ -14,8 +14,8 @@ private:
     r2::font* font_large_{};
 
 public:
-    void create();
-    bool build();
+    [[nodiscard]] bool create();
+    [[nodiscard]] bool build();
 
     void bind_font_small() const;
     void bind_font_large() const;

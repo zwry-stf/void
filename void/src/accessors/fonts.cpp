@@ -5,7 +5,7 @@
 
 void_begin_
 
-void fonts::create()
+bool fonts::create()
 {
     auto& renderer = instance()->renderer();
     auto& style = instance()->style();
@@ -44,25 +44,33 @@ void fonts::create()
     font_large_ = renderer.add_font(fcfg);
 
     // add fonts
-    const vo::loaded_resource font1 = instance()->resources().load_resource(
+    vo::loaded_resource font1 = instance()->resources().load_resource(
         void_resources::NotoSans_Medium_ttf
     );
-    font_small_->add_font(font1.data(), font1.size());
-    font_large_->add_font(font1.data(), font1.size());
+    if (!font_small_->add_font(font1.vec()) ||
+        !font_large_->add_font(font1.move())) {
+        return false;
+    }
 
-    const vo::loaded_resource font2 = instance()->resources().load_resource(
+    vo::loaded_resource font2 = instance()->resources().load_resource(
         void_resources::MPLUSRounded1c_Medium_ttf
     );
-    font_small_->add_font(font2.data(), font2.size());
-    font_large_->add_font(font2.data(), font2.size());
+    if (!font_small_->add_font(font2.vec()) ||
+        !font_large_->add_font(font2.move())) {
+        return false;
+    }
 
-    const vo::loaded_resource font3 = instance()->resources().load_resource(
+    vo::loaded_resource font3 = instance()->resources().load_resource(
         void_resources::NotoEmoji_Medium_ttf
     );
-    font_small_->add_font(font3.data(), font3.size());
-    font_large_->add_font(font3.data(), font3.size());
+    if (!font_small_->add_font(font3.vec()) ||
+        !font_large_->add_font(font3.move())) {
+        return false;
+    }
 
     instance()->callbacks().invoke<callbacks::callback_OnCreateFonts>();
+
+    return true;
 }
 
 bool fonts::build()
