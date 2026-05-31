@@ -42,8 +42,8 @@ error _background::init()
         void_resources::BackgroundVertexShader_shader);
 
     r2::vertex_attribute_desc vs_desc[] = {
-        { "POSITION", r2::vertex_attribute_format::f32f32, offsetof(r2::vec4, x), false, 0 },
-        { "TEXCOORD", r2::vertex_attribute_format::f32f32, offsetof(r2::vec4, z), false, 0 },
+        { "POSITION", 0, r2::vertex_attribute_format::f32f32, offsetof(r2::vec4, x), false, 0 },
+        { "TEXCOORD", 0, r2::vertex_attribute_format::f32f32, offsetof(r2::vec4, z), false, 0 },
     };
 
     auto compiled_vs = ctx->compile_vertexshader(
